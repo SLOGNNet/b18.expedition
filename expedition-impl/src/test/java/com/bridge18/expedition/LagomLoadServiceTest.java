@@ -1,23 +1,19 @@
 package com.bridge18.expedition;
 
 import akka.actor.ActorSystem;
-import akka.testkit.JavaTestKit;
 import com.bridge18.expedition.api.LagomLoadService;
-import com.bridge18.expedition.dto.LoadDTO;
+import com.bridge18.expedition.dto.v1.LoadDTO;
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import junit.framework.Assert;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import static com.lightbend.lagom.javadsl.testkit.ServiceTest.bind;
 import static com.lightbend.lagom.javadsl.testkit.ServiceTest.defaultSetup;
-import static com.lightbend.lagom.javadsl.testkit.ServiceTest.withServer;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public class LagomLoadServiceTest {

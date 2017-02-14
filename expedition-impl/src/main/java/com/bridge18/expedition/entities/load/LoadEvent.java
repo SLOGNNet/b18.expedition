@@ -4,8 +4,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lightbend.lagom.serialization.Jsonable;
 
 import java.util.Optional;
@@ -13,9 +11,7 @@ import java.util.Optional;
 public interface LoadEvent extends Jsonable {
 
     @Immutable
-    @JsonDeserialize
     public final class LoadCreated implements LoadEvent {
-        @JsonCreator
         public LoadCreated() {
         }
 
@@ -40,7 +36,6 @@ public interface LoadEvent extends Jsonable {
     }
 
     @Immutable
-    @JsonDeserialize
     public final class LoadDetailsAdded implements LoadEvent {
         public Optional<String> customerId;
         public Optional<String> customerAddressId;
@@ -50,11 +45,9 @@ public interface LoadEvent extends Jsonable {
         public Optional<LoadType> loadType;
         public Optional<FreightType> freightType;
 
-        @JsonCreator
         public LoadDetailsAdded() {
         }
 
-        @JsonCreator
         public LoadDetailsAdded(Optional<String> customerId, Optional<String> customerAddressId,
                                 Optional<String> carrierLoadNumber, Optional<String> brokerLoadNumber,
                                 Optional<LoadType> loadType, Optional<FreightType> freightType) {

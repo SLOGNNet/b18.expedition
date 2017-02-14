@@ -27,6 +27,7 @@ public class LoadServiceImpl implements LoadService {
 
     @Override
     public CompletionStage<LoadState> createLoad() {
+
         PersistentEntityRef<LoadCommand> ref = persistentEntityRegistry.refFor(LoadEntity.class, UUID.randomUUID().toString());
 
         LoadCommand.CreateLoad cmd = new LoadCommand.CreateLoad();

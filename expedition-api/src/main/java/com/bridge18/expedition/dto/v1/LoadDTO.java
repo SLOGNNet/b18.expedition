@@ -1,4 +1,4 @@
-package com.bridge18.expedition.dto;
+package com.bridge18.expedition.dto.v1;
 
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;

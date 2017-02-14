@@ -4,7 +4,6 @@
 package com.bridge18.expedition.entities.load;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import javax.annotation.concurrent.Immutable;
 

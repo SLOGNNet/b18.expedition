@@ -8,7 +8,6 @@ public class LoadEntity extends PersistentEntity<LoadCommand, LoadEvent, LoadSta
 
     @Override
     public Behavior initialBehavior(Optional<LoadState> snapshotState) {
-
         BehaviorBuilder b = newBehaviorBuilder(
                 snapshotState.orElse(LoadState.builder().id(entityId()).build()));
 
@@ -37,12 +36,12 @@ public class LoadEntity extends PersistentEntity<LoadCommand, LoadEvent, LoadSta
 
         b.setEventHandler(LoadEvent.LoadDetailsAdded.class,
                 (LoadEvent.LoadDetailsAdded evt) ->
-                        state().withId(entityId()).withCustomerId(evt.customerId)
-                                .withCustomerAddressId(evt.customerAddressId)
-                                .withCarrierLoadNumber(evt.carrierLoadNumber)
-                                .withBrokerLoadNumber(evt.brokerLoadNumber)
-                                .withLoadType(evt.loadType)
-                                .withFreightType(evt.freightType)
+                        LoadState.builder().from(state()).customerId(evt.customerId)
+                            .customerAddressId(evt.customerAddressId)
+                            .carrierLoadNumber(evt.carrierLoadNumber)
+                            .brokerLoadNumber(evt.brokerLoadNumber)
+                            .loadType(evt.loadType)
+                            .freightType(evt.freightType).build()
                 );
 
         return b.build();

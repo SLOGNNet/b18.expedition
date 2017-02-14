@@ -5,7 +5,7 @@ package com.bridge18.expedition.services.lagom;
 
 import akka.NotUsed;
 import com.bridge18.expedition.api.LagomLoadService;
-import com.bridge18.expedition.dto.LoadDTO;
+import com.bridge18.expedition.dto.v1.LoadDTO;
 import com.bridge18.expedition.services.objects.LoadService;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 
@@ -25,8 +25,8 @@ public class LagomLoadServiceImpl implements LagomLoadService {
     public ServiceCall<NotUsed, LoadDTO> createNewLoad() {
         return request -> {
             return loadService.createLoad()
-                    .thenApply(loadState ->
-                        new LoadDTO(loadState.getId()));
+                    .thenApply((loadState) ->
+                            new LoadDTO(loadState.getId()));
         };
     }
 

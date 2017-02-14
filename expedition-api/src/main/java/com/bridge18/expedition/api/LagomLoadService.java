@@ -3,9 +3,8 @@ package com.bridge18.expedition.api;
 import static com.lightbend.lagom.javadsl.api.Service.named;
 import static com.lightbend.lagom.javadsl.api.Service.restCall;
 
-import akka.Done;
 import akka.NotUsed;
-import com.bridge18.expedition.dto.LoadDTO;
+import com.bridge18.expedition.dto.v1.LoadDTO;
 import com.lightbend.lagom.javadsl.api.Descriptor;
 import com.lightbend.lagom.javadsl.api.Service;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
@@ -19,8 +18,8 @@ public interface LagomLoadService extends Service {
     default Descriptor descriptor() {
         // @formatter:off
         return named("expedition").withCalls(
-                restCall(Method.POST, "/api/expedition/loads",  this::createNewLoad),
-                restCall(Method.POST, "/api/expedition/loads/:id", this::addLoadDetails)
+                restCall(Method.POST, "/v1/api/expedition/loads",  this::createNewLoad),
+                restCall(Method.PUT, "/v1/api/expedition/loads/:id", this::addLoadDetails)
         ).withAutoAcl(true);
         // @formatter:on
     }
