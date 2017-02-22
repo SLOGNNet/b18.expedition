@@ -10,6 +10,7 @@ RUN mkdir /project
 
 WORKDIR /project
 
+COPY ./config ./config
 COPY ./expedition-impl/target/expedition-impl-1.0-SNAPSHOT-conductr-bundle/expedition-v1/expedition ./
 
 RUN chown -R bridge18:bridge18 /project/
