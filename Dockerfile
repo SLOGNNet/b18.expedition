@@ -20,4 +20,4 @@ USER bridge18
 
 EXPOSE 8080
 
-ENTRYPOINT expedition
+ENTRYPOINT ./bin/expedition

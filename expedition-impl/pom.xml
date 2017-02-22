@@ -10,6 +10,10 @@
 
     <packaging>jar</packaging>
 
+    <properties>
+        <lagom-service-locator.version>1.0.0</lagom-service-locator.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -55,6 +59,11 @@
         <dependency>
             <groupId>com.lightbend.lagom</groupId>
             <artifactId>lagom-javadsl-testkit_2.11</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lightbend</groupId>
+            <artifactId>lagom-service-locator-dns_2.11</artifactId>
+            <version>${lagom-service-locator.version}</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe.conductr</groupId>
