@@ -12,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
-public class WorkerBootstrap {
+public class ConsumersBootstrap {
     private List<WorkerRegistration> registrations = new ArrayList<>();
 
     private CamundaClient camundaClient;
     private Configuration configuration;
 
     @Inject
-    public WorkerBootstrap(Configuration configuration, CreateEmptyLoadWorker createEmptyLoad) {
+    public ConsumersBootstrap(Configuration configuration, CreateEmptyLoadWorker createEmptyLoad) {
         this.configuration = configuration;
 
         camundaClient = CamundaClient.create()
