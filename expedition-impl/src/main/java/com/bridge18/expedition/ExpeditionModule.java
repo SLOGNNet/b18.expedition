@@ -12,7 +12,6 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
     @Override
     protected void configure() {
         bind(LoadService.class).to(LoadServiceImpl.class);
-        bind(LoadService.class).to(LoadServiceImpl.class);
 
         bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class));
     }
