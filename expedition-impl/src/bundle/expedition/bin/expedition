@@ -9,4 +9,6 @@ CONFIG="-Dhttp.address=0.0.0.0 -Dhttp.port=8080 -Dplay.crypto.secret=$PLAY_SECRE
 
 DIR=$(dirname $0)
 
+echo "Up to run: java -cp "$DIR/../lib/*" $JAVA_OPTS $CONFIG play.core.server.ProdServerStart"
+
 java -cp "$DIR/../lib/*" $JAVA_OPTS $CONFIG play.core.server.ProdServerStart
