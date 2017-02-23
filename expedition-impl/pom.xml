@@ -71,11 +71,11 @@
             <groupId>com.lightbend.lagom</groupId>
             <artifactId>lagom-javadsl-testkit_2.11</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.lightbend</groupId>
-            <artifactId>lagom-service-locator-dns_2.11</artifactId>
-            <version>${lagom-service-locator.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.lightbend</groupId>-->
+            <!--<artifactId>lagom-service-locator-dns_2.11</artifactId>-->
+            <!--<version>${lagom-service-locator.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.typesafe.conductr</groupId>
             <artifactId>${conductr.lib.name}</artifactId>
