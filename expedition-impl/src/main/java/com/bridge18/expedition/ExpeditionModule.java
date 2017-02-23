@@ -27,8 +27,8 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
 
         bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class));
 
-        if (environment.isProd()) {
-            bind(ServiceLocator.class).to(ConfigurationServiceLocator.class);
-        }
+//        if (environment.isProd()) {
+//            bind(ServiceLocator.class).to(ConfigurationServiceLocator.class);
+//        }
     }
 }
