@@ -17,7 +17,8 @@ RUN chown -R bridge18:bridge18 /project/
 
 VOLUME /var/log/bridge18
 
-USER bridge18
+#USER bridge18
+USER root
 
 EXPOSE 8080
 
