@@ -3,44 +3,35 @@ package com.bridge18.expedition.consumers;
 import com.bridge18.service.streams.Consumer;
 import com.bridge18.service.streams.kafka.KafkaConsumerGroup;
 import com.bridge18.service.streams.kafka.KafkaProducer;
-import com.google.inject.Singleton;
+import com.google.inject.Inject;
 import play.Configuration;
 
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Properties;
 
-@Singleton
 public class ConsumersBootstrap {
+    @Inject
     public ConsumersBootstrap(Configuration configuration,
                               TaskNewLoadConsumer newLoadConsumer,
                               TaskAddLoadDetailsConsumer addLoadDetailsConsumer) {
 
-        String kafkaServers = configuration.getString("kafka.servers");
+        Map kafkaProperitesMap = configuration.getConfig("kafka").asMap();
 
-        String kafkaAckMode = configuration.getString("kafka.ackMode");
+        Properties kafkaProperties = new Properties();
+        kafkaProperties.putAll(kafkaProperitesMap);
 
-        Integer kafkaRetries = configuration.getInt("kafka.retries");
-
-        Integer kafkaBatchSize = configuration.getInt("kafka.batchSize");
-
-        Integer kafkaLingerMs = configuration.getInt("kafka.lingerMs");
-
-        Integer kafkaBufferMemory = configuration.getInt("kafka.buffer");
-
-
-        KafkaProducer kafkaProducer = new KafkaProducer(kafkaServers, kafkaAckMode, kafkaRetries,
-                kafkaBatchSize, kafkaLingerMs, kafkaBufferMemory);
+        KafkaProducer kafkaProducer = new KafkaProducer(kafkaProperties);
 
         KafkaConsumerGroup newLoadGroup = new KafkaConsumerGroup(
-                kafkaProducer, kafkaServers, (Consumer) newLoadConsumer, "camunda-task-new-load",
-                true, 100,
+                kafkaProducer, kafkaProperties, (Consumer) newLoadConsumer, "camunda-task-new-load",
                 Arrays.asList("camunda-task-new-load"), 10, 10, 1
         );
 
         newLoadGroup.start();
 
         KafkaConsumerGroup addLoadDetailsGroup = new KafkaConsumerGroup(
-                kafkaProducer, kafkaServers, (Consumer) addLoadDetailsConsumer, "camunda-task-new-load",
-                true, 100,
+                kafkaProducer, kafkaProperties, (Consumer) addLoadDetailsConsumer, "camunda-task-new-load",
                 Arrays.asList("camunda-task-add-load-details"), 10, 10, 1
         );
 

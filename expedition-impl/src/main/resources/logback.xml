@@ -31,7 +31,7 @@
     <!-- Turning off connection error logging to avoid noise when services are forcely stopped -->
     <logger name="com.datastax.driver.core.ControlConnection" level="OFF" />
     <!-- Turn down Kafka noise -->
-    <logger name="org.apache.kafka" level="WARN" />
+    <logger name="org.apache.kafka" level="DEBUG" />
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

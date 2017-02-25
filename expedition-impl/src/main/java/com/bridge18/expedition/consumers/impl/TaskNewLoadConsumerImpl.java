@@ -3,6 +3,7 @@ package com.bridge18.expedition.consumers.impl;
 import com.bridge18.expedition.consumers.TaskNewLoadConsumer;
 import com.bridge18.expedition.dto.v1.streams.TaskMessageDTO;
 import com.bridge18.expedition.services.objects.LoadService;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,7 @@ public class TaskNewLoadConsumerImpl implements TaskNewLoadConsumer {
 
     private LoadService loadService;
 
+    @Inject
     public TaskNewLoadConsumerImpl(LoadService loadService) {
         this.loadService = loadService;
     }

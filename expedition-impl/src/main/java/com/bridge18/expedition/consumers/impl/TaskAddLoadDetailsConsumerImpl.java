@@ -1,10 +1,12 @@
 package com.bridge18.expedition.consumers.impl;
 
+import com.bridge18.expedition.consumers.TaskAddLoadDetailsConsumer;
 import com.bridge18.expedition.consumers.TaskNewLoadConsumer;
 import com.bridge18.expedition.dto.v1.streams.TaskMessageDTO;
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;
 import com.bridge18.expedition.services.objects.LoadService;
+import com.google.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,11 +15,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
-public class TaskAddLoadDetailsConsumerImpl implements TaskNewLoadConsumer {
+public class TaskAddLoadDetailsConsumerImpl implements TaskAddLoadDetailsConsumer {
     private static final Logger logger = LoggerFactory.getLogger(TaskAddLoadDetailsConsumerImpl.class);
 
     private LoadService loadService;
 
+    @Inject
     public TaskAddLoadDetailsConsumerImpl(LoadService loadService) {
         this.loadService = loadService;
     }
