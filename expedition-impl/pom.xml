@@ -82,6 +82,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.lightbend.lagom</groupId>
+            <artifactId>lagom-javadsl-kafka-broker_2.11</artifactId>
+            <version>${lagom.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
             <version>7.6.0</version>
