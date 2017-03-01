@@ -1,7 +1,6 @@
 package com.bridge18.expedition.consumers.impl;
 
 import com.bridge18.expedition.consumers.TaskAddLoadDetailsConsumer;
-import com.bridge18.expedition.consumers.TaskNewLoadConsumer;
 import com.bridge18.expedition.dto.v1.streams.TaskMessageDTO;
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;

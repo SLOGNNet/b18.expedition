@@ -1,13 +1,17 @@
 package com.bridge18.expedition;
 
+import com.bridge18.expedition.api.LagomDriverService;
 import com.bridge18.expedition.api.LagomLoadService;
 import com.bridge18.expedition.consumers.ConsumersBootstrap;
 import com.bridge18.expedition.consumers.TaskAddLoadDetailsConsumer;
 import com.bridge18.expedition.consumers.TaskNewLoadConsumer;
 import com.bridge18.expedition.consumers.impl.TaskAddLoadDetailsConsumerImpl;
 import com.bridge18.expedition.consumers.impl.TaskNewLoadConsumerImpl;
+import com.bridge18.expedition.services.lagom.LagomDriverServiceImpl;
 import com.bridge18.expedition.services.lagom.LagomLoadServiceImpl;
+import com.bridge18.expedition.services.objects.DriverService;
 import com.bridge18.expedition.services.objects.LoadService;
+import com.bridge18.expedition.services.objects.impl.DriverServiceImpl;
 import com.bridge18.expedition.services.objects.impl.LoadServiceImpl;
 import com.google.inject.AbstractModule;
 import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
@@ -26,8 +30,10 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
     @Override
     protected void configure() {
         bind(LoadService.class).to(LoadServiceImpl.class);
+        bind(DriverService.class).to(DriverServiceImpl.class);
 
-        bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class));
+        bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class),
+                serviceBinding(LagomDriverService.class, LagomDriverServiceImpl.class));
 
         bind(TaskNewLoadConsumer.class).to(TaskNewLoadConsumerImpl.class);
         bind(TaskAddLoadDetailsConsumer.class).to(TaskAddLoadDetailsConsumerImpl.class);
