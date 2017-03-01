@@ -68,6 +68,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .status(evt.status)
                         .paymentOptions(evt.paymentOptions)
                         .altPhone(evt.altPhone)
+                        .rate(evt.rate)
                         .altPhoneType(evt.altPhoneType)
                         .primaryPhone(evt.primaryPhone)
                         .primaryPhoneType(evt.primaryPhoneType)

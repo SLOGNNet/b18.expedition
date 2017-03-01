@@ -1,4 +1,4 @@
-package com.bridge18.expedition;
+package com.bridge18.expedition.load;
 
 import static org.junit.Assert.assertEquals;
 
