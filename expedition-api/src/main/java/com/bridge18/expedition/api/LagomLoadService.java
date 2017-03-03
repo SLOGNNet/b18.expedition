@@ -1,14 +1,13 @@
 package com.bridge18.expedition.api;
 
-import static com.lightbend.lagom.javadsl.api.Service.named;
-import static com.lightbend.lagom.javadsl.api.Service.restCall;
-
 import akka.NotUsed;
 import com.bridge18.expedition.dto.v1.LoadDTO;
 import com.lightbend.lagom.javadsl.api.Descriptor;
 import com.lightbend.lagom.javadsl.api.Service;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.api.transport.Method;
+
+import static com.lightbend.lagom.javadsl.api.Service.*;
 
 public interface LagomLoadService extends Service {
     ServiceCall<NotUsed, LoadDTO> createNewLoad();
