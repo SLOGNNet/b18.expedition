@@ -19,7 +19,7 @@
                 <artifactId>lagom-maven-plugin</artifactId>
                 <version>${lagom.version}</version>
                 <configuration>
-                    <cassandraMaxBootWaitingSeconds>50</cassandraMaxBootWaitingSeconds>
+                    <cassandraMaxBootWaitingSeconds>100</cassandraMaxBootWaitingSeconds>
                 </configuration>
             </plugin>
             <plugin>

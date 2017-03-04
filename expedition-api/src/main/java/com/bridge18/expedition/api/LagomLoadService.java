@@ -16,7 +16,7 @@ public interface LagomLoadService extends Service {
     @Override
     default Descriptor descriptor() {
         // @formatter:off
-        return named("expedition").withCalls(
+        return named("expeditionLoad").withCalls(
                 restCall(Method.POST, "/v1/api/expedition/loads",  this::createNewLoad),
                 restCall(Method.PUT, "/v1/api/expedition/loads/:id", this::addLoadDetails)
         ).withAutoAcl(true);
