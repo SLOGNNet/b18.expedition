@@ -9,11 +9,11 @@ public class LicenseDTO {
     public Date expiration;
     public Date dateIssues;
     public String stateIssued;
-    public LicenseClass licenseClass;
+    public Integer licenseClass;
     public String endorsements;
     public String restrictions;
 
-    public LicenseDTO(Integer number, Date expiration, Date dateIssues, String stateIssued, LicenseClass licenseClass, String endorsements, String restrictions) {
+    public LicenseDTO(Integer number, Date expiration, Date dateIssues, String stateIssued, Integer licenseClass, String endorsements, String restrictions) {
         this.number = number;
         this.expiration = expiration;
         this.dateIssues = dateIssues;

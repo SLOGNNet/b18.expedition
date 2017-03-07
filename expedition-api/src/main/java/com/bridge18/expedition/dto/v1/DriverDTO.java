@@ -12,11 +12,11 @@ public class DriverDTO extends ContactDTO {
 
     public Date birthDate;
     public String SSN;
-    public PaymentOptions paymentOptions;
+    public Integer paymentOptions;
     public Double rate;
     public LicenseDTO license;
 
-    public DriverDTO(String driverId, Integer id, String firstName, String middleName, String lastName, String contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
+    public DriverDTO(String driverId, Integer id, String firstName, String middleName, String lastName, String contactInfo, String position, AddressDTO address, Date birthDate, String SSN, Integer paymentOptions, Double rate, LicenseDTO license) {
         super(id, firstName, middleName, lastName, contactInfo, position, address);
         this.driverId = driverId;
         this.birthDate = birthDate;
