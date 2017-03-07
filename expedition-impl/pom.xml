@@ -40,6 +40,13 @@
         </dependency>
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.14</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.immutables</groupId>
             <artifactId>value</artifactId>
             <version>2.4.3</version>
