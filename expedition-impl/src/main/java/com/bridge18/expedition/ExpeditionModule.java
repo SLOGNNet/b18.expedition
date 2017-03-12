@@ -1,13 +1,17 @@
 package com.bridge18.expedition;
 
+import com.bridge18.expedition.api.LagomEquipmentService;
 import com.bridge18.expedition.api.LagomLoadService;
 import com.bridge18.expedition.consumers.ConsumersBootstrap;
 import com.bridge18.expedition.consumers.TaskAddLoadDetailsConsumer;
 import com.bridge18.expedition.consumers.TaskNewLoadConsumer;
 import com.bridge18.expedition.consumers.impl.TaskAddLoadDetailsConsumerImpl;
 import com.bridge18.expedition.consumers.impl.TaskNewLoadConsumerImpl;
+import com.bridge18.expedition.services.lagom.LagomEquipmentServiceImpl;
 import com.bridge18.expedition.services.lagom.LagomLoadServiceImpl;
+import com.bridge18.expedition.services.objects.EquipmentService;
 import com.bridge18.expedition.services.objects.LoadService;
+import com.bridge18.expedition.services.objects.impl.EquipmentServiceImpl;
 import com.bridge18.expedition.services.objects.impl.LoadServiceImpl;
 import com.google.inject.AbstractModule;
 import com.lightbend.lagom.javadsl.server.ServiceGuiceSupport;
@@ -26,12 +30,14 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
     @Override
     protected void configure() {
         bind(LoadService.class).to(LoadServiceImpl.class);
+        bind(EquipmentService.class).to(EquipmentServiceImpl.class);
 
-        bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class));
+        bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class),
+                serviceBinding(LagomEquipmentService.class, LagomEquipmentServiceImpl.class));
 
-        bind(TaskNewLoadConsumer.class).to(TaskNewLoadConsumerImpl.class);
+        /*bind(TaskNewLoadConsumer.class).to(TaskNewLoadConsumerImpl.class);
         bind(TaskAddLoadDetailsConsumer.class).to(TaskAddLoadDetailsConsumerImpl.class);
 
-        bind(ConsumersBootstrap.class).asEagerSingleton();
+        bind(ConsumersBootstrap.class).asEagerSingleton();*/
     }
 }
