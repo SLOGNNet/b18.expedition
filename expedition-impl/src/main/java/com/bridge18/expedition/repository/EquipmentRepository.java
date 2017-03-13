@@ -66,7 +66,7 @@ public class EquipmentRepository {
                 .thenApply(List::stream)
                 .thenApply(rows -> rows.skip(offset))
                 .thenApply(rows -> rows.map(EquipmentRepository::convertEquipmentSummary))
-                .thenApply(driverSummaries -> driverSummaries.collect(Collectors.toList()))
+                .thenApply(equipmentSummaries -> equipmentSummaries.collect(Collectors.toList()))
                 .thenApply(TreePVector::from);
     }
 
