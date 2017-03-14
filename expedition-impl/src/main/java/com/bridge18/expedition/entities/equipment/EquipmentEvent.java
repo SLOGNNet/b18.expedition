@@ -287,4 +287,45 @@ public interface EquipmentEvent extends Jsonable, AggregateEvent<EquipmentEvent>
                     .toString();
         }
     }
+
+    @Immutable
+    final class EquipmentDeleted implements EquipmentEvent{
+        String id;
+
+        @Override
+        public String getEquipmentId() {
+            return id;
+        }
+
+        public EquipmentDeleted(String id) {
+            this.id = id;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+
+            if (o == null || getClass() != o.getClass()) return false;
+
+            EquipmentDeleted that = (EquipmentDeleted) o;
+
+            return new EqualsBuilder()
+                    .append(id, that.id)
+                    .isEquals();
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(17, 37)
+                    .append(id)
+                    .toHashCode();
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                    .append("id", id)
+                    .toString();
+        }
+    }
 }

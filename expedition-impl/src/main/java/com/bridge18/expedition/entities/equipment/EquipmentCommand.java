@@ -1,5 +1,6 @@
 package com.bridge18.expedition.entities.equipment;
 
+import akka.Done;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 import com.lightbend.lagom.serialization.CompressedJsonable;
@@ -215,6 +216,26 @@ public interface EquipmentCommand extends Jsonable {
                     .append(miles)
                     .append(takenAt)
                     .toHashCode();
+        }
+    }
+
+    @Immutable
+    @JsonDeserialize
+    final class DeleteEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<Done>{
+        public DeleteEquipment() {
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof DeleteEquipment) {
+                return true;
+            }
+            return super.equals(obj);
         }
     }
 

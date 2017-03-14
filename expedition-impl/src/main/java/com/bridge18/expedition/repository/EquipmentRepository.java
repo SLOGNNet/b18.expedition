@@ -86,6 +86,7 @@ public class EquipmentRepository {
 
         private PreparedStatement insertEquipmentSummaryStatement;
         private PreparedStatement updateEquipmentSummaryStatement;
+        private PreparedStatement deleteEquipmentSummaryStatement;
 
         @Inject
         public EquipmentEventProcessor(CassandraSession session, CassandraReadSide readSide) {
@@ -104,6 +105,8 @@ public class EquipmentRepository {
                     .setEventHandler(EquipmentEvent.EquipmentChanged.class,
                             e -> updateEquipmentSummary(e.getEquipmentId(), e.vin.orElse(null),
                                     e.type.get().ordinal(), e.subType.get().ordinal()))
+                    .setEventHandler(EquipmentEvent.EquipmentDeleted.class,
+                            e -> deleteEquipmentSummary(e.getEquipmentId()))
                     .build();
         }
 
@@ -128,7 +131,8 @@ public class EquipmentRepository {
         private CompletionStage<Done> prepareStatements(){
             return doAll(
                     prepareInsertEquipmentSummaryStatement(),
-                    prepareUpdateEquipmentSummaryStatement()
+                    prepareUpdateEquipmentSummaryStatement(),
+                    prepareDeleteEquipmentSummaryStatement()
             );
         }
 
@@ -153,6 +157,13 @@ public class EquipmentRepository {
                     .thenApply(accept(s -> updateEquipmentSummaryStatement = s));
         }
 
+        private CompletionStage<Done> prepareDeleteEquipmentSummaryStatement(){
+            return session
+                    .prepare("DELETE FROM equipmentSummary " +
+                            "WHERE equipmentId = ?")
+                    .thenApply(accept(s -> deleteEquipmentSummaryStatement = s));
+        }
+
         private CompletionStage<List<BoundStatement>> insertEquipmentSummary(String equipmentId, String vin, int type, int subType){
             return completedStatements(
                     insertEquipmentSummaryStatement.bind(
@@ -165,6 +176,14 @@ public class EquipmentRepository {
             return completedStatements(
                     updateEquipmentSummaryStatement.bind(
                             vin, type, subType, equipmentId
+                    )
+            );
+        }
+
+        private CompletionStage<List<BoundStatement>> deleteEquipmentSummary(String equipmentId){
+            return completedStatements(
+                    deleteEquipmentSummaryStatement.bind(
+                            equipmentId
                     )
             );
         }

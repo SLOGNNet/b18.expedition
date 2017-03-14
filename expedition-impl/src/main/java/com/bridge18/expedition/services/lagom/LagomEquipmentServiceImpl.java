@@ -1,5 +1,6 @@
 package com.bridge18.expedition.services.lagom;
 
+import akka.Done;
 import akka.NotUsed;
 import com.bridge18.expedition.api.LagomEquipmentService;
 import com.bridge18.expedition.dto.v1.EquipmentDTO;
@@ -129,6 +130,12 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
 
                     );
         };
+    }
+
+    @Override
+    public ServiceCall<NotUsed, Done> deleteEquipment(String id) {
+        return request ->
+                equipmentService.deleteEquipment(id);
     }
 
     @Override

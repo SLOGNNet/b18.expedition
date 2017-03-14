@@ -1,5 +1,6 @@
 package com.bridge18.expedition.services.objects.impl;
 
+import akka.Done;
 import com.bridge18.expedition.entities.equipment.*;
 import com.bridge18.expedition.services.objects.EquipmentService;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntityRef;
@@ -50,6 +51,15 @@ public class EquipmentServiceImpl implements EquipmentService {
                 number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes,
                 miles, takenAt
         );
+
+        PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class, id);
+
+        return ref.ask(cmd);
+    }
+
+    @Override
+    public CompletionStage<Done> deleteEquipment(String id) {
+        EquipmentCommand.DeleteEquipment cmd = new EquipmentCommand.DeleteEquipment();
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class, id);
 

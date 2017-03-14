@@ -1,5 +1,6 @@
 package com.bridge18.expedition.services.objects;
 
+import akka.Done;
 import com.bridge18.expedition.entities.equipment.*;
 
 import java.util.Date;
@@ -41,6 +42,8 @@ public interface EquipmentService {
                                                     Optional<String> notes,
                                                     Optional<String> miles,
                                                     Optional<Date> takenAt);
+
+    CompletionStage<Done> deleteEquipment(String id);
 
     CompletionStage<EquipmentState> getEquipment(String id);
 }

@@ -1,5 +1,6 @@
 package com.bridge18.expedition.entities.equipment;
 
+import akka.Done;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 
 import java.util.Optional;
@@ -29,6 +30,12 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
 
                         evt -> ctx.reply(state())
                 )
+        );
+
+        b.setCommandHandler(EquipmentCommand.DeleteEquipment.class, (cmd, ctx) ->
+                ctx.thenPersist(new EquipmentEvent.EquipmentDeleted(entityId()),
+                        evt -> ctx.reply(Done.getInstance())
+                        )
         );
 
         b.setReadOnlyCommandHandler(EquipmentCommand.GetEquipment.class, (cmd, ctx) ->
@@ -74,6 +81,10 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                         .miles(evt.miles)
                         .takenAt(evt.takenAt)
                         .build()
+        );
+
+        b.setEventHandler(EquipmentEvent.EquipmentDeleted.class, evt ->
+                EquipmentState.builder().id(entityId()).build()
         );
 
         return b.build();
