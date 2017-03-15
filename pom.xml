@@ -18,6 +18,9 @@
                 <groupId>com.lightbend.lagom</groupId>
                 <artifactId>lagom-maven-plugin</artifactId>
                 <version>${lagom.version}</version>
+                <configuration>
+                    <cassandraMaxBootWaitingSeconds>50</cassandraMaxBootWaitingSeconds>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
