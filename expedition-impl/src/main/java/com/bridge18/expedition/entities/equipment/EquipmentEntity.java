@@ -13,20 +13,22 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
         );
 
         b.setCommandHandler(EquipmentCommand.CreateEquipment.class, (cmd, ctx) ->
-                ctx.thenPersist(new EquipmentEvent.EquipmentCreated(entityId(), cmd.vin, cmd.ownership,
-                        cmd.type, cmd.subType, cmd.operatingMode, cmd.make, cmd.model, cmd.colour,
-                        cmd.isSleeperBerthAvailable, cmd.number, cmd.licensePlateState,
-                        cmd.licensePlateNumber, cmd.licensePlateExpiration, cmd.notes, cmd.miles, cmd.takenAt),
+                ctx.thenPersist(new EquipmentEvent.EquipmentCreated(entityId(), cmd.getVin(), cmd.getOwnership(),
+                                cmd.getType(), cmd.getSubType(), cmd.getOperatingMode(), cmd.getMake(),
+                                cmd.getModel(), cmd.getColour(), cmd.getIsSleeperBerthAvailable(),
+                                cmd.getNumber(), cmd.getLicensePlateState(),cmd.getLicensePlateNumber(),
+                                cmd.getLicensePlateExpiration(), cmd.getNotes(), cmd.getMileageRecords()),
 
                         evt -> ctx.reply(state())
                 )
         );
 
         b.setCommandHandler(EquipmentCommand.ChangeEquipment.class, (cmd, ctx) ->
-                ctx.thenPersist(new EquipmentEvent.EquipmentChanged(entityId(), cmd.vin, cmd.ownership,
-                                cmd.type, cmd.subType, cmd.operatingMode, cmd.make, cmd.model, cmd.colour,
-                                cmd.isSleeperBerthAvailable, cmd.number, cmd.licensePlateState,
-                                cmd.licensePlateNumber, cmd.licensePlateExpiration, cmd.notes, cmd.miles, cmd.takenAt),
+                ctx.thenPersist(new EquipmentEvent.EquipmentChanged(entityId(), cmd.getVin(), cmd.getOwnership(),
+                                cmd.getType(), cmd.getSubType(), cmd.getOperatingMode(), cmd.getMake(),
+                                cmd.getModel(), cmd.getColour(), cmd.getIsSleeperBerthAvailable(),
+                                cmd.getNumber(), cmd.getLicensePlateState(),cmd.getLicensePlateNumber(),
+                                cmd.getLicensePlateExpiration(), cmd.getNotes(), cmd.getMileageRecords()),
 
                         evt -> ctx.reply(state())
                 )
@@ -43,43 +45,41 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
 
         b.setEventHandler(EquipmentEvent.EquipmentCreated.class, evt ->
                 EquipmentState.builder().id(entityId())
-                .vin(evt.vin)
-                .ownership(evt.ownership)
-                .type(evt.type)
-                .subType(evt.subType)
-                .operatingMode(evt.operatingMode)
-                .make(evt.make)
-                .model(evt.model)
-                .colour(evt.colour)
-                .isSleeperBerthAvailable(evt.isSleeperBerthAvailable)
-                .number(evt.number)
-                .licensePlateState(evt.licensePlateState)
-                .licensePlateNumber(evt.licensePlateNumber)
-                .licensePlateExpiration(evt.licensePlateExpiration)
-                .notes(evt.notes)
-                .miles(evt.miles)
-                .takenAt(evt.takenAt)
+                .vin(evt.getVin())
+                .ownership(evt.getOwnership())
+                .type(evt.getType())
+                .subType(evt.getSubType())
+                .operatingMode(evt.getOperatingMode())
+                .make(evt.getMake())
+                .model(evt.getModel())
+                .colour(evt.getColour())
+                .isSleeperBerthAvailable(evt.getIsSleeperBerthAvailable())
+                .number(evt.getNumber())
+                .licensePlateState(evt.getLicensePlateState())
+                .licensePlateNumber(evt.getLicensePlateNumber())
+                .licensePlateExpiration(evt.getLicensePlateExpiration())
+                .notes(evt.getNotes())
+                .mileageRecords(evt.getMileageRecords())
                 .build()
         );
 
         b.setEventHandler(EquipmentEvent.EquipmentChanged.class, evt ->
                 EquipmentState.builder().id(entityId())
-                        .vin(evt.vin)
-                        .ownership(evt.ownership)
-                        .type(evt.type)
-                        .subType(evt.subType)
-                        .operatingMode(evt.operatingMode)
-                        .make(evt.make)
-                        .model(evt.model)
-                        .colour(evt.colour)
-                        .isSleeperBerthAvailable(evt.isSleeperBerthAvailable)
-                        .number(evt.number)
-                        .licensePlateState(evt.licensePlateState)
-                        .licensePlateNumber(evt.licensePlateNumber)
-                        .licensePlateExpiration(evt.licensePlateExpiration)
-                        .notes(evt.notes)
-                        .miles(evt.miles)
-                        .takenAt(evt.takenAt)
+                        .vin(evt.getVin())
+                        .ownership(evt.getOwnership())
+                        .type(evt.getType())
+                        .subType(evt.getSubType())
+                        .operatingMode(evt.getOperatingMode())
+                        .make(evt.getMake())
+                        .model(evt.getModel())
+                        .colour(evt.getColour())
+                        .isSleeperBerthAvailable(evt.getIsSleeperBerthAvailable())
+                        .number(evt.getNumber())
+                        .licensePlateState(evt.getLicensePlateState())
+                        .licensePlateNumber(evt.getLicensePlateNumber())
+                        .licensePlateExpiration(evt.getLicensePlateExpiration())
+                        .notes(evt.getNotes())
+                        .mileageRecords(evt.getMileageRecords())
                         .build()
         );
 

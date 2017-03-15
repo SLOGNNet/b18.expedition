@@ -4,6 +4,7 @@ import akka.Done;
 import com.bridge18.expedition.entities.equipment.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -22,8 +23,7 @@ public interface EquipmentService {
                                                     Optional<String> licensePlateNumber,
                                                     Optional<Date> licensePlateExpiration,
                                                     Optional<String> notes,
-                                                    Optional<String> miles,
-                                                    Optional<Date> takenAt);
+                                                    Optional<List<MileageRecord>> mileageRecords);
 
     CompletionStage<EquipmentState> changeEquipment(String id,
                                                     Optional<String> vin,
@@ -40,8 +40,7 @@ public interface EquipmentService {
                                                     Optional<String> licensePlateNumber,
                                                     Optional<Date> licensePlateExpiration,
                                                     Optional<String> notes,
-                                                    Optional<String> miles,
-                                                    Optional<Date> takenAt);
+                                                    Optional<List<MileageRecord>> mileageRecords);
 
     CompletionStage<Done> deleteEquipment(String id);
 

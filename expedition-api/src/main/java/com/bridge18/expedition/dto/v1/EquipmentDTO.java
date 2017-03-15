@@ -1,12 +1,10 @@
 package com.bridge18.expedition.dto.v1;
 
-import com.bridge18.expedition.entities.equipment.EquipmentSubType;
-import com.bridge18.expedition.entities.equipment.EquipmentType;
-import com.bridge18.expedition.entities.equipment.OperatingMode;
-import com.bridge18.expedition.entities.equipment.Ownership;
+import com.bridge18.expedition.entities.equipment.*;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
+import java.util.List;
 
 @Immutable
 public class EquipmentDTO {
@@ -35,9 +33,9 @@ public class EquipmentDTO {
 
     public String notes;
 
-    public MileageRecordDTO mileageRecord;
+    public List<MileageRecord> mileageRecords;
 
-    public EquipmentDTO(String id, String vin, Ownership ownership, EquipmentType type, EquipmentSubType subType, OperatingMode operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, MileageRecordDTO mileageRecord) {
+    public EquipmentDTO(String id, String vin, Ownership ownership, EquipmentType type, EquipmentSubType subType, OperatingMode operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, List<MileageRecord> mileageRecord) {
         this.id = id;
         this.vin = vin;
         this.ownership = ownership;
@@ -53,6 +51,6 @@ public class EquipmentDTO {
         this.licensePlateNumber = licensePlateNumber;
         this.licensePlateExpiration = licensePlateExpiration;
         this.notes = notes;
-        this.mileageRecord = mileageRecord;
+        this.mileageRecords = mileageRecord;
     }
 }

@@ -9,6 +9,7 @@ import com.lightbend.lagom.javadsl.persistence.PersistentEntityRegistry;
 import javax.inject.Inject;
 import javax.xml.ws.WebServiceException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
@@ -23,15 +24,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public CompletionStage<EquipmentState> createEquipment(Optional<String> vin, Optional<Ownership> ownership, Optional<EquipmentType> type, Optional<EquipmentSubType> subType, Optional<OperatingMode> operatingMode, Optional<String> make, Optional<String> model, Optional<String> colour, Optional<Boolean> isSleeperBerthAvailable, Optional<String> number, Optional<String> licensePlateState, Optional<String> licensePlateNumber, Optional<Date> licensePlateExpiration, Optional<String> notes, Optional<String> miles, Optional<Date> takenAt) {
+    public CompletionStage<EquipmentState> createEquipment(Optional<String> vin, Optional<Ownership> ownership, Optional<EquipmentType> type, Optional<EquipmentSubType> subType, Optional<OperatingMode> operatingMode, Optional<String> make, Optional<String> model, Optional<String> colour, Optional<Boolean> isSleeperBerthAvailable, Optional<String> number, Optional<String> licensePlateState, Optional<String> licensePlateNumber, Optional<Date> licensePlateExpiration, Optional<String> notes, Optional<List<MileageRecord>> mileageRecords) {
         if(!subTypeMatchesToType(subType.get(), type.get())){
             throw new WebServiceException("Subtype doesn't match to equipment type.");
         }
 
         EquipmentCommand.CreateEquipment cmd = new EquipmentCommand.CreateEquipment(
                 vin, ownership, type, subType, operatingMode, make, model, colour, isSleeperBerthAvailable,
-                number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes,
-                miles, takenAt
+                number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes, mileageRecords
         );
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class,
@@ -41,15 +41,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public CompletionStage<EquipmentState> changeEquipment(String id, Optional<String> vin, Optional<Ownership> ownership, Optional<EquipmentType> type, Optional<EquipmentSubType> subType, Optional<OperatingMode> operatingMode, Optional<String> make, Optional<String> model, Optional<String> colour, Optional<Boolean> isSleeperBerthAvailable, Optional<String> number, Optional<String> licensePlateState, Optional<String> licensePlateNumber, Optional<Date> licensePlateExpiration, Optional<String> notes, Optional<String> miles, Optional<Date> takenAt) {
+    public CompletionStage<EquipmentState> changeEquipment(String id, Optional<String> vin, Optional<Ownership> ownership, Optional<EquipmentType> type, Optional<EquipmentSubType> subType, Optional<OperatingMode> operatingMode, Optional<String> make, Optional<String> model, Optional<String> colour, Optional<Boolean> isSleeperBerthAvailable, Optional<String> number, Optional<String> licensePlateState, Optional<String> licensePlateNumber, Optional<Date> licensePlateExpiration, Optional<String> notes, Optional<List<MileageRecord>> mileageRecords) {
         if(!subTypeMatchesToType(subType.get(), type.get())){
             throw new WebServiceException("Subtype doesn't match to equipment type.");
         }
 
         EquipmentCommand.ChangeEquipment cmd = new EquipmentCommand.ChangeEquipment(
                 vin, ownership, type, subType, operatingMode, make, model, colour, isSleeperBerthAvailable,
-                number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes,
-                miles, takenAt
+                number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes, mileageRecords
         );
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class, id);

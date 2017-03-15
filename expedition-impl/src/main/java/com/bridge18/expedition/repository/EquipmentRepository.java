@@ -100,11 +100,11 @@ public class EquipmentRepository {
                     .setGlobalPrepare(this::createTables)
                     .setPrepare(tag -> prepareStatements())
                     .setEventHandler(EquipmentEvent.EquipmentCreated.class,
-                            e -> insertEquipmentSummary(e.getEquipmentId(), e.vin.orElse(null),
-                                    e.type.get().ordinal(), e.subType.get().ordinal()))
+                            e -> insertEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
+                                    e.getType().get().ordinal(), e.getSubType().get().ordinal()))
                     .setEventHandler(EquipmentEvent.EquipmentChanged.class,
-                            e -> updateEquipmentSummary(e.getEquipmentId(), e.vin.orElse(null),
-                                    e.type.get().ordinal(), e.subType.get().ordinal()))
+                            e -> updateEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
+                                    e.getType().get().ordinal(), e.getSubType().get().ordinal()))
                     .setEventHandler(EquipmentEvent.EquipmentDeleted.class,
                             e -> deleteEquipmentSummary(e.getEquipmentId()))
                     .build();

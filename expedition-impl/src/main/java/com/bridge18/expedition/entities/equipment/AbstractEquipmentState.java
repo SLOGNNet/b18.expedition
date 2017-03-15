@@ -6,6 +6,7 @@ import com.lightbend.lagom.serialization.Jsonable;
 import org.immutables.value.Value;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Value.Immutable
@@ -44,7 +45,5 @@ public interface AbstractEquipmentState extends Jsonable {
     @Value.Parameter
     Optional<String> getNotes();
     @Value.Parameter
-    Optional<String> getMiles();
-    @Value.Parameter
-    Optional<Date> getTakenAt();
+    Optional<List<MileageRecord>> getMileageRecords();
 }
