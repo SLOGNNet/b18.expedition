@@ -35,9 +35,9 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
         bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class),
                 serviceBinding(LagomDriverService.class, LagomDriverServiceImpl.class));
 
-        /*bind(TaskNewLoadConsumer.class).to(TaskNewLoadConsumerImpl.class);
+        bind(TaskNewLoadConsumer.class).to(TaskNewLoadConsumerImpl.class);
         bind(TaskAddLoadDetailsConsumer.class).to(TaskAddLoadDetailsConsumerImpl.class);
 
-        bind(ConsumersBootstrap.class).asEagerSingleton();*/
+        bind(ConsumersBootstrap.class).asEagerSingleton();
     }
 }
