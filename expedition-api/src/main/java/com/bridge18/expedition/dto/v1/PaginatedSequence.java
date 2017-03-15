@@ -5,20 +5,20 @@ import org.pcollections.PSequence;
 
 @Value
 public class PaginatedSequence<T> {
-    PSequence<T> drivers;
+    PSequence<T> values;
     int page;
     int pageSize;
     int count;
 
-    public PaginatedSequence(PSequence<T> drivers, int page, int pageSize, int count) {
-        this.drivers = drivers;
+    public PaginatedSequence(PSequence<T> values, int page, int pageSize, int count) {
+        this.values = values;
         this.page = page;
         this.pageSize = pageSize;
         this.count = count;
     }
 
     public boolean isEmpty() {
-        return drivers.isEmpty();
+        return values.isEmpty();
     }
 
     public boolean isFirst() {

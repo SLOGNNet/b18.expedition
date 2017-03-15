@@ -7,8 +7,16 @@ import javax.annotation.concurrent.Immutable;
 import java.util.Date;
 
 @Immutable
-public class DriverDTO extends ContactDTO {
+public class DriverDTO {
     public String driverId;
+
+    public Integer id;
+    public String firstName;
+    public String middleName;
+    public String lastName;
+    public String contactInfo;
+    public String position;
+    public AddressDTO address;
 
     public Date birthDate;
     public String SSN;
@@ -17,8 +25,14 @@ public class DriverDTO extends ContactDTO {
     public LicenseDTO license;
 
     public DriverDTO(String driverId, Integer id, String firstName, String middleName, String lastName, String contactInfo, String position, AddressDTO address, Date birthDate, String SSN, Integer paymentOptions, Double rate, LicenseDTO license) {
-        super(id, firstName, middleName, lastName, contactInfo, position, address);
         this.driverId = driverId;
+        this.id = id;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.contactInfo = contactInfo;
+        this.position = position;
+        this.address = address;
         this.birthDate = birthDate;
         this.SSN = SSN;
         this.paymentOptions = paymentOptions;

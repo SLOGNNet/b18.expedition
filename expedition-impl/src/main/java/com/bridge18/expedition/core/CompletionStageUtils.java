@@ -11,9 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-/**
- * Created by Admin on 06.03.2017.
- */
 public final class CompletionStageUtils {
     private CompletionStageUtils() {
         throw new Error("no instances");
