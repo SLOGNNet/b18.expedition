@@ -17,7 +17,7 @@ import static com.lightbend.lagom.javadsl.api.Service.*;
 
 public interface LagomEquipmentService extends Service {
     ServiceCall<EquipmentDTO, EquipmentDTO> createNewEquipment();
-    ServiceCall<EquipmentDTO, EquipmentDTO> changeEquipmentInformation(String id);
+    ServiceCall<EquipmentDTO, EquipmentDTO> updateEquipmentInformation(String id);
     ServiceCall<NotUsed, Done> deleteEquipment(String id);
     ServiceCall<NotUsed, EquipmentDTO> getEquipment(String id);
     ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<Integer> pageNo, Optional<Integer> pageSize);
@@ -26,7 +26,7 @@ public interface LagomEquipmentService extends Service {
     default Descriptor descriptor(){
         return named("expeditionEquipment").withCalls(
                 restCall(Method.POST, "/v1/api/expedition/equipment", this::createNewEquipment),
-                restCall(Method.PUT, "/v1/api/expedition/equipment/:id", this::changeEquipmentInformation),
+                restCall(Method.PUT, "/v1/api/expedition/equipment/:id", this::updateEquipmentInformation),
                 restCall(Method.DELETE, "/v1/api/expedition/equipment/:id", this::deleteEquipment),
                 restCall(Method.GET, "/v1/api/expedition/equipment/:id", this::getEquipment),
                 restCall(Method.GET, "/v1/api/expedition/equipment?pageNo&pageSize", this::getEquipmentSummaries)

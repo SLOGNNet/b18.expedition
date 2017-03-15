@@ -72,7 +72,7 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     }
 
     @Override
-    public ServiceCall<EquipmentDTO, EquipmentDTO> changeEquipmentInformation(String id) {
+    public ServiceCall<EquipmentDTO, EquipmentDTO> updateEquipmentInformation(String id) {
         return request -> {
             return equipmentService.changeEquipment(id,
                     Optional.ofNullable(request.vin),

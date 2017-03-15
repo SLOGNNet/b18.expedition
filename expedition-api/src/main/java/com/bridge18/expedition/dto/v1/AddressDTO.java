@@ -15,6 +15,9 @@ public class AddressDTO {
     public Double latitude;
     public Double longitude;
 
+    public AddressDTO() {
+    }
+
     public AddressDTO(Integer id, String name, String streetAddress1, String streetAddress2, String city, String phone, String state, String zip, String fax, String phoneExtension, String faxExtension, Double latitude, Double longitude) {
         this.id = id;
         this.name = name;

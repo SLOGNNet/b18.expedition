@@ -7,7 +7,6 @@ import com.lightbend.lagom.javadsl.persistence.AggregateEventShards;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTagger;
 import com.lightbend.lagom.serialization.Jsonable;
-import lombok.Value;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -218,7 +217,7 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
     }
 
     @Immutable
-    final class DriverInformationChanged implements DriverEvent{
+    final class DriverUpdated implements DriverEvent{
         public String driverId;
 
         public Optional<Integer> contactId;
@@ -256,7 +255,7 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
         public Optional<String> licenseEndorsements;
         public Optional<String> licenseRestrictions;
 
-        public DriverInformationChanged(String driverId, Optional<Integer> contactId, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<String> contactInfo, Optional<Integer> addressId, Optional<String> addressName, Optional<String> streetAddress1, Optional<String> streetAddress2, Optional<String> city, Optional<String> addressPhone, Optional<String> state, Optional<String> zip, Optional<String> addressFax, Optional<String> addressPhoneExtension, Optional<String> addressFaxExtension, Optional<Double> addressLatitude, Optional<Double> addressLongitude, Optional<Integer> licenseNumber, Optional<Date> licenseExpiration, Optional<Date> licenseDateIssued, Optional<String> licenseStateIssue, Optional<LicenseClass> licenseClass, Optional<String> licenseEndorsements, Optional<String> licenseRestrictions) {
+        public DriverUpdated(String driverId, Optional<Integer> contactId, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<String> contactInfo, Optional<Integer> addressId, Optional<String> addressName, Optional<String> streetAddress1, Optional<String> streetAddress2, Optional<String> city, Optional<String> addressPhone, Optional<String> state, Optional<String> zip, Optional<String> addressFax, Optional<String> addressPhoneExtension, Optional<String> addressFaxExtension, Optional<Double> addressLatitude, Optional<Double> addressLongitude, Optional<Integer> licenseNumber, Optional<Date> licenseExpiration, Optional<Date> licenseDateIssued, Optional<String> licenseStateIssue, Optional<LicenseClass> licenseClass, Optional<String> licenseEndorsements, Optional<String> licenseRestrictions) {
             this.driverId = driverId;
             this.contactId = contactId;
             this.position = position;
@@ -297,7 +296,7 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
 
             if (o == null || getClass() != o.getClass()) return false;
 
-            DriverInformationChanged that = (DriverInformationChanged) o;
+            DriverUpdated that = (DriverUpdated) o;
 
             return new EqualsBuilder()
                     .append(driverId, that.driverId)

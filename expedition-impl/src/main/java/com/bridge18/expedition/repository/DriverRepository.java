@@ -101,7 +101,7 @@ public class DriverRepository {
                     .setPrepare(tag -> prepareStatements())
                     .setEventHandler(DriverEvent.DriverCreated.class,
                             e -> insertDriverSummary(e.driverId, e.firstName.orElse(null), e.lastName.orElse(null)))
-                    .setEventHandler(DriverEvent.DriverInformationChanged.class,
+                    .setEventHandler(DriverEvent.DriverUpdated.class,
                             e -> updateDriverSummary(e.driverId, e.firstName.orElse(null), e.lastName.orElse(null)))
                     .build();
         }

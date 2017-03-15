@@ -1,7 +1,6 @@
 package com.bridge18.expedition.entities.driver;
 
 
-import akka.Done;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 
 import java.util.Optional;
@@ -25,8 +24,8 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                             ctx.reply(state());
                         }));
 
-        b.setCommandHandler(DriverCommand.ChangeDriverInformation.class, (cmd, ctx) ->
-                    ctx.thenPersist(new DriverEvent.DriverInformationChanged(entityId(), cmd.contactId, cmd.position, cmd.firstName, cmd.middleName, cmd.lastName,
+        b.setCommandHandler(DriverCommand.UpdateDriver.class, (cmd, ctx) ->
+                    ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.contactId, cmd.position, cmd.firstName, cmd.middleName, cmd.lastName,
                                     cmd.birthDate, cmd.SSN, cmd.paymentOptions, cmd.rate, cmd.contactInfo, cmd.addressId,
                                     cmd.addressName, cmd.streetAddress1, cmd.streetAddress2, cmd.city, cmd.addressPhone,
                                     cmd.state, cmd.zip, cmd.addressFax, cmd.addressPhoneExtension, cmd.addressFaxExtension,
@@ -78,7 +77,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .build()
         );
 
-        b.setEventHandler(DriverEvent.DriverInformationChanged.class,
+        b.setEventHandler(DriverEvent.DriverUpdated.class,
                 evt -> DriverState.builder().from(state())
                         .contactId(evt.contactId)
                         .position(evt.position)

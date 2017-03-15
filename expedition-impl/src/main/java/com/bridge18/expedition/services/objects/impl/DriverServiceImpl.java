@@ -1,6 +1,5 @@
 package com.bridge18.expedition.services.objects.impl;
 
-import akka.Done;
 import com.bridge18.expedition.entities.LicenseClass;
 import com.bridge18.expedition.entities.PaymentOptions;
 import com.bridge18.expedition.entities.driver.*;
@@ -44,7 +43,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public CompletionStage<DriverState> changeDriverInformation(String id, Optional<Integer> contactId, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<String> contactInfo, Optional<Integer> addressId, Optional<String> addressName, Optional<String> streetAddress1, Optional<String> streetAddress2, Optional<String> city, Optional<String> addressPhone, Optional<String> state, Optional<String> zip, Optional<String> addressFax, Optional<String> addressPhoneExtension, Optional<String> addressFaxExtension, Optional<Double> addressLatitude, Optional<Double> addressLongitude, Optional<Integer> licenseNumber, Optional<Date> licenseExpiration, Optional<Date> licenseDateIssued, Optional<String> licenseStateIssue, Optional<LicenseClass> licenseClass, Optional<String> licenseEndorsements, Optional<String> licenseRestrictions){
-        DriverCommand.ChangeDriverInformation cmd = new DriverCommand.ChangeDriverInformation(
+        DriverCommand.UpdateDriver cmd = new DriverCommand.UpdateDriver(
                 contactId, position, firstName, middleName, lastName,
                 birthDate, SSN, paymentOptions, rate, contactInfo, addressId,
                 addressName, streetAddress1, streetAddress2, city, addressPhone,

@@ -1,6 +1,5 @@
 package com.bridge18.expedition.entities.driver;
 
-import akka.Done;
 import com.bridge18.expedition.entities.LicenseClass;
 import com.bridge18.expedition.entities.PaymentOptions;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -172,7 +171,7 @@ public interface DriverCommand extends Jsonable {
 
     @Immutable
     @JsonDeserialize
-    final class ChangeDriverInformation implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState>{
+    final class UpdateDriver implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState>{
         public Optional<Integer> contactId;
         public Optional<String> position;
         public Optional<String> firstName;
@@ -209,10 +208,10 @@ public interface DriverCommand extends Jsonable {
         public Optional<String> licenseEndorsements;
         public Optional<String> licenseRestrictions;
 
-        public ChangeDriverInformation() {
+        public UpdateDriver() {
         }
 
-        public ChangeDriverInformation(Optional<Integer> contactId, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<String> contactInfo, Optional<Integer> addressId, Optional<String> addressName, Optional<String> streetAddress1, Optional<String> streetAddress2, Optional<String> city, Optional<String> addressPhone, Optional<String> state, Optional<String> zip, Optional<String> addressFax, Optional<String> addressPhoneExtension, Optional<String> addressFaxExtension, Optional<Double> addressLatitude, Optional<Double> addressLongitude, Optional<Integer> licenseNumber, Optional<Date> licenseExpiration, Optional<Date> licenseDateIssued, Optional<String> licenseStateIssue, Optional<LicenseClass> licenseClass, Optional<String> licenseEndorsements, Optional<String> licenseRestrictions) {
+        public UpdateDriver(Optional<Integer> contactId, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<String> contactInfo, Optional<Integer> addressId, Optional<String> addressName, Optional<String> streetAddress1, Optional<String> streetAddress2, Optional<String> city, Optional<String> addressPhone, Optional<String> state, Optional<String> zip, Optional<String> addressFax, Optional<String> addressPhoneExtension, Optional<String> addressFaxExtension, Optional<Double> addressLatitude, Optional<Double> addressLongitude, Optional<Integer> licenseNumber, Optional<Date> licenseExpiration, Optional<Date> licenseDateIssued, Optional<String> licenseStateIssue, Optional<LicenseClass> licenseClass, Optional<String> licenseEndorsements, Optional<String> licenseRestrictions) {
             this.contactId = contactId;
             this.position = position;
             this.firstName = firstName;
@@ -251,7 +250,7 @@ public interface DriverCommand extends Jsonable {
 
             if (o == null || getClass() != o.getClass()) return false;
 
-            ChangeDriverInformation that = (ChangeDriverInformation) o;
+            UpdateDriver that = (UpdateDriver) o;
 
             return new EqualsBuilder()
                     .append(contactId, that.contactId)
