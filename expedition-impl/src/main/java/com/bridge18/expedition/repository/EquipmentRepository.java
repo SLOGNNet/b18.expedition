@@ -4,9 +4,10 @@ import akka.Done;
 import com.bridge18.expedition.dto.v1.EquipmentSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.equipment.EquipmentEvent;
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.Row;
+import com.bridge18.expedition.entities.equipment.EquipmentSubType;
+import com.bridge18.expedition.entities.equipment.EquipmentType;
+import com.datastax.driver.core.*;
+import com.datastax.driver.extras.codecs.enums.EnumNameCodec;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSide;
 import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
@@ -74,8 +75,8 @@ public class EquipmentRepository {
         return new EquipmentSummary(
                 equipment.getString("equipmentId"),
                 equipment.getString("vin"),
-                equipment.getInt("type"),
-                equipment.getInt("subType")
+                equipment.get("type", EquipmentType.class),
+                equipment.get("subType", EquipmentSubType.class)
         );
     }
 
@@ -101,10 +102,10 @@ public class EquipmentRepository {
                     .setPrepare(tag -> prepareStatements())
                     .setEventHandler(EquipmentEvent.EquipmentCreated.class,
                             e -> insertEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
-                                    e.getType().get().ordinal(), e.getSubType().get().ordinal()))
+                                    e.getType().get(), e.getSubType().get()))
                     .setEventHandler(EquipmentEvent.EquipmentUpdated.class,
                             e -> updateEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
-                                    e.getType().get().ordinal(), e.getSubType().get().ordinal()))
+                                    e.getType().get(), e.getSubType().get()))
                     .setEventHandler(EquipmentEvent.EquipmentDeleted.class,
                             e -> deleteEquipmentSummary(e.getEquipmentId()))
                     .build();
@@ -118,11 +119,11 @@ public class EquipmentRepository {
         private CompletionStage<Done> createTables(){
             return doAll(
                     session.executeCreateTable(
-                   "CREATE TABLE IF NOT EXISTS equipmentSummary (" +
+                            "CREATE TABLE IF NOT EXISTS equipmentSummary (" +
                                     "equipmentId text PRIMARY KEY, " +
                                     "vin text, " +
-                                    "type int, " +
-                                    "subType int" +
+                                    "type text, " +
+                                    "subType text" +
                                     ");"
                     )
             );
@@ -130,10 +131,20 @@ public class EquipmentRepository {
 
         private CompletionStage<Done> prepareStatements(){
             return doAll(
+                    session.underlying()
+                            .thenAccept(s -> {
+                                registerCodec(s, new EnumNameCodec<>(EquipmentType.class));
+                                registerCodec(s, new EnumNameCodec<>(EquipmentSubType.class));
+                            })
+                            .thenApply(x -> Done.getInstance()),
                     prepareInsertEquipmentSummaryStatement(),
                     prepareUpdateEquipmentSummaryStatement(),
                     prepareDeleteEquipmentSummaryStatement()
             );
+        }
+
+        private void registerCodec(Session session, TypeCodec<?> codec) {
+            session.getCluster().getConfiguration().getCodecRegistry().register(codec);
         }
 
         private CompletionStage<Done> prepareInsertEquipmentSummaryStatement(){
@@ -164,7 +175,7 @@ public class EquipmentRepository {
                     .thenApply(accept(s -> deleteEquipmentSummaryStatement = s));
         }
 
-        private CompletionStage<List<BoundStatement>> insertEquipmentSummary(String equipmentId, String vin, int type, int subType){
+        private CompletionStage<List<BoundStatement>> insertEquipmentSummary(String equipmentId, String vin, EquipmentType type, EquipmentSubType subType){
             return completedStatements(
                     insertEquipmentSummaryStatement.bind(
                             equipmentId, vin, type, subType
@@ -172,7 +183,7 @@ public class EquipmentRepository {
             );
         }
 
-        private CompletionStage<List<BoundStatement>> updateEquipmentSummary(String equipmentId, String vin, int type, int subType){
+        private CompletionStage<List<BoundStatement>> updateEquipmentSummary(String equipmentId, String vin, EquipmentType type, EquipmentSubType subType){
             return completedStatements(
                     updateEquipmentSummaryStatement.bind(
                             vin, type, subType, equipmentId
