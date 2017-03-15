@@ -1,5 +1,10 @@
 package com.bridge18.expedition.dto.v1;
 
+import com.bridge18.expedition.entities.equipment.EquipmentSubType;
+import com.bridge18.expedition.entities.equipment.EquipmentType;
+import com.bridge18.expedition.entities.equipment.OperatingMode;
+import com.bridge18.expedition.entities.equipment.Ownership;
+
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
 
@@ -8,12 +13,12 @@ public class EquipmentDTO {
     public String id;
 
     public String vin;
-    public Integer ownership;
+    public Ownership ownership;
 
-    public Integer type;
-    public Integer subType;
+    public EquipmentType type;
+    public EquipmentSubType subType;
 
-    public Integer operatingMode;
+    public OperatingMode operatingMode;
 
     public String make;
     public String model;
@@ -32,7 +37,7 @@ public class EquipmentDTO {
 
     public MileageRecordDTO mileageRecord;
 
-    public EquipmentDTO(String id, String vin, Integer ownership, Integer type, Integer subType, Integer operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, MileageRecordDTO mileageRecord) {
+    public EquipmentDTO(String id, String vin, Ownership ownership, EquipmentType type, EquipmentSubType subType, OperatingMode operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, MileageRecordDTO mileageRecord) {
         this.id = id;
         this.vin = vin;
         this.ownership = ownership;

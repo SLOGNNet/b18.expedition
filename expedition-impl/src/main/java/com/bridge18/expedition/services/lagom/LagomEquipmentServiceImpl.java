@@ -34,12 +34,12 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
         return request ->{
             MileageRecordDTO mileageRecord = Optional.ofNullable(request.mileageRecord).orElse(new MileageRecordDTO());
             return equipmentService.createEquipment(Optional.ofNullable(request.vin),
-                    Optional.ofNullable(Ownership.values()[Optional.ofNullable(request.ownership).orElse(0)]),
-                    Optional.ofNullable(EquipmentType.values()[Optional.ofNullable(request.type).orElseThrow(
-                            () -> new WebServiceException("Type field is mandatory"))]),
-                    Optional.ofNullable(EquipmentSubType.values()[Optional.ofNullable(request.subType).orElseThrow(
-                            () -> new WebServiceException("Subtype field is mandatory"))]),
-                    Optional.ofNullable(OperatingMode.values()[Optional.ofNullable(request.operatingMode).orElse(0)]),
+                    Optional.ofNullable(request.ownership),
+                    Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
+                            () -> new WebServiceException("Type field is mandatory"))),
+                    Optional.ofNullable(Optional.ofNullable(request.subType).orElseThrow(
+                            () -> new WebServiceException("Subtype field is mandatory"))),
+                    Optional.ofNullable(request.operatingMode),
                     Optional.ofNullable(request.make),
                     Optional.ofNullable(request.model),
                     Optional.ofNullable(request.colour),
@@ -56,12 +56,10 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                                 equipmentState.getTakenAt().orElse(null));
                         return new EquipmentDTO(equipmentState.getId(),
                                 equipmentState.getVin().orElse(null),
-                                equipmentState.getOwnership().orElse(Ownership.COMPANY).ordinal(),
-                                equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory"))
-                                        .ordinal(),
-                                equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory"))
-                                        .ordinal(),
-                                equipmentState.getOperatingMode().orElse(OperatingMode.INTER_STATE).ordinal(),
+                                equipmentState.getOwnership().orElse(null),
+                                equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
+                                equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
+                                equipmentState.getOperatingMode().orElse(null),
                                 equipmentState.getMake().orElse(null),
                                 equipmentState.getModel().orElse(null),
                                 equipmentState.getColour().orElse(null),
@@ -86,12 +84,12 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
             MileageRecordDTO mileageRecord = Optional.ofNullable(request.mileageRecord).orElse(new MileageRecordDTO());
             return equipmentService.changeEquipment(id,
                     Optional.ofNullable(request.vin),
-                    Optional.ofNullable(Ownership.values()[Optional.ofNullable(request.ownership).orElse(0)]),
-                    Optional.ofNullable(EquipmentType.values()[Optional.ofNullable(request.type).orElseThrow(
-                            () -> new WebServiceException("Type field is mandatory"))]),
-                    Optional.ofNullable(EquipmentSubType.values()[Optional.ofNullable(request.subType).orElseThrow(
-                            () -> new WebServiceException("Subtype field is mandatory"))]),
-                    Optional.ofNullable(OperatingMode.values()[Optional.ofNullable(request.operatingMode).orElse(0)]),
+                    Optional.ofNullable(request.ownership),
+                    Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
+                            () -> new WebServiceException("Type field is mandatory"))),
+                    Optional.ofNullable(Optional.ofNullable(request.subType).orElseThrow(
+                            () -> new WebServiceException("Subtype field is mandatory"))),
+                    Optional.ofNullable(request.operatingMode),
                     Optional.ofNullable(request.make),
                     Optional.ofNullable(request.model),
                     Optional.ofNullable(request.colour),
@@ -109,12 +107,10 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                                         equipmentState.getTakenAt().orElse(null));
                                 return new EquipmentDTO(equipmentState.getId(),
                                         equipmentState.getVin().orElse(null),
-                                        equipmentState.getOwnership().orElse(Ownership.COMPANY).ordinal(),
-                                        equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory"))
-                                                .ordinal(),
-                                        equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory"))
-                                                .ordinal(),
-                                        equipmentState.getOperatingMode().orElse(OperatingMode.INTER_STATE).ordinal(),
+                                        equipmentState.getOwnership().orElse(null),
+                                        equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
+                                        equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
+                                        equipmentState.getOperatingMode().orElse(null),
                                         equipmentState.getMake().orElse(null),
                                         equipmentState.getModel().orElse(null),
                                         equipmentState.getColour().orElse(null),
@@ -148,12 +144,10 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                                             equipmentState.getTakenAt().orElse(null));
                                     return new EquipmentDTO(equipmentState.getId(),
                                             equipmentState.getVin().orElse(null),
-                                            equipmentState.getOwnership().orElse(Ownership.COMPANY).ordinal(),
-                                            equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory"))
-                                                    .ordinal(),
-                                            equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory"))
-                                                    .ordinal(),
-                                            equipmentState.getOperatingMode().orElse(OperatingMode.INTER_STATE).ordinal(),
+                                            equipmentState.getOwnership().orElse(null),
+                                            equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
+                                            equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
+                                            equipmentState.getOperatingMode().orElse(null),
                                             equipmentState.getMake().orElse(null),
                                             equipmentState.getModel().orElse(null),
                                             equipmentState.getColour().orElse(null),
