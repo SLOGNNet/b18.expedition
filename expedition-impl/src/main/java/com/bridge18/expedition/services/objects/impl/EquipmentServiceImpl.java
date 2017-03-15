@@ -46,7 +46,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             throw new WebServiceException("Subtype doesn't match to equipment type.");
         }
 
-        EquipmentCommand.ChangeEquipment cmd = new EquipmentCommand.ChangeEquipment(
+        EquipmentCommand.UpdateEquipment cmd = new EquipmentCommand.UpdateEquipment(
                 vin, ownership, type, subType, operatingMode, make, model, colour, isSleeperBerthAvailable,
                 number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes, mileageRecords
         );

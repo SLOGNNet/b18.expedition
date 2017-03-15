@@ -102,7 +102,7 @@ public class EquipmentRepository {
                     .setEventHandler(EquipmentEvent.EquipmentCreated.class,
                             e -> insertEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
                                     e.getType().get().ordinal(), e.getSubType().get().ordinal()))
-                    .setEventHandler(EquipmentEvent.EquipmentChanged.class,
+                    .setEventHandler(EquipmentEvent.EquipmentUpdated.class,
                             e -> updateEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
                                     e.getType().get().ordinal(), e.getSubType().get().ordinal()))
                     .setEventHandler(EquipmentEvent.EquipmentDeleted.class,

@@ -23,8 +23,8 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                 )
         );
 
-        b.setCommandHandler(EquipmentCommand.ChangeEquipment.class, (cmd, ctx) ->
-                ctx.thenPersist(new EquipmentEvent.EquipmentChanged(entityId(), cmd.getVin(), cmd.getOwnership(),
+        b.setCommandHandler(EquipmentCommand.UpdateEquipment.class, (cmd, ctx) ->
+                ctx.thenPersist(new EquipmentEvent.EquipmentUpdated(entityId(), cmd.getVin(), cmd.getOwnership(),
                                 cmd.getType(), cmd.getSubType(), cmd.getOperatingMode(), cmd.getMake(),
                                 cmd.getModel(), cmd.getColour(), cmd.getIsSleeperBerthAvailable(),
                                 cmd.getNumber(), cmd.getLicensePlateState(),cmd.getLicensePlateNumber(),
@@ -63,7 +63,7 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                 .build()
         );
 
-        b.setEventHandler(EquipmentEvent.EquipmentChanged.class, evt ->
+        b.setEventHandler(EquipmentEvent.EquipmentUpdated.class, evt ->
                 EquipmentState.builder().id(entityId())
                         .vin(evt.getVin())
                         .ownership(evt.getOwnership())

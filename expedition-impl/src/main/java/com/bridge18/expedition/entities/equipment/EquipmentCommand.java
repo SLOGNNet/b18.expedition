@@ -46,7 +46,7 @@ public interface EquipmentCommand extends Jsonable {
 
     @Value
     @JsonDeserialize
-    final class ChangeEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState>{
+    final class UpdateEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState>{
         Optional<String> vin;
         Optional<Ownership> ownership;
 

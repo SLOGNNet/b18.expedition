@@ -62,7 +62,7 @@ public interface EquipmentEvent extends Jsonable, AggregateEvent<EquipmentEvent>
     }
 
     @Value
-    final class EquipmentChanged implements EquipmentEvent{
+    final class EquipmentUpdated implements EquipmentEvent{
         String id;
 
         Optional<String> vin;
