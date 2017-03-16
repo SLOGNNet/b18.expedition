@@ -34,9 +34,9 @@ public class EquipmentDTO {
 
     public String notes;
 
-    public PVector<MileageRecord> mileageRecords;
+    public List<MileageRecordDTO> mileageRecords;
 
-    public EquipmentDTO(String id, String vin, Ownership ownership, EquipmentType type, EquipmentSubType subType, OperatingMode operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, PVector<MileageRecord> mileageRecord) {
+    public EquipmentDTO(String id, String vin, Ownership ownership, EquipmentType type, EquipmentSubType subType, OperatingMode operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, List<MileageRecordDTO> mileageRecord) {
         this.id = id;
         this.vin = vin;
         this.ownership = ownership;
