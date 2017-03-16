@@ -9,6 +9,7 @@ import lombok.Value;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.pcollections.PVector;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
@@ -53,7 +54,7 @@ public interface EquipmentEvent extends Jsonable, AggregateEvent<EquipmentEvent>
 
         Optional<String> notes;
 
-        Optional<List<MileageRecord>> mileageRecords;
+        Optional<PVector<MileageRecord>> mileageRecords;
 
         @Override
         public String getEquipmentId() {
@@ -88,7 +89,7 @@ public interface EquipmentEvent extends Jsonable, AggregateEvent<EquipmentEvent>
 
         Optional<String> notes;
 
-        Optional<List<MileageRecord>> mileageRecords;
+        Optional<PVector<MileageRecord>> mileageRecords;
 
         @Override
         public String getEquipmentId() {
