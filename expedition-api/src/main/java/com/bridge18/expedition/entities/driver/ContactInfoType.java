@@ -1,13 +1,13 @@
-package com.bridge18.expedition.entities;
+package com.bridge18.expedition.entities.driver;
+
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum PaymentOptions {
+public enum ContactInfoType {
     NONE,
-    PER_MILE,
-    PERCENTAGE,
-    HOURLY,
-    FLAT;
+    PHONE,
+    FAX,
+    EMAIL;
 
     @JsonValue
     public Integer toValue() {

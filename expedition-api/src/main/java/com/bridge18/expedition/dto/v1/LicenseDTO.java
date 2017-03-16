@@ -1,6 +1,6 @@
 package com.bridge18.expedition.dto.v1;
 
-import com.bridge18.expedition.entities.LicenseClass;
+import com.bridge18.expedition.entities.driver.LicenseClass;
 
 import java.util.Date;
 

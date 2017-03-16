@@ -1,13 +1,13 @@
 package com.bridge18.expedition.entities.driver;
 
-import com.bridge18.expedition.entities.LicenseClass;
-import com.bridge18.expedition.entities.PaymentOptions;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.serialization.Jsonable;
 import org.immutables.value.Value;
+import org.pcollections.PVector;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,7 +32,7 @@ public interface AbstractDriverState extends Jsonable {
     @Value.Parameter
     Optional<String> getLastName();
     @Value.Parameter
-    Optional<String> getContactInfo();
+    Optional<PVector<ContactInfo>> getContactInfo();
 
     @Value.Parameter
     Optional<Date> getBirthDate();

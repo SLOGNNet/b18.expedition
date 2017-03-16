@@ -100,9 +100,11 @@ public class DriverRepository {
                     .setGlobalPrepare(this::createTables)
                     .setPrepare(tag -> prepareStatements())
                     .setEventHandler(DriverEvent.DriverCreated.class,
-                            e -> insertDriverSummary(e.driverId, e.firstName.orElse(null), e.lastName.orElse(null)))
+                            e -> insertDriverSummary(e.getDriverId(), e.getFirstName().orElse(null),
+                                    e.getLastName().orElse(null)))
                     .setEventHandler(DriverEvent.DriverUpdated.class,
-                            e -> updateDriverSummary(e.driverId, e.firstName.orElse(null), e.lastName.orElse(null)))
+                            e -> updateDriverSummary(e.getDriverId(), e.getFirstName().orElse(null),
+                                    e.getLastName().orElse(null)))
                     .build();
         }
 

@@ -1,13 +1,14 @@
-package com.bridge18.expedition.entities;
-
+package com.bridge18.expedition.entities.driver;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum ContactInfoType {
+/**
+ * Created by Viktor on 01.03.2017.
+ */
+public enum LicenseClass {
     NONE,
-    PHONE,
-    FAX,
-    EMAIL;
+    CLASS_A,
+    CLASS_B;
 
     @JsonValue
     public Integer toValue() {

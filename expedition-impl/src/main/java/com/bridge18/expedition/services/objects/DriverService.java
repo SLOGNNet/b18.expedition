@@ -1,11 +1,12 @@
 package com.bridge18.expedition.services.objects;
 
-import akka.Done;
-import com.bridge18.expedition.entities.LicenseClass;
-import com.bridge18.expedition.entities.PaymentOptions;
+import com.bridge18.expedition.entities.driver.LicenseClass;
+import com.bridge18.expedition.entities.driver.PaymentOptions;
 import com.bridge18.expedition.entities.driver.*;
+import org.pcollections.PVector;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -22,7 +23,7 @@ public interface DriverService {
                                               Optional<String> SSN,
                                               Optional<PaymentOptions> paymentOptions,
                                               Optional<Double> rate,
-                                              Optional<String> contactInfo,
+                                              Optional<PVector<ContactInfo>> contactInfo,
                                               Optional<Integer> addressId,
                                               Optional<String> addressName,
                                               Optional<String> streetAddress1,
@@ -54,7 +55,7 @@ public interface DriverService {
                                                           Optional<String> SSN,
                                                           Optional<PaymentOptions> paymentOptions,
                                                           Optional<Double> rate,
-                                                          Optional<String> contactInfo,
+                                                          Optional<PVector<ContactInfo>> contactInfo,
                                                           Optional<Integer> addressId,
                                                           Optional<String> addressName,
                                                           Optional<String> streetAddress1,

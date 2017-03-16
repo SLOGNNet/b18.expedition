@@ -3,13 +3,18 @@ package com.bridge18.expedition.services.lagom;
 import akka.NotUsed;
 import com.bridge18.expedition.api.LagomDriverService;
 import com.bridge18.expedition.dto.v1.*;
-import com.bridge18.expedition.entities.LicenseClass;
-import com.bridge18.expedition.entities.PaymentOptions;
+import com.bridge18.expedition.entities.driver.ContactInfo;
+import com.bridge18.expedition.entities.driver.DriverState;
 import com.bridge18.expedition.repository.DriverRepository;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**

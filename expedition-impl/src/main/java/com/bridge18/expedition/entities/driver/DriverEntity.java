@@ -12,26 +12,28 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                 snapshotState.orElse(DriverState.builder().id(entityId()).build()));
 
         b.setCommandHandler(DriverCommand.CreateDriver.class, (cmd, ctx) ->
-                ctx.thenPersist(new DriverEvent.DriverCreated(entityId(), cmd.contactId, cmd.position, cmd.firstName, cmd.middleName, cmd.lastName,
-                                cmd.birthDate, cmd.SSN, cmd.paymentOptions, cmd.rate, cmd.contactInfo, cmd.addressId,
-                                cmd.addressName, cmd.streetAddress1, cmd.streetAddress2, cmd.city, cmd.addressPhone,
-                                cmd.state, cmd.zip, cmd.addressFax, cmd.addressPhoneExtension, cmd.addressFaxExtension,
-                                cmd.addressLatitude, cmd.addressLongitude, cmd.licenseNumber, cmd.licenseExpiration,
-                                cmd.licenseDateIssued, cmd.licenseStateIssue, cmd.licenseClass, cmd.licenseEndorsements,
-                                cmd.licenseRestrictions),
+                ctx.thenPersist(new DriverEvent.DriverCreated(entityId(), cmd.getContactId(), cmd.getPosition(),
+                                cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
+                                cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
+                                cmd.getAddressId(), cmd.getAddressName(), cmd.getStreetAddress1(), cmd.getStreetAddress2(),
+                                cmd.getCity(), cmd.getAddressPhone(), cmd.getState(), cmd.getZip(), cmd.getAddressFax(),
+                                cmd.getAddressPhoneExtension(), cmd.getAddressFaxExtension(), cmd.getAddressLatitude(),
+                                cmd.getAddressLongitude(), cmd.getLicenseNumber(), cmd.getLicenseExpiration(), cmd.getLicenseDateIssued(),
+                                cmd.getLicenseStateIssue(), cmd.getLicenseClass(), cmd.getLicenseEndorsements(), cmd.getLicenseRestrictions()),
 
                         evt -> {
                             ctx.reply(state());
                         }));
 
         b.setCommandHandler(DriverCommand.UpdateDriver.class, (cmd, ctx) ->
-                    ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.contactId, cmd.position, cmd.firstName, cmd.middleName, cmd.lastName,
-                                    cmd.birthDate, cmd.SSN, cmd.paymentOptions, cmd.rate, cmd.contactInfo, cmd.addressId,
-                                    cmd.addressName, cmd.streetAddress1, cmd.streetAddress2, cmd.city, cmd.addressPhone,
-                                    cmd.state, cmd.zip, cmd.addressFax, cmd.addressPhoneExtension, cmd.addressFaxExtension,
-                                    cmd.addressLatitude, cmd.addressLongitude, cmd.licenseNumber, cmd.licenseExpiration,
-                                    cmd.licenseDateIssued, cmd.licenseStateIssue, cmd.licenseClass, cmd.licenseEndorsements,
-                                    cmd.licenseRestrictions),
+                    ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.getContactId(), cmd.getPosition(),
+                                    cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
+                                    cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
+                                    cmd.getAddressId(), cmd.getAddressName(), cmd.getStreetAddress1(), cmd.getStreetAddress2(),
+                                    cmd.getCity(), cmd.getAddressPhone(), cmd.getState(), cmd.getZip(), cmd.getAddressFax(),
+                                    cmd.getAddressPhoneExtension(), cmd.getAddressFaxExtension(), cmd.getAddressLatitude(),
+                                    cmd.getAddressLongitude(), cmd.getLicenseNumber(), cmd.getLicenseExpiration(), cmd.getLicenseDateIssued(),
+                                    cmd.getLicenseStateIssue(), cmd.getLicenseClass(), cmd.getLicenseEndorsements(), cmd.getLicenseRestrictions()),
 
                             evt -> {
                                 ctx.reply(state());
@@ -44,71 +46,71 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
 
         b.setEventHandler(DriverEvent.DriverCreated.class,
                 evt -> DriverState.builder().id(entityId())
-                        .contactId(evt.contactId)
-                        .position(evt.position)
-                        .firstName(evt.firstName)
-                        .middleName(evt.middleName)
-                        .lastName(evt.lastName)
-                        .birthDate(evt.birthDate)
-                        .sSN(evt.SSN)
-                        .paymentOptions(evt.paymentOptions)
-                        .rate(evt.rate)
-                        .contactInfo(evt.contactInfo)
-                        .addressId(evt.addressId)
-                        .addressName(evt.addressName)
-                        .streetAddress1(evt.streetAddress1)
-                        .streetAddress2(evt.streetAddress2)
-                        .city(evt.city)
-                        .addressPhone(evt.addressPhone)
-                        .state(evt.state)
-                        .zip(evt.zip)
-                        .addressFax(evt.addressFax)
-                        .addressPhoneExtension(evt.addressPhoneExtension)
-                        .addressFaxExtension(evt.addressFaxExtension)
-                        .addressLatitude(evt.addressLatitude)
-                        .addressLongitude(evt.addressLongitude)
-                        .licenseNumber(evt.licenseNumber)
-                        .licenseExpiration(evt.licenseExpiration)
-                        .licenseDateIssued(evt.licenseDateIssued)
-                        .licenseStateIssue(evt.licenseStateIssue)
-                        .licenseClass(evt.licenseClass)
-                        .licenseEndorsements(evt.licenseEndorsements)
-                        .licenseRestrictions(evt.licenseRestrictions)
+                        .contactId(evt.getContactId())
+                        .position(evt.getPosition())
+                        .firstName(evt.getFirstName())
+                        .middleName(evt.getMiddleName())
+                        .lastName(evt.getLastName())
+                        .birthDate(evt.getBirthDate())
+                        .sSN(evt.getSSN())
+                        .paymentOptions(evt.getPaymentOptions())
+                        .rate(evt.getRate())
+                        .contactInfo(evt.getContactInfo())
+                        .addressId(evt.getAddressId())
+                        .addressName(evt.getAddressName())
+                        .streetAddress1(evt.getStreetAddress1())
+                        .streetAddress2(evt.getStreetAddress2())
+                        .city(evt.getCity())
+                        .addressPhone(evt.getAddressPhone())
+                        .state(evt.getState())
+                        .zip(evt.getZip())
+                        .addressFax(evt.getAddressFax())
+                        .addressPhoneExtension(evt.getAddressPhoneExtension())
+                        .addressFaxExtension(evt.getAddressFaxExtension())
+                        .addressLatitude(evt.getRate())
+                        .addressLongitude(evt.getAddressLongitude())
+                        .licenseNumber(evt.getLicenseNumber())
+                        .licenseExpiration(evt.getLicenseExpiration())
+                        .licenseDateIssued(evt.getLicenseDateIssued())
+                        .licenseStateIssue(evt.getLicenseStateIssue())
+                        .licenseClass(evt.getLicenseClass())
+                        .licenseEndorsements(evt.getLicenseEndorsements())
+                        .licenseRestrictions(evt.getLicenseRestrictions())
                         .build()
         );
 
         b.setEventHandler(DriverEvent.DriverUpdated.class,
                 evt -> DriverState.builder().from(state())
-                        .contactId(evt.contactId)
-                        .position(evt.position)
-                        .firstName(evt.firstName)
-                        .middleName(evt.middleName)
-                        .lastName(evt.lastName)
-                        .birthDate(evt.birthDate)
-                        .sSN(evt.SSN)
-                        .paymentOptions(evt.paymentOptions)
-                        .rate(evt.rate)
-                        .contactInfo(evt.contactInfo)
-                        .addressId(evt.addressId)
-                        .addressName(evt.addressName)
-                        .streetAddress1(evt.streetAddress1)
-                        .streetAddress2(evt.streetAddress2)
-                        .city(evt.city)
-                        .addressPhone(evt.addressPhone)
-                        .state(evt.state)
-                        .zip(evt.zip)
-                        .addressFax(evt.addressFax)
-                        .addressPhoneExtension(evt.addressPhoneExtension)
-                        .addressFaxExtension(evt.addressFaxExtension)
-                        .addressLatitude(evt.addressLatitude)
-                        .addressLongitude(evt.addressLongitude)
-                        .licenseNumber(evt.licenseNumber)
-                        .licenseExpiration(evt.licenseExpiration)
-                        .licenseDateIssued(evt.licenseDateIssued)
-                        .licenseStateIssue(evt.licenseStateIssue)
-                        .licenseClass(evt.licenseClass)
-                        .licenseEndorsements(evt.licenseEndorsements)
-                        .licenseRestrictions(evt.licenseRestrictions)
+                        .contactId(evt.getContactId())
+                        .position(evt.getPosition())
+                        .firstName(evt.getFirstName())
+                        .middleName(evt.getMiddleName())
+                        .lastName(evt.getLastName())
+                        .birthDate(evt.getBirthDate())
+                        .sSN(evt.getSSN())
+                        .paymentOptions(evt.getPaymentOptions())
+                        .rate(evt.getRate())
+                        .contactInfo(evt.getContactInfo())
+                        .addressId(evt.getAddressId())
+                        .addressName(evt.getAddressName())
+                        .streetAddress1(evt.getStreetAddress1())
+                        .streetAddress2(evt.getStreetAddress2())
+                        .city(evt.getCity())
+                        .addressPhone(evt.getAddressPhone())
+                        .state(evt.getState())
+                        .zip(evt.getZip())
+                        .addressFax(evt.getAddressFax())
+                        .addressPhoneExtension(evt.getAddressPhoneExtension())
+                        .addressFaxExtension(evt.getAddressFaxExtension())
+                        .addressLatitude(evt.getRate())
+                        .addressLongitude(evt.getAddressLongitude())
+                        .licenseNumber(evt.getLicenseNumber())
+                        .licenseExpiration(evt.getLicenseExpiration())
+                        .licenseDateIssued(evt.getLicenseDateIssued())
+                        .licenseStateIssue(evt.getLicenseStateIssue())
+                        .licenseClass(evt.getLicenseClass())
+                        .licenseEndorsements(evt.getLicenseEndorsements())
+                        .licenseRestrictions(evt.getLicenseRestrictions())
                         .build()
         );
 

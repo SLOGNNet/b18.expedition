@@ -1,9 +1,12 @@
 package com.bridge18.expedition.dto.v1;
 
-import com.bridge18.expedition.entities.PaymentOptions;
+import com.bridge18.expedition.entities.driver.ContactInfo;
+import com.bridge18.expedition.entities.driver.PaymentOptions;
+import org.pcollections.PVector;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
+import java.util.List;
 
 @Immutable
 public class DriverDTO {
@@ -13,7 +16,7 @@ public class DriverDTO {
     public String firstName;
     public String middleName;
     public String lastName;
-    public String contactInfo;
+    public PVector<ContactInfo> contactInfo;
     public String position;
     public AddressDTO address;
 
@@ -23,7 +26,7 @@ public class DriverDTO {
     public Double rate;
     public LicenseDTO license;
 
-    public DriverDTO(String driverId, Integer id, String firstName, String middleName, String lastName, String contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
+    public DriverDTO(String driverId, Integer id, String firstName, String middleName, String lastName, PVector<ContactInfo> contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
         this.driverId = driverId;
         this.id = id;
         this.firstName = firstName;
