@@ -44,44 +44,8 @@ public interface AbstractDriverState extends Jsonable {
     Optional<Double> getRate();
 
     @Value.Parameter
-    Optional<Integer> getAddressId();
-    @Value.Parameter
-    Optional<String> getAddressName();
-    @Value.Parameter
-    Optional<String> getStreetAddress1();
-    @Value.Parameter
-    Optional<String> getStreetAddress2();
-    @Value.Parameter
-    Optional<String> getCity();
-    @Value.Parameter
-    Optional<String> getAddressPhone();
-    @Value.Parameter
-    Optional<String> getState();
-    @Value.Parameter
-    Optional<String> getZip();
-    @Value.Parameter
-    Optional<String> getAddressFax();
-    @Value.Parameter
-    Optional<String> getAddressPhoneExtension();
-    @Value.Parameter
-    Optional<String> getAddressFaxExtension();
-    @Value.Parameter
-    Optional<Double> getAddressLatitude();
-    @Value.Parameter
-    Optional<Double> getAddressLongitude();
+    Optional<Address> getAddress();
 
     @Value.Parameter
-    Optional<Integer> getLicenseNumber();
-    @Value.Parameter
-    Optional<Date> getLicenseExpiration();
-    @Value.Parameter
-    Optional<Date> getLicenseDateIssued();
-    @Value.Parameter
-    Optional<String> getLicenseStateIssue();
-    @Value.Parameter
-    Optional<LicenseClass> getLicenseClass();
-    @Value.Parameter
-    Optional<String> getLicenseEndorsements();
-    @Value.Parameter
-    Optional<String> getLicenseRestrictions();
+    Optional<License> getLicense();
 }

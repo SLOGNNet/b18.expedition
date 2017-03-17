@@ -41,7 +41,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public CompletionStage<EquipmentState> changeEquipment(String id, Optional<String> vin, Optional<Ownership> ownership, Optional<EquipmentType> type, Optional<EquipmentSubType> subType, Optional<OperatingMode> operatingMode, Optional<String> make, Optional<String> model, Optional<String> colour, Optional<Boolean> isSleeperBerthAvailable, Optional<String> number, Optional<String> licensePlateState, Optional<String> licensePlateNumber, Optional<Date> licensePlateExpiration, Optional<String> notes, Optional<List<MileageRecord>> mileageRecords) {
+    public CompletionStage<EquipmentState> updateEquipment(String id, Optional<String> vin, Optional<Ownership> ownership, Optional<EquipmentType> type, Optional<EquipmentSubType> subType, Optional<OperatingMode> operatingMode, Optional<String> make, Optional<String> model, Optional<String> colour, Optional<Boolean> isSleeperBerthAvailable, Optional<String> number, Optional<String> licensePlateState, Optional<String> licensePlateNumber, Optional<Date> licensePlateExpiration, Optional<String> notes, Optional<List<MileageRecord>> mileageRecords) {
         if(!subTypeMatchesToType(subType.get(), type.get())){
             throw new WebServiceException("Subtype doesn't match to equipment type.");
         }

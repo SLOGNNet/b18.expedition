@@ -15,11 +15,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                 ctx.thenPersist(new DriverEvent.DriverCreated(entityId(), cmd.getContactId(), cmd.getPosition(),
                                 cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
                                 cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
-                                cmd.getAddressId(), cmd.getAddressName(), cmd.getStreetAddress1(), cmd.getStreetAddress2(),
-                                cmd.getCity(), cmd.getAddressPhone(), cmd.getState(), cmd.getZip(), cmd.getAddressFax(),
-                                cmd.getAddressPhoneExtension(), cmd.getAddressFaxExtension(), cmd.getAddressLatitude(),
-                                cmd.getAddressLongitude(), cmd.getLicenseNumber(), cmd.getLicenseExpiration(), cmd.getLicenseDateIssued(),
-                                cmd.getLicenseStateIssue(), cmd.getLicenseClass(), cmd.getLicenseEndorsements(), cmd.getLicenseRestrictions()),
+                                cmd.getAddress(), cmd.getLicense()),
 
                         evt -> {
                             ctx.reply(state());
@@ -29,11 +25,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                     ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.getContactId(), cmd.getPosition(),
                                     cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
                                     cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
-                                    cmd.getAddressId(), cmd.getAddressName(), cmd.getStreetAddress1(), cmd.getStreetAddress2(),
-                                    cmd.getCity(), cmd.getAddressPhone(), cmd.getState(), cmd.getZip(), cmd.getAddressFax(),
-                                    cmd.getAddressPhoneExtension(), cmd.getAddressFaxExtension(), cmd.getAddressLatitude(),
-                                    cmd.getAddressLongitude(), cmd.getLicenseNumber(), cmd.getLicenseExpiration(), cmd.getLicenseDateIssued(),
-                                    cmd.getLicenseStateIssue(), cmd.getLicenseClass(), cmd.getLicenseEndorsements(), cmd.getLicenseRestrictions()),
+                                    cmd.getAddress(), cmd.getLicense()),
 
                             evt -> {
                                 ctx.reply(state());
@@ -56,26 +48,8 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .paymentOptions(evt.getPaymentOptions())
                         .rate(evt.getRate())
                         .contactInfo(evt.getContactInfo())
-                        .addressId(evt.getAddressId())
-                        .addressName(evt.getAddressName())
-                        .streetAddress1(evt.getStreetAddress1())
-                        .streetAddress2(evt.getStreetAddress2())
-                        .city(evt.getCity())
-                        .addressPhone(evt.getAddressPhone())
-                        .state(evt.getState())
-                        .zip(evt.getZip())
-                        .addressFax(evt.getAddressFax())
-                        .addressPhoneExtension(evt.getAddressPhoneExtension())
-                        .addressFaxExtension(evt.getAddressFaxExtension())
-                        .addressLatitude(evt.getRate())
-                        .addressLongitude(evt.getAddressLongitude())
-                        .licenseNumber(evt.getLicenseNumber())
-                        .licenseExpiration(evt.getLicenseExpiration())
-                        .licenseDateIssued(evt.getLicenseDateIssued())
-                        .licenseStateIssue(evt.getLicenseStateIssue())
-                        .licenseClass(evt.getLicenseClass())
-                        .licenseEndorsements(evt.getLicenseEndorsements())
-                        .licenseRestrictions(evt.getLicenseRestrictions())
+                        .address(evt.getAddress())
+                        .license(evt.getLicense())
                         .build()
         );
 
@@ -91,26 +65,8 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .paymentOptions(evt.getPaymentOptions())
                         .rate(evt.getRate())
                         .contactInfo(evt.getContactInfo())
-                        .addressId(evt.getAddressId())
-                        .addressName(evt.getAddressName())
-                        .streetAddress1(evt.getStreetAddress1())
-                        .streetAddress2(evt.getStreetAddress2())
-                        .city(evt.getCity())
-                        .addressPhone(evt.getAddressPhone())
-                        .state(evt.getState())
-                        .zip(evt.getZip())
-                        .addressFax(evt.getAddressFax())
-                        .addressPhoneExtension(evt.getAddressPhoneExtension())
-                        .addressFaxExtension(evt.getAddressFaxExtension())
-                        .addressLatitude(evt.getRate())
-                        .addressLongitude(evt.getAddressLongitude())
-                        .licenseNumber(evt.getLicenseNumber())
-                        .licenseExpiration(evt.getLicenseExpiration())
-                        .licenseDateIssued(evt.getLicenseDateIssued())
-                        .licenseStateIssue(evt.getLicenseStateIssue())
-                        .licenseClass(evt.getLicenseClass())
-                        .licenseEndorsements(evt.getLicenseEndorsements())
-                        .licenseRestrictions(evt.getLicenseRestrictions())
+                        .address(evt.getAddress())
+                        .license(evt.getLicense())
                         .build()
         );
 

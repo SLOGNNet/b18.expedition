@@ -34,27 +34,9 @@ public interface DriverCommand extends Jsonable {
 
         Optional<PVector<ContactInfo>> contactInfo;
 
-        Optional<Integer> addressId;
-        Optional<String> addressName;
-        Optional<String> streetAddress1;
-        Optional<String> streetAddress2;
-        Optional<String> city;
-        Optional<String> addressPhone;
-        Optional<String> state;
-        Optional<String> zip;
-        Optional<String> addressFax;
-        Optional<String> addressPhoneExtension;
-        Optional<String> addressFaxExtension;
-        Optional<Double> addressLatitude;
-        Optional<Double> addressLongitude;
+        Optional<Address> address;
 
-        Optional<Integer> licenseNumber;
-        Optional<Date> licenseExpiration;
-        Optional<Date> licenseDateIssued;
-        Optional<String> licenseStateIssue;
-        Optional<LicenseClass> licenseClass;
-        Optional<String> licenseEndorsements;
-        Optional<String> licenseRestrictions;
+        Optional<License> license;
     }
 
     @Immutable
@@ -75,27 +57,9 @@ public interface DriverCommand extends Jsonable {
 
         Optional<PVector<ContactInfo>> contactInfo;
 
-        Optional<Integer> addressId;
-        Optional<String> addressName;
-        Optional<String> streetAddress1;
-        Optional<String> streetAddress2;
-        Optional<String> city;
-        Optional<String> addressPhone;
-        Optional<String> state;
-        Optional<String> zip;
-        Optional<String> addressFax;
-        Optional<String> addressPhoneExtension;
-        Optional<String> addressFaxExtension;
-        Optional<Double> addressLatitude;
-        Optional<Double> addressLongitude;
+        Optional<Address> address;
 
-        Optional<Integer> licenseNumber;
-        Optional<Date> licenseExpiration;
-        Optional<Date> licenseDateIssued;
-        Optional<String> licenseStateIssue;
-        Optional<LicenseClass> licenseClass;
-        Optional<String> licenseEndorsements;
-        Optional<String> licenseRestrictions;
+        Optional<License> license;
     }
 
     @Immutable

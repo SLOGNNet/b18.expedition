@@ -3,8 +3,10 @@ package com.bridge18.expedition.services.lagom;
 import akka.NotUsed;
 import com.bridge18.expedition.api.LagomDriverService;
 import com.bridge18.expedition.dto.v1.*;
+import com.bridge18.expedition.entities.driver.Address;
 import com.bridge18.expedition.entities.driver.ContactInfo;
 import com.bridge18.expedition.entities.driver.DriverState;
+import com.bridge18.expedition.entities.driver.License;
 import com.bridge18.expedition.repository.DriverRepository;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.google.common.collect.Lists;
@@ -13,16 +15,10 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Collections;
-import java.util.function.Function;
 
-/**
- * Created by Viktor on 01.03.2017.
- */
+
 public class LagomDriverServiceImpl implements LagomDriverService {
     private DriverService driverService;
 
@@ -45,23 +41,13 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                     Optional.ofNullable(contactInfoDTO.type)
                             ))
                     )  : null;
-            AddressDTO inAddressDTO = Optional.ofNullable(request.address).orElse(new AddressDTO());
-            LicenseDTO inLicenseDTO = Optional.ofNullable(request.license).orElse(new LicenseDTO());
             return driverService.createDriver(Optional.ofNullable(request.id), Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
                     Optional.ofNullable(request.SSN), Optional.ofNullable(request.paymentOptions),
                     Optional.ofNullable(request.rate), Optional.ofNullable(inContactInfo),
-                    Optional.ofNullable(inAddressDTO.id), Optional.ofNullable(inAddressDTO.name),
-                    Optional.ofNullable(inAddressDTO.streetAddress1), Optional.ofNullable(inAddressDTO.streetAddress2),
-                    Optional.ofNullable(inAddressDTO.city), Optional.ofNullable(inAddressDTO.phone),
-                    Optional.ofNullable(inAddressDTO.state), Optional.ofNullable(inAddressDTO.zip),
-                    Optional.ofNullable(inAddressDTO.fax), Optional.ofNullable(inAddressDTO.phoneExtension),
-                    Optional.ofNullable(inAddressDTO.faxExtension), Optional.ofNullable(inAddressDTO.latitude),
-                    Optional.ofNullable(inAddressDTO.longitude), Optional.ofNullable(inLicenseDTO.number),
-                    Optional.ofNullable(inLicenseDTO.expiration), Optional.ofNullable(inLicenseDTO.dateIssues),
-                    Optional.ofNullable(inLicenseDTO.stateIssued), Optional.ofNullable(inLicenseDTO.licenseClass),
-                    Optional.ofNullable(inLicenseDTO.endorsements), Optional.ofNullable(inLicenseDTO.restrictions))
+                    Optional.ofNullable(convertAddressDTOToAddress(request.address)),
+                    Optional.ofNullable(convertLicenseDTOToLicense(request.license)))
 
                     .thenApply(this::convertDriverStateToDriverDTO);
         };
@@ -79,24 +65,13 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                     Optional.ofNullable(contactInfoDTO.type)
                             ))
                     )  : null;
-            AddressDTO inAddressDTO = Optional.ofNullable(request.address).orElse(new AddressDTO());
-            LicenseDTO inLicenseDTO = Optional.ofNullable(request.license).orElse(new LicenseDTO());
-            return driverService.changeDriverInformation(id,
-                    Optional.ofNullable(request.id), Optional.ofNullable(request.position),
+            return driverService.updateDriver(id, Optional.ofNullable(request.id), Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
                     Optional.ofNullable(request.SSN), Optional.ofNullable(request.paymentOptions),
                     Optional.ofNullable(request.rate), Optional.ofNullable(inContactInfo),
-                    Optional.ofNullable(inAddressDTO.id), Optional.ofNullable(inAddressDTO.name),
-                    Optional.ofNullable(inAddressDTO.streetAddress1), Optional.ofNullable(inAddressDTO.streetAddress2),
-                    Optional.ofNullable(inAddressDTO.city), Optional.ofNullable(inAddressDTO.phone),
-                    Optional.ofNullable(inAddressDTO.state), Optional.ofNullable(inAddressDTO.zip),
-                    Optional.ofNullable(inAddressDTO.fax), Optional.ofNullable(inAddressDTO.phoneExtension),
-                    Optional.ofNullable(inAddressDTO.faxExtension), Optional.ofNullable(inAddressDTO.latitude),
-                    Optional.ofNullable(inAddressDTO.longitude), Optional.ofNullable(inLicenseDTO.number),
-                    Optional.ofNullable(inLicenseDTO.expiration), Optional.ofNullable(inLicenseDTO.dateIssues),
-                    Optional.ofNullable(inLicenseDTO.stateIssued), Optional.ofNullable(inLicenseDTO.licenseClass),
-                    Optional.ofNullable(inLicenseDTO.endorsements), Optional.ofNullable(inLicenseDTO.restrictions))
+                    Optional.ofNullable(convertAddressDTOToAddress(request.address)),
+                    Optional.ofNullable(convertLicenseDTOToLicense(request.license)))
 
                     .thenApply(this::convertDriverStateToDriverDTO);
         };
@@ -122,26 +97,53 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                 contactInfo.getType().orElse(null)
                         )
                 ) : null;
-        LicenseDTO outLicenseDTO = new LicenseDTO(driverState.getLicenseNumber().orElse(null),
-                driverState.getLicenseExpiration().orElse(null), driverState.getLicenseDateIssued().orElse(null),
-                driverState.getLicenseStateIssue().orElse(null), driverState.getLicenseClass().orElse(null),
-                driverState.getLicenseEndorsements().orElse(null), driverState.getLicenseRestrictions().orElse(null)
-        );
-        AddressDTO outAddressDTO = new AddressDTO(driverState.getAddressId().orElse(null),
-                driverState.getAddressName().orElse(null),driverState.getStreetAddress1().orElse(null),
-                driverState.getStreetAddress2().orElse(null),driverState.getCity().orElse(null),
-                driverState.getAddressPhone().orElse(null),driverState.getState().orElse(null),
-                driverState.getZip().orElse(null),driverState.getAddressFax().orElse(null),
-                driverState.getAddressPhoneExtension().orElse(null),driverState.getAddressFaxExtension().orElse(null),
-                driverState.getAddressLatitude().orElse(null),driverState.getAddressLongitude().orElse(null)
-        );
+
+        Address address = driverState.getAddress().get();
+        AddressDTO addressDTO = driverState.getAddress().isPresent() ?
+            new AddressDTO(address.getAddressId().orElse(null),
+                    address.getAddressName().orElse(null),address.getStreetAddress1().orElse(null),
+                    address.getStreetAddress2().orElse(null),address.getCity().orElse(null),
+                    address.getAddressPhone().orElse(null),address.getState().orElse(null),
+                    address.getZip().orElse(null),address.getAddressFax().orElse(null),
+                    address.getAddressPhoneExtension().orElse(null),address.getAddressFaxExtension().orElse(null),
+                    address.getAddressLatitude().orElse(null),address.getAddressLongitude().orElse(null)
+        ) : null;
+
+        License license = driverState.getLicense().get();
+        LicenseDTO licenseDTO = driverState.getLicense().isPresent() ?
+                new LicenseDTO(
+                        license.getLicenseNumber().orElse(null),
+                        license.getLicenseExpiration().orElse(null), license.getLicenseDateIssued().orElse(null),
+                        license.getLicenseStateIssue().orElse(null), license.getLicenseClass().orElse(null),
+                        license.getLicenseEndorsements().orElse(null), license.getLicenseRestrictions().orElse(null)
+                ) : null;
+
         DriverDTO driverDTO = new DriverDTO(driverState.getId(), driverState.getContactId().orElse(null),
                 driverState.getFirstName().orElse(null), driverState.getMiddleName().orElse(null),
                 driverState.getLastName().orElse(null), contactInfoDTOList,
-                driverState.getPosition().orElse(null), outAddressDTO, driverState.getBirthDate().orElse(null),
+                driverState.getPosition().orElse(null), addressDTO, driverState.getBirthDate().orElse(null),
                 driverState.getSSN().orElse(null), driverState.getPaymentOptions().orElse(null),
-                driverState.getRate().orElse(null), outLicenseDTO
+                driverState.getRate().orElse(null), licenseDTO
         );
         return driverDTO;
+    }
+
+    private Address convertAddressDTOToAddress(AddressDTO addressDTO){
+        addressDTO = Optional.ofNullable(addressDTO).orElse(new AddressDTO());
+        return new Address(Optional.ofNullable(addressDTO.id), Optional.ofNullable(addressDTO.name),
+                Optional.ofNullable(addressDTO.streetAddress1), Optional.ofNullable(addressDTO.streetAddress2),
+                Optional.ofNullable(addressDTO.city), Optional.ofNullable(addressDTO.phone),
+                Optional.ofNullable(addressDTO.state), Optional.ofNullable(addressDTO.zip),
+                Optional.ofNullable(addressDTO.fax), Optional.ofNullable(addressDTO.phoneExtension),
+                Optional.ofNullable(addressDTO.faxExtension), Optional.ofNullable(addressDTO.latitude),
+                Optional.ofNullable(addressDTO.longitude));
+    }
+
+    private License convertLicenseDTOToLicense(LicenseDTO licenseDTO){
+        licenseDTO = Optional.ofNullable(licenseDTO).orElse(new LicenseDTO());
+        return new License(Optional.ofNullable(licenseDTO.number),
+                Optional.ofNullable(licenseDTO.expiration), Optional.ofNullable(licenseDTO.dateIssues),
+                Optional.ofNullable(licenseDTO.stateIssued), Optional.ofNullable(licenseDTO.licenseClass),
+                Optional.ofNullable(licenseDTO.endorsements), Optional.ofNullable(licenseDTO.restrictions));
     }
 }

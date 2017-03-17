@@ -8,13 +8,10 @@ import com.bridge18.expedition.dto.v1.EquipmentSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.repository.EquipmentRepository;
 import com.bridge18.expedition.services.objects.EquipmentService;
-import com.google.common.collect.Lists;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 
 import javax.inject.Inject;
 import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class LagomEquipmentServiceImpl implements LagomEquipmentService {
@@ -74,7 +71,7 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     @Override
     public ServiceCall<EquipmentDTO, EquipmentDTO> updateEquipmentInformation(String id) {
         return request -> {
-            return equipmentService.changeEquipment(id,
+            return equipmentService.updateEquipment(id,
                     Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
                     Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
