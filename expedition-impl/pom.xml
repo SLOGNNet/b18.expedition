@@ -73,6 +73,10 @@
         <dependency>
             <groupId>com.typesafe.play</groupId>
             <artifactId>play-netty-server_2.11</artifactId>
+         </dependency>
+        <dependency>
+            <groupId>com.typesafe.play</groupId>
+            <artifactId>filters-helpers_2.11</artifactId>
         </dependency>
         <dependency>
             <groupId>com.lightbend.lagom</groupId>
