@@ -3,7 +3,9 @@ package com.bridge18.expedition.repository;
 import akka.Done;
 import com.bridge18.expedition.dto.v1.DriverSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
+import com.bridge18.expedition.entities.driver.DriverCreated;
 import com.bridge18.expedition.entities.driver.DriverEvent;
+import com.bridge18.expedition.entities.driver.DriverUpdated;
 import com.datastax.driver.core.*;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSide;
@@ -111,11 +113,11 @@ public class DriverRepository {
             return readSide.<DriverEvent>builder("driverEventOffset")
                     .setGlobalPrepare(this::createTables)
                     .setPrepare(tag -> prepareStatements())
-                    .setEventHandler(DriverEvent.DriverCreated.class,
-                            e -> insertDriverSummary(e.getDriverId(), e.getFirstName().orElse(null),
+                    .setEventHandler(DriverCreated.class,
+                            e -> insertDriverSummary(e.getId(), e.getFirstName().orElse(null),
                                     e.getLastName().orElse(null)))
-                    .setEventHandler(DriverEvent.DriverUpdated.class,
-                            e -> updateDriverSummary(e.getDriverId(), e.getFirstName().orElse(null),
+                    .setEventHandler(DriverUpdated.class,
+                            e -> updateDriverSummary(e.getId(), e.getFirstName().orElse(null),
                                     e.getLastName().orElse(null)))
                     .build();
         }

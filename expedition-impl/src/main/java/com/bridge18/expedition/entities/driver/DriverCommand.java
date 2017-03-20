@@ -1,68 +1,83 @@
 package com.bridge18.expedition.entities.driver;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 import com.lightbend.lagom.serialization.CompressedJsonable;
 import com.lightbend.lagom.serialization.Jsonable;
-import lombok.Value;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.immutables.value.Value;
 import org.pcollections.PVector;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 
 public interface DriverCommand extends Jsonable {
-    @Immutable
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class CreateDriver implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState> {
-        Optional<String> position;
-        Optional<String> firstName;
-        Optional<String> middleName;
-        Optional<String> lastName;
-        Optional<Date> birthDate;
-        Optional<String> SSN;
+    interface AbstractCreateDriver extends DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState> {
+        @Value.Parameter
+        Optional<String> getPosition();
+        @Value.Parameter
+        Optional<String> getFirstName();
+        @Value.Parameter
+        Optional<String> getMiddleName();
+        @Value.Parameter
+        Optional<String> getLastName();
+        @Value.Parameter
+        Optional<PVector<ContactInfo>> getContactInfo();
 
+        @Value.Parameter
+        Optional<Date> getBirthDate();
+        @Value.Parameter
+        Optional<String> getSSN();
+        @Value.Parameter
+        Optional<PaymentOptions> getPaymentOptions();
+        @Value.Parameter
+        Optional<Double> getRate();
 
-        Optional<PaymentOptions> paymentOptions;
-        Optional<Double> rate;
+        @Value.Parameter
+        Optional<Address> getAddress();
 
-        Optional<PVector<ContactInfo>> contactInfo;
-
-        Optional<Address> address;
-
-        Optional<License> license;
+        @Value.Parameter
+        Optional<License> getLicense();
     }
 
-    @Immutable
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class UpdateDriver implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState>{
-        Optional<String> position;
-        Optional<String> firstName;
-        Optional<String> middleName;
-        Optional<String> lastName;
-        Optional<Date> birthDate;
-        Optional<String> SSN;
+    interface AbstractUpdateDriver extends DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState>{
+        @Value.Parameter
+        Optional<String> getPosition();
+        @Value.Parameter
+        Optional<String> getFirstName();
+        @Value.Parameter
+        Optional<String> getMiddleName();
+        @Value.Parameter
+        Optional<String> getLastName();
+        @Value.Parameter
+        Optional<PVector<ContactInfo>> getContactInfo();
 
+        @Value.Parameter
+        Optional<Date> getBirthDate();
+        @Value.Parameter
+        Optional<String> getSSN();
+        @Value.Parameter
+        Optional<PaymentOptions> getPaymentOptions();
+        @Value.Parameter
+        Optional<Double> getRate();
 
-        Optional<PaymentOptions> paymentOptions;
-        Optional<Double> rate;
+        @Value.Parameter
+        Optional<Address> getAddress();
 
-        Optional<PVector<ContactInfo>> contactInfo;
-
-        Optional<Address> address;
-
-        Optional<License> license;
+        @Value.Parameter
+        Optional<License> getLicense();
     }
 
-    @Immutable
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class GetDriverInformation implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState> {
+    interface AbstractGetDriverInformation extends DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState> {
     }
 }

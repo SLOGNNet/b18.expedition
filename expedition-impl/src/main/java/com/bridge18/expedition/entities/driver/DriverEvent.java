@@ -1,19 +1,16 @@
 package com.bridge18.expedition.entities.driver;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.javadsl.persistence.AggregateEvent;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventShards;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTagger;
 import com.lightbend.lagom.serialization.Jsonable;
-import lombok.Value;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.immutables.value.Value;
 import org.pcollections.PVector;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -26,49 +23,73 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
         return TAG;
     }
 
-    @Immutable
-    @Value
-    final class DriverCreated implements DriverEvent{
-        String driverId;
-
-        Optional<String> position;
-        Optional<String> firstName;
-        Optional<String> middleName;
-        Optional<String> lastName;
-        Optional<Date> birthDate;
-        Optional<String> SSN;
+    @Value.Immutable
+    @ImmutableStyle
+    @JsonDeserialize
+    interface AbstractDriverCreated extends DriverEvent{
+        @Value.Parameter
+        String getId();
 
 
-        Optional<PaymentOptions> paymentOptions;
-        Optional<Double> rate;
+        @Value.Parameter
+        Optional<String> getPosition();
+        @Value.Parameter
+        Optional<String> getFirstName();
+        @Value.Parameter
+        Optional<String> getMiddleName();
+        @Value.Parameter
+        Optional<String> getLastName();
+        @Value.Parameter
+        Optional<PVector<ContactInfo>> getContactInfo();
 
-        Optional<PVector<ContactInfo>> contactInfo;
+        @Value.Parameter
+        Optional<Date> getBirthDate();
+        @Value.Parameter
+        Optional<String> getSSN();
+        @Value.Parameter
+        Optional<PaymentOptions> getPaymentOptions();
+        @Value.Parameter
+        Optional<Double> getRate();
 
-        Optional<Address> address;
+        @Value.Parameter
+        Optional<Address> getAddress();
 
-        Optional<License> license;
+        @Value.Parameter
+        Optional<License> getLicense();
     }
 
-    @Immutable
-    @Value
-    final class DriverUpdated implements DriverEvent{
-        String driverId;
-
-        Optional<String> position;
-        Optional<String> firstName;
-        Optional<String> middleName;
-        Optional<String> lastName;
-        Optional<Date> birthDate;
-        Optional<String> SSN;
+    @Value.Immutable
+    @ImmutableStyle
+    @JsonDeserialize
+    interface AbstractDriverUpdated extends DriverEvent{
+        @Value.Parameter
+        String getId();
 
 
-        Optional<PaymentOptions> paymentOptions;
-        Optional<Double> rate;
+        @Value.Parameter
+        Optional<String> getPosition();
+        @Value.Parameter
+        Optional<String> getFirstName();
+        @Value.Parameter
+        Optional<String> getMiddleName();
+        @Value.Parameter
+        Optional<String> getLastName();
+        @Value.Parameter
+        Optional<PVector<ContactInfo>> getContactInfo();
 
-        Optional<PVector<ContactInfo>> contactInfo;
+        @Value.Parameter
+        Optional<Date> getBirthDate();
+        @Value.Parameter
+        Optional<String> getSSN();
+        @Value.Parameter
+        Optional<PaymentOptions> getPaymentOptions();
+        @Value.Parameter
+        Optional<Double> getRate();
 
-        Optional<Address> address;
+        @Value.Parameter
+        Optional<Address> getAddress();
 
-        Optional<License> license;
+        @Value.Parameter
+        Optional<License> getLicense();
     }
 }

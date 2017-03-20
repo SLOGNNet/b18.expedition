@@ -11,32 +11,52 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
         BehaviorBuilder b = newBehaviorBuilder(
                 snapshotState.orElse(DriverState.builder().id(entityId()).build()));
 
-        b.setCommandHandler(DriverCommand.CreateDriver.class, (cmd, ctx) ->
-                ctx.thenPersist(new DriverEvent.DriverCreated(entityId(), cmd.getPosition(),
-                                cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
-                                cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
-                                cmd.getAddress(), cmd.getLicense()),
+        b.setCommandHandler(CreateDriver.class, (cmd, ctx) ->
+                ctx.thenPersist(DriverCreated.builder()
+                                .id(entityId())
+                                .position(cmd.getPosition())
+                                .firstName(cmd.getFirstName())
+                                .middleName(cmd.getMiddleName())
+                                .lastName(cmd.getLastName())
+                                .birthDate(cmd.getBirthDate())
+                                .sSN(cmd.getSSN())
+                                .paymentOptions(cmd.getPaymentOptions())
+                                .rate(cmd.getRate())
+                                .contactInfo(cmd.getContactInfo())
+                                .address(cmd.getAddress())
+                                .license(cmd.getLicense())
+                                .build(),
 
                         evt -> {
                             ctx.reply(state());
                         }));
 
-        b.setCommandHandler(DriverCommand.UpdateDriver.class, (cmd, ctx) ->
-                    ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.getPosition(),
-                                    cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
-                                    cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
-                                    cmd.getAddress(), cmd.getLicense()),
+        b.setCommandHandler(UpdateDriver.class, (cmd, ctx) ->
+                ctx.thenPersist(DriverUpdated.builder()
+                                .id(entityId())
+                                .position(cmd.getPosition())
+                                .firstName(cmd.getFirstName())
+                                .middleName(cmd.getMiddleName())
+                                .lastName(cmd.getLastName())
+                                .birthDate(cmd.getBirthDate())
+                                .sSN(cmd.getSSN())
+                                .paymentOptions(cmd.getPaymentOptions())
+                                .rate(cmd.getRate())
+                                .contactInfo(cmd.getContactInfo())
+                                .address(cmd.getAddress())
+                                .license(cmd.getLicense())
+                                .build(),
 
-                            evt -> {
-                                ctx.reply(state());
-                            }));
+                        evt -> {
+                            ctx.reply(state());
+                        }));
 
 
-        b.setReadOnlyCommandHandler(DriverCommand.GetDriverInformation.class, (cmd, ctx) ->
+        b.setReadOnlyCommandHandler(GetDriverInformation.class, (cmd, ctx) ->
                 ctx.reply(state()));
 
 
-        b.setEventHandler(DriverEvent.DriverCreated.class,
+        b.setEventHandler(DriverCreated.class,
                 evt -> DriverState.builder().id(entityId())
                         .position(evt.getPosition())
                         .firstName(evt.getFirstName())
@@ -52,7 +72,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .build()
         );
 
-        b.setEventHandler(DriverEvent.DriverUpdated.class,
+        b.setEventHandler(DriverUpdated.class,
                 evt -> DriverState.builder().from(state())
                         .position(evt.getPosition())
                         .firstName(evt.getFirstName())

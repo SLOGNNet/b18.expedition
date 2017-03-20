@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
-/**
- * Created by Viktor on 01.03.2017.
- */
 public interface DriverService {
     CompletionStage<DriverState> createDriver(Optional<String> position,
                                               Optional<String> firstName,

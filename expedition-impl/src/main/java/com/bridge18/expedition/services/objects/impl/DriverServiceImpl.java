@@ -29,9 +29,19 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public CompletionStage<DriverState> createDriver(Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<PVector<ContactInfo>> contactInfo, Optional<Address> address, Optional<License> license) {
-        DriverCommand.CreateDriver cmd = new DriverCommand.CreateDriver(
-                position, firstName, middleName, lastName,
-                birthDate, SSN, paymentOptions, rate, contactInfo, address, license);
+        CreateDriver cmd = CreateDriver.builder()
+                .position(position)
+                .firstName(firstName)
+                .middleName(middleName)
+                .lastName(lastName)
+                .birthDate(birthDate)
+                .sSN(SSN)
+                .paymentOptions(paymentOptions)
+                .rate(rate)
+                .contactInfo(contactInfo)
+                .address(address)
+                .license(license)
+                .build();
 
         PersistentEntityRef<DriverCommand> ref = persistentEntityRegistry.refFor(DriverEntity.class, UUID.randomUUID().toString());
 
@@ -40,9 +50,19 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public CompletionStage<DriverState> updateDriver(String id, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> SSN, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<PVector<ContactInfo>> contactInfo, Optional<Address> address, Optional<License> license) {
-        DriverCommand.UpdateDriver cmd = new DriverCommand.UpdateDriver(
-                position, firstName, middleName, lastName,
-                birthDate, SSN, paymentOptions, rate, contactInfo, address, license);
+        UpdateDriver cmd = UpdateDriver.builder()
+                .position(position)
+                .firstName(firstName)
+                .middleName(middleName)
+                .lastName(lastName)
+                .birthDate(birthDate)
+                .sSN(SSN)
+                .paymentOptions(paymentOptions)
+                .rate(rate)
+                .contactInfo(contactInfo)
+                .address(address)
+                .license(license)
+                .build();
 
         PersistentEntityRef<DriverCommand> ref = persistentEntityRegistry.refFor(DriverEntity.class, id);
 
@@ -51,7 +71,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public CompletionStage<DriverState> getDriverInformation(String id) {
-        DriverCommand.GetDriverInformation cmd = new DriverCommand.GetDriverInformation();
+        GetDriverInformation cmd = GetDriverInformation.builder().build();
 
         PersistentEntityRef<DriverCommand> ref = persistentEntityRegistry.refFor(DriverEntity.class, id);
 

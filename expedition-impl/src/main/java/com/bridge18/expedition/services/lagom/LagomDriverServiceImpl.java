@@ -35,11 +35,12 @@ public class LagomDriverServiceImpl implements LagomDriverService {
         return request ->{
             PVector<ContactInfo> inContactInfo = Optional.ofNullable(request.contactInfo).isPresent() ?
                     TreePVector.from(
-                            Lists.transform(request.contactInfo, contactInfoDTO -> new ContactInfo(
-                                    Optional.ofNullable(contactInfoDTO.label),
-                                    Optional.ofNullable(contactInfoDTO.value),
-                                    Optional.ofNullable(contactInfoDTO.type)
-                            ))
+                            Lists.transform(request.contactInfo, contactInfoDTO -> ContactInfo.builder()
+                                    .label(Optional.ofNullable(contactInfoDTO.label))
+                                    .value(Optional.ofNullable(contactInfoDTO.value))
+                                    .type(Optional.ofNullable(contactInfoDTO.type))
+                                    .build()
+                            )
                     )  : null;
             return driverService.createDriver(Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
@@ -59,11 +60,12 @@ public class LagomDriverServiceImpl implements LagomDriverService {
         return request ->{
             PVector<ContactInfo> inContactInfo = Optional.ofNullable(request.contactInfo).isPresent() ?
                     TreePVector.from(
-                            Lists.transform(request.contactInfo, contactInfoDTO -> new ContactInfo(
-                                    Optional.ofNullable(contactInfoDTO.label),
-                                    Optional.ofNullable(contactInfoDTO.value),
-                                    Optional.ofNullable(contactInfoDTO.type)
-                            ))
+                            Lists.transform(request.contactInfo, contactInfoDTO -> ContactInfo.builder()
+                                    .label(Optional.ofNullable(contactInfoDTO.label))
+                                    .value(Optional.ofNullable(contactInfoDTO.value))
+                                    .type(Optional.ofNullable(contactInfoDTO.type))
+                                    .build()
+                            )
                     )  : null;
             return driverService.updateDriver(id, Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
@@ -130,20 +132,33 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     private Address convertAddressDTOToAddress(AddressDTO addressDTO){
         addressDTO = Optional.ofNullable(addressDTO).orElse(new AddressDTO());
-        return new Address(Optional.ofNullable(addressDTO.id), Optional.ofNullable(addressDTO.name),
-                Optional.ofNullable(addressDTO.streetAddress1), Optional.ofNullable(addressDTO.streetAddress2),
-                Optional.ofNullable(addressDTO.city), Optional.ofNullable(addressDTO.phone),
-                Optional.ofNullable(addressDTO.state), Optional.ofNullable(addressDTO.zip),
-                Optional.ofNullable(addressDTO.fax), Optional.ofNullable(addressDTO.phoneExtension),
-                Optional.ofNullable(addressDTO.faxExtension), Optional.ofNullable(addressDTO.latitude),
-                Optional.ofNullable(addressDTO.longitude));
+        return Address.builder()
+                .addressId(Optional.ofNullable(addressDTO.id))
+                .addressName(Optional.ofNullable(addressDTO.name))
+                .streetAddress1(Optional.ofNullable(addressDTO.streetAddress1))
+                .streetAddress2(Optional.ofNullable(addressDTO.streetAddress2))
+                .city(Optional.ofNullable(addressDTO.city))
+                .addressPhone(Optional.ofNullable(addressDTO.phone))
+                .state(Optional.ofNullable(addressDTO.state))
+                .zip(Optional.ofNullable(addressDTO.zip))
+                .addressFax(Optional.ofNullable(addressDTO.fax))
+                .addressPhoneExtension(Optional.ofNullable(addressDTO.phoneExtension))
+                .addressFaxExtension(Optional.ofNullable(addressDTO.faxExtension))
+                .addressLatitude(Optional.ofNullable(addressDTO.latitude))
+                .addressLongitude(Optional.ofNullable(addressDTO.longitude))
+                .build();
     }
 
     private License convertLicenseDTOToLicense(LicenseDTO licenseDTO){
         licenseDTO = Optional.ofNullable(licenseDTO).orElse(new LicenseDTO());
-        return new License(Optional.ofNullable(licenseDTO.number),
-                Optional.ofNullable(licenseDTO.expiration), Optional.ofNullable(licenseDTO.dateIssues),
-                Optional.ofNullable(licenseDTO.stateIssued), Optional.ofNullable(licenseDTO.licenseClass),
-                Optional.ofNullable(licenseDTO.endorsements), Optional.ofNullable(licenseDTO.restrictions));
+        return License.builder()
+                .licenseNumber(Optional.ofNullable(licenseDTO.number))
+                .licenseExpiration(Optional.ofNullable(licenseDTO.expiration))
+                .licenseDateIssued(Optional.ofNullable(licenseDTO.dateIssues))
+                .licenseStateIssue(Optional.ofNullable(licenseDTO.stateIssued))
+                .licenseClass(Optional.ofNullable(licenseDTO.licenseClass))
+                .licenseEndorsements(Optional.ofNullable(licenseDTO.endorsements))
+                .licenseRestrictions(Optional.ofNullable(licenseDTO.restrictions))
+                .build();
     }
 }

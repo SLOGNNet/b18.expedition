@@ -1,10 +1,5 @@
 package com.bridge18.expedition.dto.v1;
 
-import lombok.Value;
-import lombok.experimental.Wither;
-
-@Value
-@Wither
 public final class DriverSummary {
     String id;
     String firstName;
@@ -14,5 +9,17 @@ public final class DriverSummary {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 }
