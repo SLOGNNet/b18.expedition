@@ -10,8 +10,4 @@ public enum LicenseClass {
     CLASS_A,
     CLASS_B;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

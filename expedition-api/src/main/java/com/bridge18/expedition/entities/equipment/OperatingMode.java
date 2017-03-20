@@ -6,8 +6,4 @@ public enum OperatingMode {
     INTER_STATE,
     INTRA_STATE;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

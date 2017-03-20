@@ -6,8 +6,4 @@ public enum EquipmentType {
     POWER_UNIT,
     TRAILER;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

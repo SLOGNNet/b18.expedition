@@ -6,8 +6,4 @@ public enum FreightType {
     DRY,
     REEFER;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

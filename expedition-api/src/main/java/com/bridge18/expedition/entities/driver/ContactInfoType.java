@@ -9,8 +9,4 @@ public enum ContactInfoType {
     FAX,
     EMAIL;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

@@ -9,8 +9,4 @@ public enum PaymentOptions {
     HOURLY,
     FLAT;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

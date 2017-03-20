@@ -25,8 +25,4 @@ public enum EquipmentSubType {
         return parentType;
     }
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }
