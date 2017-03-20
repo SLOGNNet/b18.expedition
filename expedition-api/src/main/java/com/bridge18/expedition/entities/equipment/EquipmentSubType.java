@@ -3,6 +3,7 @@ package com.bridge18.expedition.entities.equipment;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum EquipmentSubType {
+    NONE,
     TRACTOR,
     STRAIGHT_TRUCK_25,
     STRAIGHT_TRUCK_FLAT_BED,
@@ -19,6 +20,9 @@ public enum EquipmentSubType {
     EquipmentSubType(){
         parentType = this.ordinal() <= 3 ?
                 EquipmentType.POWER_UNIT : EquipmentType.TRAILER;
+        if(this.ordinal() == 0){
+            parentType = EquipmentType.NONE;
+        }
     }
 
     public EquipmentType getParentType() {
