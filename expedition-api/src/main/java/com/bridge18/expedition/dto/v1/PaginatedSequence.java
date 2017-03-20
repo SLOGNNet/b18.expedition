@@ -1,9 +1,7 @@
 package com.bridge18.expedition.dto.v1;
 
-import lombok.Value;
 import org.pcollections.PSequence;
 
-@Value
 public class PaginatedSequence<T> {
     PSequence<T> values;
     int page;
@@ -15,6 +13,22 @@ public class PaginatedSequence<T> {
         this.page = page;
         this.pageSize = pageSize;
         this.count = count;
+    }
+
+    public PSequence<T> getValues() {
+        return values;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public int getCount() {
+        return count;
     }
 
     public boolean isEmpty() {

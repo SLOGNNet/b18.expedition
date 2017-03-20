@@ -12,38 +12,62 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                 snapshotState.orElse(EquipmentState.builder().id(entityId()).build())
         );
 
-        b.setCommandHandler(EquipmentCommand.CreateEquipment.class, (cmd, ctx) ->
-                ctx.thenPersist(new EquipmentEvent.EquipmentCreated(entityId(), cmd.getVin(), cmd.getOwnership(),
-                                cmd.getType(), cmd.getSubType(), cmd.getOperatingMode(), cmd.getMake(),
-                                cmd.getModel(), cmd.getColour(), cmd.getIsSleeperBerthAvailable(),
-                                cmd.getNumber(), cmd.getLicensePlateState(),cmd.getLicensePlateNumber(),
-                                cmd.getLicensePlateExpiration(), cmd.getNotes(), cmd.getMileageRecords()),
+        b.setCommandHandler(CreateEquipment.class, (cmd, ctx) ->
+                ctx.thenPersist(EquipmentCreated.builder().id(entityId())
+                        .vin(cmd.getVin())
+                        .ownership(cmd.getOwnership())
+                        .type(cmd.getType())
+                        .subType(cmd.getSubType())
+                        .operatingMode(cmd.getOperatingMode())
+                        .make(cmd.getMake())
+                        .model(cmd.getModel())
+                        .colour(cmd.getColour())
+                        .isSleeperBerthAvailable(cmd.getIsSleeperBerthAvailable())
+                        .number(cmd.getNumber())
+                        .licensePlateState(cmd.getLicensePlateState())
+                        .licensePlateNumber(cmd.getLicensePlateNumber())
+                        .licensePlateExpiration(cmd.getLicensePlateExpiration())
+                        .notes(cmd.getNotes())
+                        .mileageRecords(cmd.getMileageRecords())
+                        .build(),
 
                         evt -> ctx.reply(state())
                 )
         );
 
-        b.setCommandHandler(EquipmentCommand.UpdateEquipment.class, (cmd, ctx) ->
-                ctx.thenPersist(new EquipmentEvent.EquipmentUpdated(entityId(), cmd.getVin(), cmd.getOwnership(),
-                                cmd.getType(), cmd.getSubType(), cmd.getOperatingMode(), cmd.getMake(),
-                                cmd.getModel(), cmd.getColour(), cmd.getIsSleeperBerthAvailable(),
-                                cmd.getNumber(), cmd.getLicensePlateState(),cmd.getLicensePlateNumber(),
-                                cmd.getLicensePlateExpiration(), cmd.getNotes(), cmd.getMileageRecords()),
+        b.setCommandHandler(UpdateEquipment.class, (cmd, ctx) ->
+                ctx.thenPersist(EquipmentUpdated.builder().id(entityId())
+                                .vin(cmd.getVin())
+                                .ownership(cmd.getOwnership())
+                                .type(cmd.getType())
+                                .subType(cmd.getSubType())
+                                .operatingMode(cmd.getOperatingMode())
+                                .make(cmd.getMake())
+                                .model(cmd.getModel())
+                                .colour(cmd.getColour())
+                                .isSleeperBerthAvailable(cmd.getIsSleeperBerthAvailable())
+                                .number(cmd.getNumber())
+                                .licensePlateState(cmd.getLicensePlateState())
+                                .licensePlateNumber(cmd.getLicensePlateNumber())
+                                .licensePlateExpiration(cmd.getLicensePlateExpiration())
+                                .notes(cmd.getNotes())
+                                .mileageRecords(cmd.getMileageRecords())
+                                .build(),
 
                         evt -> ctx.reply(state())
                 )
         );
 
-        b.setCommandHandler(EquipmentCommand.DeleteEquipment.class, (cmd, ctx) ->
-                ctx.thenPersist(new EquipmentEvent.EquipmentDeleted(entityId()),
+        b.setCommandHandler(DeleteEquipment.class, (cmd, ctx) ->
+                ctx.thenPersist(EquipmentDeleted.builder().id(entityId()).build(),
                         evt -> ctx.reply(Done.getInstance())
                         )
         );
 
-        b.setReadOnlyCommandHandler(EquipmentCommand.GetEquipment.class, (cmd, ctx) ->
+        b.setReadOnlyCommandHandler(GetEquipment.class, (cmd, ctx) ->
                 ctx.reply(state()));
 
-        b.setEventHandler(EquipmentEvent.EquipmentCreated.class, evt ->
+        b.setEventHandler(EquipmentCreated.class, evt ->
                 EquipmentState.builder().id(entityId())
                 .vin(evt.getVin())
                 .ownership(evt.getOwnership())
@@ -63,7 +87,7 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                 .build()
         );
 
-        b.setEventHandler(EquipmentEvent.EquipmentUpdated.class, evt ->
+        b.setEventHandler(EquipmentUpdated.class, evt ->
                 EquipmentState.builder().id(entityId())
                         .vin(evt.getVin())
                         .ownership(evt.getOwnership())
@@ -83,7 +107,7 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                         .build()
         );
 
-        b.setEventHandler(EquipmentEvent.EquipmentDeleted.class, evt ->
+        b.setEventHandler(EquipmentDeleted.class, evt ->
                 EquipmentState.builder().id(entityId()).build()
         );
 

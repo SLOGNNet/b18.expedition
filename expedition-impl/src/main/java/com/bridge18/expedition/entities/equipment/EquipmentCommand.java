@@ -2,85 +2,98 @@ package com.bridge18.expedition.entities.equipment;
 
 import akka.Done;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 import com.lightbend.lagom.serialization.CompressedJsonable;
 import com.lightbend.lagom.serialization.Jsonable;
-import lombok.Value;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.immutables.value.Value;
 import org.pcollections.PVector;
 
-import javax.annotation.concurrent.Immutable;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 public interface EquipmentCommand extends Jsonable {
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class CreateEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState>{
-        Optional<String> vin;
-        Optional<Ownership> ownership;
-
-        Optional<EquipmentType> type;
-        Optional<EquipmentSubType> subType;
-
-        Optional<OperatingMode> operatingMode;
-
-        Optional<String> make;
-        Optional<String> model;
-
-        Optional<String> colour;
-
-        Optional<Boolean> isSleeperBerthAvailable;
-
-        Optional<String> number;
-
-        Optional<String> licensePlateState;
-        Optional<String> licensePlateNumber;
-        Optional<Date> licensePlateExpiration;
-
-        Optional<String> notes;
-
-        Optional<PVector<MileageRecord>> mileageRecords;
+    interface AbstractCreateEquipment extends EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState>{
+        @Value.Parameter
+        Optional<String> getVin();
+        @Value.Parameter
+        Optional<Ownership> getOwnership();
+        @Value.Parameter
+        Optional<EquipmentType> getType();
+        @Value.Parameter
+        Optional<EquipmentSubType> getSubType();
+        @Value.Parameter
+        Optional<OperatingMode> getOperatingMode();
+        @Value.Parameter
+        Optional<String> getMake();
+        @Value.Parameter
+        Optional<String> getModel();
+        @Value.Parameter
+        Optional<String> getColour();
+        @Value.Parameter
+        Optional<Boolean> getIsSleeperBerthAvailable();
+        @Value.Parameter
+        Optional<String> getNumber();
+        @Value.Parameter
+        Optional<String> getLicensePlateState();
+        @Value.Parameter
+        Optional<String> getLicensePlateNumber();
+        @Value.Parameter
+        Optional<Date> getLicensePlateExpiration();
+        @Value.Parameter
+        Optional<String> getNotes();
+        @Value.Parameter
+        Optional<PVector<MileageRecord>> getMileageRecords();
     }
 
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class UpdateEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState>{
-        Optional<String> vin;
-        Optional<Ownership> ownership;
-
-        Optional<EquipmentType> type;
-        Optional<EquipmentSubType> subType;
-
-        Optional<OperatingMode> operatingMode;
-
-        Optional<String> make;
-        Optional<String> model;
-
-        Optional<String> colour;
-
-        Optional<Boolean> isSleeperBerthAvailable;
-
-        Optional<String> number;
-
-        Optional<String> licensePlateState;
-        Optional<String> licensePlateNumber;
-        Optional<Date> licensePlateExpiration;
-
-        Optional<String> notes;
-
-        Optional<PVector<MileageRecord>> mileageRecords;
+    interface AbstractUpdateEquipment extends EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState>{
+        @Value.Parameter
+        Optional<String> getVin();
+        @Value.Parameter
+        Optional<Ownership> getOwnership();
+        @Value.Parameter
+        Optional<EquipmentType> getType();
+        @Value.Parameter
+        Optional<EquipmentSubType> getSubType();
+        @Value.Parameter
+        Optional<OperatingMode> getOperatingMode();
+        @Value.Parameter
+        Optional<String> getMake();
+        @Value.Parameter
+        Optional<String> getModel();
+        @Value.Parameter
+        Optional<String> getColour();
+        @Value.Parameter
+        Optional<Boolean> getIsSleeperBerthAvailable();
+        @Value.Parameter
+        Optional<String> getNumber();
+        @Value.Parameter
+        Optional<String> getLicensePlateState();
+        @Value.Parameter
+        Optional<String> getLicensePlateNumber();
+        @Value.Parameter
+        Optional<Date> getLicensePlateExpiration();
+        @Value.Parameter
+        Optional<String> getNotes();
+        @Value.Parameter
+        Optional<PVector<MileageRecord>> getMileageRecords();
     }
 
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class DeleteEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<Done>{
+    interface AbstractDeleteEquipment extends EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<Done>{
     }
 
-    @Value
+    @Value.Immutable
+    @ImmutableStyle
     @JsonDeserialize
-    final class GetEquipment implements EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState> {
+    interface AbstractGetEquipment extends EquipmentCommand, CompressedJsonable, PersistentEntity.ReplyType<EquipmentState> {
     }
 }
