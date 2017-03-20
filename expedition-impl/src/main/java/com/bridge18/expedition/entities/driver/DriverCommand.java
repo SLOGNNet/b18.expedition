@@ -20,7 +20,6 @@ public interface DriverCommand extends Jsonable {
     @Value
     @JsonDeserialize
     final class CreateDriver implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState> {
-        Optional<Integer> contactId;
         Optional<String> position;
         Optional<String> firstName;
         Optional<String> middleName;
@@ -43,7 +42,6 @@ public interface DriverCommand extends Jsonable {
     @Value
     @JsonDeserialize
     final class UpdateDriver implements DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState>{
-        Optional<Integer> contactId;
         Optional<String> position;
         Optional<String> firstName;
         Optional<String> middleName;

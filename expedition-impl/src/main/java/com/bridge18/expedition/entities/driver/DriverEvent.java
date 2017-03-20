@@ -31,7 +31,6 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
     final class DriverCreated implements DriverEvent{
         String driverId;
 
-        Optional<Integer> contactId;
         Optional<String> position;
         Optional<String> firstName;
         Optional<String> middleName;
@@ -55,7 +54,6 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
     final class DriverUpdated implements DriverEvent{
         String driverId;
 
-        Optional<Integer> contactId;
         Optional<String> position;
         Optional<String> firstName;
         Optional<String> middleName;

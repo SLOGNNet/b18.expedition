@@ -12,7 +12,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                 snapshotState.orElse(DriverState.builder().id(entityId()).build()));
 
         b.setCommandHandler(DriverCommand.CreateDriver.class, (cmd, ctx) ->
-                ctx.thenPersist(new DriverEvent.DriverCreated(entityId(), cmd.getContactId(), cmd.getPosition(),
+                ctx.thenPersist(new DriverEvent.DriverCreated(entityId(), cmd.getPosition(),
                                 cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
                                 cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
                                 cmd.getAddress(), cmd.getLicense()),
@@ -22,7 +22,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         }));
 
         b.setCommandHandler(DriverCommand.UpdateDriver.class, (cmd, ctx) ->
-                    ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.getContactId(), cmd.getPosition(),
+                    ctx.thenPersist(new DriverEvent.DriverUpdated(entityId(), cmd.getPosition(),
                                     cmd.getFirstName(), cmd.getMiddleName(), cmd.getLastName(), cmd.getBirthDate(),
                                     cmd.getSSN(), cmd.getPaymentOptions(), cmd.getRate(), cmd.getContactInfo(),
                                     cmd.getAddress(), cmd.getLicense()),
@@ -38,7 +38,6 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
 
         b.setEventHandler(DriverEvent.DriverCreated.class,
                 evt -> DriverState.builder().id(entityId())
-                        .contactId(evt.getContactId())
                         .position(evt.getPosition())
                         .firstName(evt.getFirstName())
                         .middleName(evt.getMiddleName())
@@ -55,7 +54,6 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
 
         b.setEventHandler(DriverEvent.DriverUpdated.class,
                 evt -> DriverState.builder().from(state())
-                        .contactId(evt.getContactId())
                         .position(evt.getPosition())
                         .firstName(evt.getFirstName())
                         .middleName(evt.getMiddleName())

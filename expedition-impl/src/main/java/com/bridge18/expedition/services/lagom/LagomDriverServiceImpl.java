@@ -41,7 +41,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                     Optional.ofNullable(contactInfoDTO.type)
                             ))
                     )  : null;
-            return driverService.createDriver(Optional.ofNullable(request.id), Optional.ofNullable(request.position),
+            return driverService.createDriver(Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
                     Optional.ofNullable(request.SSN), Optional.ofNullable(request.paymentOptions),
@@ -65,7 +65,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                     Optional.ofNullable(contactInfoDTO.type)
                             ))
                     )  : null;
-            return driverService.updateDriver(id, Optional.ofNullable(request.id), Optional.ofNullable(request.position),
+            return driverService.updateDriver(id, Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
                     Optional.ofNullable(request.SSN), Optional.ofNullable(request.paymentOptions),
@@ -118,7 +118,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                         license.getLicenseEndorsements().orElse(null), license.getLicenseRestrictions().orElse(null)
                 ) : null;
 
-        DriverDTO driverDTO = new DriverDTO(driverState.getId(), driverState.getContactId().orElse(null),
+        DriverDTO driverDTO = new DriverDTO(driverState.getId(),
                 driverState.getFirstName().orElse(null), driverState.getMiddleName().orElse(null),
                 driverState.getLastName().orElse(null), contactInfoDTOList,
                 driverState.getPosition().orElse(null), addressDTO, driverState.getBirthDate().orElse(null),

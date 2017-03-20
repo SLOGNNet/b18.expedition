@@ -22,8 +22,6 @@ public interface AbstractDriverState extends Jsonable {
 
 
     @Value.Parameter
-    Optional<Integer> getContactId();
-    @Value.Parameter
     Optional<String> getPosition();
     @Value.Parameter
     Optional<String> getFirstName();

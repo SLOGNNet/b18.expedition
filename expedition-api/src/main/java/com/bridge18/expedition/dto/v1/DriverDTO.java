@@ -10,7 +10,6 @@ import java.util.List;
 public class DriverDTO {
     public String driverId;
 
-    public Integer id;
     public String firstName;
     public String middleName;
     public String lastName;
@@ -24,9 +23,8 @@ public class DriverDTO {
     public Double rate;
     public LicenseDTO license;
 
-    public DriverDTO(String driverId, Integer id, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
+    public DriverDTO(String driverId, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
         this.driverId = driverId;
-        this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;

@@ -14,8 +14,7 @@ import java.util.concurrent.CompletionStage;
  * Created by Viktor on 01.03.2017.
  */
 public interface DriverService {
-    CompletionStage<DriverState> createDriver(Optional<Integer> contactId,
-                                              Optional<String> position,
+    CompletionStage<DriverState> createDriver(Optional<String> position,
                                               Optional<String> firstName,
                                               Optional<String> middleName,
                                               Optional<String> lastName,
@@ -28,7 +27,6 @@ public interface DriverService {
                                               Optional<License> license);
 
     CompletionStage<DriverState> updateDriver(String id,
-                                              Optional<Integer> contactId,
                                               Optional<String> position,
                                               Optional<String> firstName,
                                               Optional<String> middleName,
