@@ -36,16 +36,14 @@ public class EquipmentRepository {
         readSide.register(EquipmentEventProcessor.class);
     }
 
-    public CompletionStage<PaginatedSequence<EquipmentSummary>> getEquipments(int page, int pageSize){
+    public CompletionStage<PaginatedSequence<EquipmentSummary>> getEquipments(String pagingState, int pageSize){
         return countEquipments()
                 .thenCompose(
                         count -> {
-                            int offset = page * pageSize;
-                            int limit = (page + 1) * pageSize;
-                            CompletionStage<PSequence<EquipmentSummary>> equipments = offset > count ?
-                                    CompletableFuture.completedFuture(TreePVector.empty()) :
-                                    selectEquipments(offset, limit);
-                            return equipments.thenApply(seq -> new PaginatedSequence<>(seq, page, pageSize, count));
+                            CompletionStage<PaginatedSequence<EquipmentSummary>> equipmentSummaries =
+                                    selectEquipments(pagingState, pageSize, count);
+
+                            return equipmentSummaries;
                         }
                 );
     }
@@ -58,17 +56,33 @@ public class EquipmentRepository {
                 .thenApply(row -> (int) row.get().getLong("count"));
     }
 
-    private CompletionStage<PSequence<EquipmentSummary>> selectEquipments(long offset, int limit){
+    private CompletionStage<PaginatedSequence<EquipmentSummary>> selectEquipments(String pagingState, int pageSize, int count){
         return session
-                .selectAll(
-                        "SELECT * FROM equipmentSummary LIMIT ?",
-                        limit
-                )
-                .thenApply(List::stream)
-                .thenApply(rows -> rows.skip(offset))
-                .thenApply(rows -> rows.map(EquipmentRepository::convertEquipmentSummary))
-                .thenApply(equipmentSummaries -> equipmentSummaries.collect(Collectors.toList()))
-                .thenApply(TreePVector::from);
+                .underlying()
+                .thenApply(nativeSession -> {
+                    Statement queryStatement = new SimpleStatement("SELECT * FROM equipmentSummary");
+                    queryStatement.setFetchSize(pageSize);
+                    if(pagingState != null){
+                        queryStatement.setPagingState(PagingState.fromString(pagingState));
+                    }
+                    return nativeSession.execute(queryStatement);
+                })
+                .thenApply(resultSet -> {
+                            List<EquipmentSummary> resultList = resultSet.all().stream()
+                                    .map(EquipmentRepository::convertEquipmentSummary)
+                                    .collect(Collectors.toList());
+                            return new PaginatedSequence<EquipmentSummary>(
+                                    TreePVector.from(resultList).subList(0, pageSize > resultList.size() ?
+                                            resultList.size() : pageSize)
+                                    ,
+                                    resultSet.getAllExecutionInfo().get(0).getPagingState() == null ?
+                                            null :
+                                            resultSet.getAllExecutionInfo().get(0).getPagingState().toString(),
+                                    pageSize,
+                                    count);
+                        }
+                );
+
     }
 
     private static EquipmentSummary convertEquipmentSummary(Row equipment) {

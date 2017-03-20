@@ -21,7 +21,7 @@ public interface LagomEquipmentService extends Service {
     ServiceCall<EquipmentDTO, EquipmentDTO> updateEquipmentInformation(String id);
     ServiceCall<NotUsed, Done> deleteEquipment(String id);
     ServiceCall<NotUsed, EquipmentDTO> getEquipment(String id);
-    ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<Integer> pageNo, Optional<Integer> pageSize);
+    ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
 
     @Override
     default Descriptor descriptor(){
@@ -30,7 +30,7 @@ public interface LagomEquipmentService extends Service {
                 restCall(Method.PUT, "/v1/api/expedition/equipment/:id", this::updateEquipmentInformation),
                 restCall(Method.DELETE, "/v1/api/expedition/equipment/:id", this::deleteEquipment),
                 restCall(Method.GET, "/v1/api/expedition/equipment/:id", this::getEquipment),
-                restCall(Method.GET, "/v1/api/expedition/equipment?pageNo&pageSize", this::getEquipmentSummaries)
+                restCall(Method.GET, "/v1/api/expedition/equipment?pagingState&pageSize", this::getEquipmentSummaries)
         ).withAutoAcl(true)
                 .withServiceAcls(
                         ServiceAcl.methodAndPath(Method.OPTIONS, "\\*")

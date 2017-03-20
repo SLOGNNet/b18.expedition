@@ -15,7 +15,7 @@ import java.util.Optional;
 import static com.lightbend.lagom.javadsl.api.Service.*;
 public interface LagomDriverService extends Service {
     ServiceCall<DriverDTO, DriverDTO> createNewDriver();
-    ServiceCall<NotUsed, PaginatedSequence<DriverSummary>> getDriverSummaries(Optional<Integer> pageNo, Optional<Integer> pageSize);
+    ServiceCall<NotUsed, PaginatedSequence<DriverSummary>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
     ServiceCall<DriverDTO, DriverDTO> updateDriverInformation(String id);
     ServiceCall<NotUsed, DriverDTO> getDriverInformation(String id);
 
@@ -23,7 +23,7 @@ public interface LagomDriverService extends Service {
     default Descriptor descriptor(){
         return named("expeditionDriver").withCalls(
                 restCall(Method.POST, "/v1/api/expedition/drivers", this::createNewDriver),
-                restCall(Method.GET, "/v1/api/expedition/drivers?pageNo&pageSize", this::getDriverSummaries),
+                restCall(Method.GET, "/v1/api/expedition/drivers?pagingState&pageSize", this::getDriverSummaries),
                 restCall(Method.PUT, "/v1/api/expedition/drivers/:id", this::updateDriverInformation),
                 restCall(Method.GET, "/v1/api/expedition/drivers/:id", this::getDriverInformation)
         ).withAutoAcl(true)

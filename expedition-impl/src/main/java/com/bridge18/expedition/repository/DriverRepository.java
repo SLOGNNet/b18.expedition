@@ -4,9 +4,7 @@ import akka.Done;
 import com.bridge18.expedition.dto.v1.DriverSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.driver.DriverEvent;
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.Row;
+import com.datastax.driver.core.*;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSide;
 import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
@@ -35,16 +33,14 @@ public class DriverRepository {
         readSide.register(DriverEventProcessor.class);
     }
 
-    public CompletionStage<PaginatedSequence<DriverSummary>> getDrivers(int page, int pageSize){
+    public CompletionStage<PaginatedSequence<DriverSummary>> getDrivers(String pagingState, int pageSize){
         return countDrivers()
                 .thenCompose(
                         count -> {
-                            int offset = page * pageSize;
-                            int limit = (page + 1) * pageSize;
-                            CompletionStage<PSequence<DriverSummary>> drivers = offset > count ?
-                                    CompletableFuture.completedFuture(TreePVector.empty()) :
-                                    selectDrivers(offset, limit);
-                            return drivers.thenApply(seq -> new PaginatedSequence<>(seq, page, pageSize, count));
+                            CompletionStage<PaginatedSequence<DriverSummary>> driverSummaries =
+                                    selectDrivers(pagingState, pageSize, count);
+
+                            return driverSummaries;
                         }
                 );
     }
@@ -57,17 +53,33 @@ public class DriverRepository {
                 .thenApply(row -> (int) row.get().getLong("count"));
     }
 
-    private CompletionStage<PSequence<DriverSummary>> selectDrivers(long offset, int limit){
+    private CompletionStage<PaginatedSequence<DriverSummary>> selectDrivers(String pagingState, int pageSize, int count){
         return session
-                .selectAll(
-                "SELECT * FROM driverSummary LIMIT ?",
-                limit
-                )
-                .thenApply(List::stream)
-                .thenApply(rows -> rows.skip(offset))
-                .thenApply(rows -> rows.map(DriverRepository::convertDriverSummary))
-                .thenApply(driverSummaries -> driverSummaries.collect(Collectors.toList()))
-                .thenApply(TreePVector::from);
+                .underlying()
+                .thenApply(nativeSession -> {
+                    Statement queryStatement = new SimpleStatement("SELECT * FROM driverSummary");
+                    queryStatement.setFetchSize(pageSize);
+                    if(pagingState != null){
+                        queryStatement.setPagingState(PagingState.fromString(pagingState));
+                    }
+                    return nativeSession.execute(queryStatement);
+                })
+                .thenApply(resultSet -> {
+                            List<DriverSummary> resultList = resultSet.all().stream()
+                                    .map(DriverRepository::convertDriverSummary)
+                                    .collect(Collectors.toList());
+                            return new PaginatedSequence<DriverSummary>(
+                                    TreePVector.from(resultList).subList(0, pageSize > resultList.size() ?
+                                            resultList.size() : pageSize)
+                                    ,
+                                    resultSet.getAllExecutionInfo().get(0).getPagingState() == null ?
+                                            null :
+                                            resultSet.getAllExecutionInfo().get(0).getPagingState().toString(),
+                                    pageSize,
+                                    count);
+                        }
+                );
+
     }
 
     private static DriverSummary convertDriverSummary(Row driver) {
