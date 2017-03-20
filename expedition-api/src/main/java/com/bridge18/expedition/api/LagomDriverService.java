@@ -6,6 +6,7 @@ import com.bridge18.expedition.dto.v1.DriverSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.lightbend.lagom.javadsl.api.Descriptor;
 import com.lightbend.lagom.javadsl.api.Service;
+import com.lightbend.lagom.javadsl.api.ServiceAcl;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.api.transport.Method;
 
@@ -25,6 +26,9 @@ public interface LagomDriverService extends Service {
                 restCall(Method.GET, "/v1/api/expedition/drivers?pageNo&pageSize", this::getDriverSummaries),
                 restCall(Method.PUT, "/v1/api/expedition/drivers/:id", this::updateDriverInformation),
                 restCall(Method.GET, "/v1/api/expedition/drivers/:id", this::getDriverInformation)
-        ).withAutoAcl(true);
+        ).withAutoAcl(true)
+                .withServiceAcls(
+                        ServiceAcl.methodAndPath(Method.OPTIONS, "\\*")
+                );
     }
 }
