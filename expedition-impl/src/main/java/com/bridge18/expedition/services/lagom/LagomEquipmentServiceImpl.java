@@ -5,13 +5,19 @@ import akka.NotUsed;
 import com.bridge18.expedition.api.LagomEquipmentService;
 import com.bridge18.expedition.dto.v1.EquipmentDTO;
 import com.bridge18.expedition.dto.v1.EquipmentSummary;
+import com.bridge18.expedition.dto.v1.MileageRecordDTO;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
+import com.bridge18.expedition.entities.equipment.MileageRecord;
 import com.bridge18.expedition.repository.EquipmentRepository;
 import com.bridge18.expedition.services.objects.EquipmentService;
+import com.google.common.collect.Lists;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
+import org.pcollections.PVector;
+import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
 import javax.xml.ws.WebServiceException;
+import java.util.List;
 import java.util.Optional;
 
 public class LagomEquipmentServiceImpl implements LagomEquipmentService {
@@ -27,6 +33,12 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     @Override
     public ServiceCall<EquipmentDTO, EquipmentDTO> createNewEquipment() {
         return request -> {
+            PVector<MileageRecord> inMileageRecords = Optional.ofNullable(request.mileageRecords).isPresent() ?
+                    TreePVector.from(
+                            Lists.transform(request.mileageRecords, mileageRecordDTO -> new MileageRecord(
+                                    Optional.ofNullable(mileageRecordDTO.miles), Optional.ofNullable(mileageRecordDTO.takenAt)
+                            ))
+                    )  : null;
             return equipmentService.createEquipment(Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
                     Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
@@ -43,26 +55,32 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                     Optional.ofNullable(request.licensePlateNumber),
                     Optional.ofNullable(request.licensePlateExpiration),
                     Optional.ofNullable(request.notes),
-                    Optional.ofNullable(request.mileageRecords)
+                    Optional.ofNullable(inMileageRecords)
             ).thenApply(equipmentState ->
-                    new EquipmentDTO(equipmentState.getId(),
-                            equipmentState.getVin().orElse(null),
-                            equipmentState.getOwnership().orElse(null),
-                            equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
-                            equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
-                            equipmentState.getOperatingMode().orElse(null),
-                            equipmentState.getMake().orElse(null),
-                            equipmentState.getModel().orElse(null),
-                            equipmentState.getColour().orElse(null),
-                            equipmentState.getIsSleeperBerthAvailable().orElse(null),
-                            equipmentState.getNumber().orElse(null),
-                            equipmentState.getLicensePlateState().orElse(null),
-                            equipmentState.getLicensePlateNumber().orElse(null),
-                            equipmentState.getLicensePlateExpiration().orElse(null),
-                            equipmentState.getNotes().orElse(null),
-                            equipmentState.getMileageRecords().orElse(null)
-                    )
-
+                    {
+                        List<MileageRecordDTO> mileageRecordDTOList = equipmentState.getMileageRecords().isPresent() ?
+                                Lists.transform(equipmentState.getMileageRecords().get(), mileageRecord ->
+                                        new MileageRecordDTO(mileageRecord.getMiles().orElse(null),
+                                                mileageRecord.getTakenAt().orElse(null))
+                                ) : null;
+                        return new EquipmentDTO(equipmentState.getId(),
+                                equipmentState.getVin().orElse(null),
+                                equipmentState.getOwnership().orElse(null),
+                                equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
+                                equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
+                                equipmentState.getOperatingMode().orElse(null),
+                                equipmentState.getMake().orElse(null),
+                                equipmentState.getModel().orElse(null),
+                                equipmentState.getColour().orElse(null),
+                                equipmentState.getIsSleeperBerthAvailable().orElse(null),
+                                equipmentState.getNumber().orElse(null),
+                                equipmentState.getLicensePlateState().orElse(null),
+                                equipmentState.getLicensePlateNumber().orElse(null),
+                                equipmentState.getLicensePlateExpiration().orElse(null),
+                                equipmentState.getNotes().orElse(null),
+                                mileageRecordDTOList
+                        );
+                    }
             );
         };
 
@@ -71,6 +89,12 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     @Override
     public ServiceCall<EquipmentDTO, EquipmentDTO> updateEquipmentInformation(String id) {
         return request -> {
+            PVector<MileageRecord> inMileageRecords = Optional.ofNullable(request.mileageRecords).isPresent() ?
+                    TreePVector.from(
+                            Lists.transform(request.mileageRecords, mileageRecordDTO -> new MileageRecord(
+                                    Optional.ofNullable(mileageRecordDTO.miles), Optional.ofNullable(mileageRecordDTO.takenAt)
+                            ))
+                    )  : null;
             return equipmentService.updateEquipment(id,
                     Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
@@ -88,29 +112,33 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                     Optional.ofNullable(request.licensePlateNumber),
                     Optional.ofNullable(request.licensePlateExpiration),
                     Optional.ofNullable(request.notes),
-                    Optional.ofNullable(request.mileageRecords)
-            )
-                    .thenApply(equipmentState -> {
-                                return new EquipmentDTO(equipmentState.getId(),
-                                        equipmentState.getVin().orElse(null),
-                                        equipmentState.getOwnership().orElse(null),
-                                        equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
-                                        equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
-                                        equipmentState.getOperatingMode().orElse(null),
-                                        equipmentState.getMake().orElse(null),
-                                        equipmentState.getModel().orElse(null),
-                                        equipmentState.getColour().orElse(null),
-                                        equipmentState.getIsSleeperBerthAvailable().orElse(null),
-                                        equipmentState.getNumber().orElse(null),
-                                        equipmentState.getLicensePlateState().orElse(null),
-                                        equipmentState.getLicensePlateNumber().orElse(null),
-                                        equipmentState.getLicensePlateExpiration().orElse(null),
-                                        equipmentState.getNotes().orElse(null),
-                                        equipmentState.getMileageRecords().orElse(null)
-                                );
-                            }
-
-                    );
+                    Optional.ofNullable(inMileageRecords)
+            ).thenApply(equipmentState ->
+                    {
+                        List<MileageRecordDTO> mileageRecordDTOList = equipmentState.getMileageRecords().isPresent() ?
+                                Lists.transform(equipmentState.getMileageRecords().get(), mileageRecord ->
+                                        new MileageRecordDTO(mileageRecord.getMiles().orElse(null),
+                                                mileageRecord.getTakenAt().orElse(null))
+                                ) : null;
+                        return new EquipmentDTO(equipmentState.getId(),
+                                equipmentState.getVin().orElse(null),
+                                equipmentState.getOwnership().orElse(null),
+                                equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
+                                equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
+                                equipmentState.getOperatingMode().orElse(null),
+                                equipmentState.getMake().orElse(null),
+                                equipmentState.getModel().orElse(null),
+                                equipmentState.getColour().orElse(null),
+                                equipmentState.getIsSleeperBerthAvailable().orElse(null),
+                                equipmentState.getNumber().orElse(null),
+                                equipmentState.getLicensePlateState().orElse(null),
+                                equipmentState.getLicensePlateNumber().orElse(null),
+                                equipmentState.getLicensePlateExpiration().orElse(null),
+                                equipmentState.getNotes().orElse(null),
+                                mileageRecordDTOList
+                        );
+                    }
+            );
         };
     }
 
@@ -125,7 +153,13 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
         return request ->
                 equipmentService.getEquipment(id)
 
-                        .thenApply(equipmentState -> {
+                        .thenApply(equipmentState ->
+                                {
+                                    List<MileageRecordDTO> mileageRecordDTOList = equipmentState.getMileageRecords().isPresent() ?
+                                            Lists.transform(equipmentState.getMileageRecords().get(), mileageRecord ->
+                                                    new MileageRecordDTO(mileageRecord.getMiles().orElse(null),
+                                                            mileageRecord.getTakenAt().orElse(null))
+                                            ) : null;
                                     return new EquipmentDTO(equipmentState.getId(),
                                             equipmentState.getVin().orElse(null),
                                             equipmentState.getOwnership().orElse(null),
@@ -141,10 +175,9 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                                             equipmentState.getLicensePlateNumber().orElse(null),
                                             equipmentState.getLicensePlateExpiration().orElse(null),
                                             equipmentState.getNotes().orElse(null),
-                                            equipmentState.getMileageRecords().orElse(null)
+                                            mileageRecordDTOList
                                     );
                                 }
-
                         );
     }
 

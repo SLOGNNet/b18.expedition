@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.serialization.Jsonable;
 import org.immutables.value.Value;
+import org.pcollections.PVector;
 
 import java.util.Date;
 import java.util.List;
@@ -45,5 +46,5 @@ public interface AbstractEquipmentState extends Jsonable {
     @Value.Parameter
     Optional<String> getNotes();
     @Value.Parameter
-    Optional<List<MileageRecord>> getMileageRecords();
+    Optional<PVector<MileageRecord>> getMileageRecords();
 }

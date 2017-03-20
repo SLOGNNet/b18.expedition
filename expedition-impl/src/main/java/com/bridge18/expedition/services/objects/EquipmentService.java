@@ -2,6 +2,7 @@ package com.bridge18.expedition.services.objects;
 
 import akka.Done;
 import com.bridge18.expedition.entities.equipment.*;
+import org.pcollections.PVector;
 
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface EquipmentService {
                                                     Optional<String> licensePlateNumber,
                                                     Optional<Date> licensePlateExpiration,
                                                     Optional<String> notes,
-                                                    Optional<List<MileageRecord>> mileageRecords);
+                                                    Optional<PVector<MileageRecord>> mileageRecords);
 
     CompletionStage<EquipmentState> updateEquipment(String id,
                                                     Optional<String> vin,
@@ -40,7 +41,7 @@ public interface EquipmentService {
                                                     Optional<String> licensePlateNumber,
                                                     Optional<Date> licensePlateExpiration,
                                                     Optional<String> notes,
-                                                    Optional<List<MileageRecord>> mileageRecords);
+                                                    Optional<PVector<MileageRecord>> mileageRecords);
 
     CompletionStage<Done> deleteEquipment(String id);
 

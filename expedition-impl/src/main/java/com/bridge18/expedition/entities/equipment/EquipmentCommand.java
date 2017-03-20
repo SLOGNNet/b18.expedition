@@ -8,6 +8,7 @@ import com.lightbend.lagom.serialization.Jsonable;
 import lombok.Value;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.pcollections.PVector;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
@@ -41,7 +42,7 @@ public interface EquipmentCommand extends Jsonable {
 
         Optional<String> notes;
 
-        Optional<List<MileageRecord>> mileageRecords;
+        Optional<PVector<MileageRecord>> mileageRecords;
     }
 
     @Value
@@ -70,7 +71,7 @@ public interface EquipmentCommand extends Jsonable {
 
         Optional<String> notes;
 
-        Optional<List<MileageRecord>> mileageRecords;
+        Optional<PVector<MileageRecord>> mileageRecords;
     }
 
     @Value
