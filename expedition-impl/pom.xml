@@ -29,8 +29,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>b18.shared</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -40,17 +38,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.14</version>
-            <scope>provided</scope>
+            <groupId>com.datastax.cassandra</groupId>
+            <artifactId>cassandra-driver-extras</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.immutables</groupId>
-            <artifactId>value</artifactId>
-            <version>2.4.3</version>
-            <scope>provided</scope>
+            <groupId>org.pcollections</groupId>
+            <artifactId>pcollections</artifactId>
         </dependency>
 
         <dependency>
@@ -101,13 +95,16 @@
         <dependency>
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine</artifactId>
-            <version>7.6.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.7.5</version>
         </dependency>
 
 
