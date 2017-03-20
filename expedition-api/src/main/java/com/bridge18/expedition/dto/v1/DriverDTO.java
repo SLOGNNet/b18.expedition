@@ -8,7 +8,7 @@ import java.util.List;
 
 @Immutable
 public class DriverDTO {
-    public String driverId;
+    public String id;
 
     public String firstName;
     public String middleName;
@@ -23,8 +23,8 @@ public class DriverDTO {
     public Double rate;
     public LicenseDTO license;
 
-    public DriverDTO(String driverId, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
-        this.driverId = driverId;
+    public DriverDTO(String id, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
+        this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
