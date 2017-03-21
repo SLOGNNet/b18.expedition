@@ -2,11 +2,7 @@ package com.bridge18.expedition.dto.v1;
 
 import com.bridge18.expedition.entities.equipment.EquipmentSubType;
 import com.bridge18.expedition.entities.equipment.EquipmentType;
-import lombok.Value;
-import lombok.experimental.Wither;
 
-@Value
-@Wither
 public class EquipmentSummary {
     String id;
     String vin;
@@ -18,5 +14,21 @@ public class EquipmentSummary {
         this.vin = vin;
         this.type = type;
         this.subType = subType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public EquipmentType getType() {
+        return type;
+    }
+
+    public EquipmentSubType getSubType() {
+        return subType;
     }
 }

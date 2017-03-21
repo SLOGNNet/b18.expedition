@@ -7,7 +7,6 @@ import org.immutables.value.Value;
 import org.pcollections.PVector;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Value.Immutable

@@ -10,7 +10,6 @@ import org.pcollections.PVector;
 import javax.inject.Inject;
 import javax.xml.ws.WebServiceException;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletionStage;
@@ -29,11 +28,23 @@ public class EquipmentServiceImpl implements EquipmentService {
         if(!subTypeMatchesToType(subType.get(), type.get())){
             throw new WebServiceException("Subtype doesn't match to equipment type.");
         }
-
-        EquipmentCommand.CreateEquipment cmd = new EquipmentCommand.CreateEquipment(
-                vin, ownership, type, subType, operatingMode, make, model, colour, isSleeperBerthAvailable,
-                number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes, mileageRecords
-        );
+        CreateEquipment cmd = CreateEquipment.builder()
+                .vin(vin)
+                .ownership(ownership)
+                .type(type)
+                .subType(subType)
+                .operatingMode(operatingMode)
+                .make(make)
+                .model(model)
+                .colour(colour)
+                .isSleeperBerthAvailable(isSleeperBerthAvailable)
+                .number(number)
+                .licensePlateState(licensePlateState)
+                .licensePlateNumber(licensePlateNumber)
+                .licensePlateExpiration(licensePlateExpiration)
+                .notes(notes)
+                .mileageRecords(mileageRecords)
+                .build();
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class,
                 UUID.randomUUID().toString());
@@ -47,10 +58,23 @@ public class EquipmentServiceImpl implements EquipmentService {
             throw new WebServiceException("Subtype doesn't match to equipment type.");
         }
 
-        EquipmentCommand.UpdateEquipment cmd = new EquipmentCommand.UpdateEquipment(
-                vin, ownership, type, subType, operatingMode, make, model, colour, isSleeperBerthAvailable,
-                number, licensePlateState, licensePlateNumber, licensePlateExpiration, notes, mileageRecords
-        );
+        UpdateEquipment cmd = UpdateEquipment.builder()
+                .vin(vin)
+                .ownership(ownership)
+                .type(type)
+                .subType(subType)
+                .operatingMode(operatingMode)
+                .make(make)
+                .model(model)
+                .colour(colour)
+                .isSleeperBerthAvailable(isSleeperBerthAvailable)
+                .number(number)
+                .licensePlateState(licensePlateState)
+                .licensePlateNumber(licensePlateNumber)
+                .licensePlateExpiration(licensePlateExpiration)
+                .notes(notes)
+                .mileageRecords(mileageRecords)
+                .build();
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class, id);
 
@@ -59,7 +83,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public CompletionStage<Done> deleteEquipment(String id) {
-        EquipmentCommand.DeleteEquipment cmd = new EquipmentCommand.DeleteEquipment();
+        DeleteEquipment cmd = DeleteEquipment.builder().build();
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class, id);
 
@@ -68,7 +92,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public CompletionStage<EquipmentState> getEquipment(String id) {
-        EquipmentCommand.GetEquipment cmd = new EquipmentCommand.GetEquipment();
+        GetEquipment cmd = GetEquipment.builder().build();
 
         PersistentEntityRef<EquipmentCommand> ref = persistentEntityRegistry.refFor(EquipmentEntity.class, id);
 

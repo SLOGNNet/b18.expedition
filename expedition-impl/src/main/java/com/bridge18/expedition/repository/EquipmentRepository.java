@@ -3,9 +3,7 @@ package com.bridge18.expedition.repository;
 import akka.Done;
 import com.bridge18.expedition.dto.v1.EquipmentSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
-import com.bridge18.expedition.entities.equipment.EquipmentEvent;
-import com.bridge18.expedition.entities.equipment.EquipmentSubType;
-import com.bridge18.expedition.entities.equipment.EquipmentType;
+import com.bridge18.expedition.entities.equipment.*;
 import com.datastax.driver.core.*;
 import com.datastax.driver.extras.codecs.enums.EnumNameCodec;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
@@ -114,14 +112,14 @@ public class EquipmentRepository {
             return readSide.<EquipmentEvent>builder("equipmentEventOffset")
                     .setGlobalPrepare(this::createTables)
                     .setPrepare(tag -> prepareStatements())
-                    .setEventHandler(EquipmentEvent.EquipmentCreated.class,
-                            e -> insertEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
+                    .setEventHandler(EquipmentCreated.class,
+                            e -> insertEquipmentSummary(e.getId(), e.getVin().orElse(null),
                                     e.getType().get(), e.getSubType().get()))
-                    .setEventHandler(EquipmentEvent.EquipmentUpdated.class,
-                            e -> updateEquipmentSummary(e.getEquipmentId(), e.getVin().orElse(null),
+                    .setEventHandler(EquipmentUpdated.class,
+                            e -> updateEquipmentSummary(e.getId(), e.getVin().orElse(null),
                                     e.getType().get(), e.getSubType().get()))
-                    .setEventHandler(EquipmentEvent.EquipmentDeleted.class,
-                            e -> deleteEquipmentSummary(e.getEquipmentId()))
+                    .setEventHandler(EquipmentDeleted.class,
+                            e -> deleteEquipmentSummary(e.getId()))
                     .build();
         }
 

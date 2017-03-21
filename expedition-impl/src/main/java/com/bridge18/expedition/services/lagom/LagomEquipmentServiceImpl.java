@@ -35,9 +35,11 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
         return request -> {
             PVector<MileageRecord> inMileageRecords = Optional.ofNullable(request.mileageRecords).isPresent() ?
                     TreePVector.from(
-                            Lists.transform(request.mileageRecords, mileageRecordDTO -> new MileageRecord(
-                                    Optional.ofNullable(mileageRecordDTO.miles), Optional.ofNullable(mileageRecordDTO.takenAt)
-                            ))
+                            Lists.transform(request.mileageRecords, mileageRecordDTO -> MileageRecord.builder()
+                                    .miles(Optional.ofNullable(mileageRecordDTO.miles))
+                                    .takenAt(Optional.ofNullable(mileageRecordDTO.takenAt))
+                                    .build()
+                            )
                     )  : null;
             return equipmentService.createEquipment(Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
@@ -91,9 +93,11 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
         return request -> {
             PVector<MileageRecord> inMileageRecords = Optional.ofNullable(request.mileageRecords).isPresent() ?
                     TreePVector.from(
-                            Lists.transform(request.mileageRecords, mileageRecordDTO -> new MileageRecord(
-                                    Optional.ofNullable(mileageRecordDTO.miles), Optional.ofNullable(mileageRecordDTO.takenAt)
-                            ))
+                            Lists.transform(request.mileageRecords, mileageRecordDTO -> MileageRecord.builder()
+                                    .miles(Optional.ofNullable(mileageRecordDTO.miles))
+                                    .takenAt(Optional.ofNullable(mileageRecordDTO.takenAt))
+                                    .build()
+                            )
                     )  : null;
             return equipmentService.updateEquipment(id,
                     Optional.ofNullable(request.vin),
