@@ -1,4 +1,4 @@
-package com.bridge18.expedition;
+package com.bridge18.expedition.load;
 
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;
@@ -7,14 +7,11 @@ import com.bridge18.expedition.entities.load.LoadEntity;
 import com.bridge18.expedition.entities.load.LoadState;
 import com.bridge18.expedition.services.objects.LoadService;
 import com.bridge18.expedition.services.objects.impl.LoadServiceImpl;
-import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntityRef;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntityRegistry;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.AdditionalAnswers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.util.Optional;

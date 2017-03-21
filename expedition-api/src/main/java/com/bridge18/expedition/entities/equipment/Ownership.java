@@ -7,8 +7,4 @@ public enum Ownership {
     COMPANY,
     OWNER_OPERATOR;
 
-    @JsonValue
-    public Integer toValue() {
-        return  this.ordinal();
-    }
 }

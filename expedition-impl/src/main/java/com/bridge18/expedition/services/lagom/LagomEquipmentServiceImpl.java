@@ -17,8 +17,6 @@ import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
 import javax.xml.ws.WebServiceException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +87,7 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     }
 
     @Override
-    public ServiceCall<EquipmentDTO, EquipmentDTO> changeEquipmentInformation(String id) {
+    public ServiceCall<EquipmentDTO, EquipmentDTO> updateEquipmentInformation(String id) {
         return request -> {
             PVector<MileageRecord> inMileageRecords = Optional.ofNullable(request.mileageRecords).isPresent() ?
                     TreePVector.from(
@@ -97,7 +95,7 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                                     Optional.ofNullable(mileageRecordDTO.miles), Optional.ofNullable(mileageRecordDTO.takenAt)
                             ))
                     )  : null;
-            return equipmentService.changeEquipment(id,
+            return equipmentService.updateEquipment(id,
                     Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
                     Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
@@ -184,7 +182,7 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     }
 
     @Override
-    public ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<Integer> pageNo, Optional<Integer> pageSize) {
-        return request -> equipmentRepository.getEquipments(pageNo.orElse(0), pageSize.orElse(10));
+    public ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
+        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(10));
     }
 }

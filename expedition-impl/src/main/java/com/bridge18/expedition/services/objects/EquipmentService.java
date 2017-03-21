@@ -26,7 +26,7 @@ public interface EquipmentService {
                                                     Optional<String> notes,
                                                     Optional<PVector<MileageRecord>> mileageRecords);
 
-    CompletionStage<EquipmentState> changeEquipment(String id,
+    CompletionStage<EquipmentState> updateEquipment(String id,
                                                     Optional<String> vin,
                                                     Optional<Ownership> ownership,
                                                     Optional<EquipmentType> type,
