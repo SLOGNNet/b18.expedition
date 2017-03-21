@@ -44,6 +44,7 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
         bind(TaskNewLoadConsumer.class).to(TaskNewLoadConsumerImpl.class);
         bind(TaskAddLoadDetailsConsumer.class).to(TaskAddLoadDetailsConsumerImpl.class);
 
-        bind(ConsumersBootstrap.class).asEagerSingleton();
+        //@TOOD: reactivate module
+//        bind(ConsumersBootstrap.class).asEagerSingleton();
     }
 }
