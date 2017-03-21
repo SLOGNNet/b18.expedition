@@ -19,8 +19,8 @@ public class PaginatedSequence<T> {
         return values;
     }
 
-    public int getPage() {
-        return page;
+    public String getPagingState() {
+        return pagingState;
     }
 
     public int getPageSize() {
