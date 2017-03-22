@@ -13,13 +13,13 @@ import java.util.Optional;
 @JsonDeserialize
 public interface AbstractLicense extends Jsonable {
     @Value.Parameter
-    Optional<Integer> getLicenseNumber();
+    Optional<String> getLicenseNumber();
     @Value.Parameter
     Optional<Date> getLicenseExpiration();
     @Value.Parameter
     Optional<Date> getLicenseDateIssued();
     @Value.Parameter
-    Optional<String> getLicenseStateIssue();
+    Optional<String> getLicenseStateIssued();
     @Value.Parameter
     Optional<LicenseClass> getLicenseClass();
     @Value.Parameter

@@ -28,7 +28,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public CompletionStage<DriverState> createDriver(Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> ssn, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<PVector<ContactInfo>> contactInfo, Optional<Address> address, Optional<License> license) {
+    public CompletionStage<DriverState> createDriver(Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> ssn, Optional<PaymentOptions> paymentOption, Optional<Double> rate, Optional<PVector<ContactInfo>> contactInfo, Optional<Address> address, Optional<License> license) {
         CreateDriver cmd = CreateDriver.builder()
                 .position(position)
                 .firstName(firstName)
@@ -36,7 +36,7 @@ public class DriverServiceImpl implements DriverService {
                 .lastName(lastName)
                 .birthDate(birthDate)
                 .ssn(ssn)
-                .paymentOptions(paymentOptions)
+                .paymentOption(paymentOption)
                 .rate(rate)
                 .contactInfo(contactInfo)
                 .address(address)
@@ -49,7 +49,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public CompletionStage<DriverState> updateDriver(String id, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> ssn, Optional<PaymentOptions> paymentOptions, Optional<Double> rate, Optional<PVector<ContactInfo>> contactInfo, Optional<Address> address, Optional<License> license) {
+    public CompletionStage<DriverState> updateDriver(String id, Optional<String> position, Optional<String> firstName, Optional<String> middleName, Optional<String> lastName, Optional<Date> birthDate, Optional<String> ssn, Optional<PaymentOptions> paymentOption, Optional<Double> rate, Optional<PVector<ContactInfo>> contactInfo, Optional<Address> address, Optional<License> license) {
         UpdateDriver cmd = UpdateDriver.builder()
                 .position(position)
                 .firstName(firstName)
@@ -57,7 +57,7 @@ public class DriverServiceImpl implements DriverService {
                 .lastName(lastName)
                 .birthDate(birthDate)
                 .ssn(ssn)
-                .paymentOptions(paymentOptions)
+                .paymentOption(paymentOption)
                 .rate(rate)
                 .contactInfo(contactInfo)
                 .address(address)

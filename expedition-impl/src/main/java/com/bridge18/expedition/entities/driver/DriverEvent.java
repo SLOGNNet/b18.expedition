@@ -47,7 +47,7 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
         @Value.Parameter
         Optional<String> getSsn();
         @Value.Parameter
-        Optional<PaymentOptions> getPaymentOptions();
+        Optional<PaymentOptions> getPaymentOption();
         @Value.Parameter
         Optional<Double> getRate();
 
@@ -82,7 +82,7 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
         @Value.Parameter
         Optional<String> getSsn();
         @Value.Parameter
-        Optional<PaymentOptions> getPaymentOptions();
+        Optional<PaymentOptions> getPaymentOption();
         @Value.Parameter
         Optional<Double> getRate();
 
