@@ -154,7 +154,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
         return License.builder()
                 .licenseNumber(Optional.ofNullable(licenseDTO.number))
                 .licenseExpiration(Optional.ofNullable(licenseDTO.expiration))
-                .licenseDateIssued(Optional.ofNullable(licenseDTO.dateIssues))
+                .licenseDateIssued(Optional.ofNullable(licenseDTO.dateIssued))
                 .licenseStateIssue(Optional.ofNullable(licenseDTO.stateIssued))
                 .licenseClass(Optional.ofNullable(licenseDTO.licenseClass))
                 .licenseEndorsements(Optional.ofNullable(licenseDTO.endorsements))
