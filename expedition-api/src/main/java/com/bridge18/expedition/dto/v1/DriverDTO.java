@@ -18,12 +18,12 @@ public class DriverDTO {
     public AddressDTO address;
 
     public Date birthDate;
-    public String SSN;
+    public String ssn;
     public PaymentOptions paymentOptions;
     public Double rate;
     public LicenseDTO license;
 
-    public DriverDTO(String id, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String SSN, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
+    public DriverDTO(String id, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String ssn, PaymentOptions paymentOptions, Double rate, LicenseDTO license) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -32,7 +32,7 @@ public class DriverDTO {
         this.position = position;
         this.address = address;
         this.birthDate = birthDate;
-        this.SSN = SSN;
+        this.ssn = ssn;
         this.paymentOptions = paymentOptions;
         this.rate = rate;
         this.license = license;

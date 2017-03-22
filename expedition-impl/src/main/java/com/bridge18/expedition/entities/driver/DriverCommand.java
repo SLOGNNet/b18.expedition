@@ -31,7 +31,7 @@ public interface DriverCommand extends Jsonable {
         @Value.Parameter
         Optional<Date> getBirthDate();
         @Value.Parameter
-        Optional<String> getSSN();
+        Optional<String> getSsn();
         @Value.Parameter
         Optional<PaymentOptions> getPaymentOptions();
         @Value.Parameter
@@ -62,7 +62,7 @@ public interface DriverCommand extends Jsonable {
         @Value.Parameter
         Optional<Date> getBirthDate();
         @Value.Parameter
-        Optional<String> getSSN();
+        Optional<String> getSsn();
         @Value.Parameter
         Optional<PaymentOptions> getPaymentOptions();
         @Value.Parameter

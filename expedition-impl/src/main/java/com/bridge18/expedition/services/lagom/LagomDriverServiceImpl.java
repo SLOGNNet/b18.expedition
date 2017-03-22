@@ -45,7 +45,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
             return driverService.createDriver(Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
-                    Optional.ofNullable(request.SSN), Optional.ofNullable(request.paymentOptions),
+                    Optional.ofNullable(request.ssn), Optional.ofNullable(request.paymentOptions),
                     Optional.ofNullable(request.rate), Optional.ofNullable(inContactInfo),
                     Optional.ofNullable(convertAddressDTOToAddress(request.address)),
                     Optional.ofNullable(convertLicenseDTOToLicense(request.license)))
@@ -70,7 +70,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
             return driverService.updateDriver(id, Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
-                    Optional.ofNullable(request.SSN), Optional.ofNullable(request.paymentOptions),
+                    Optional.ofNullable(request.ssn), Optional.ofNullable(request.paymentOptions),
                     Optional.ofNullable(request.rate), Optional.ofNullable(inContactInfo),
                     Optional.ofNullable(convertAddressDTOToAddress(request.address)),
                     Optional.ofNullable(convertLicenseDTOToLicense(request.license)))
@@ -124,7 +124,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                 driverState.getFirstName().orElse(null), driverState.getMiddleName().orElse(null),
                 driverState.getLastName().orElse(null), contactInfoDTOList,
                 driverState.getPosition().orElse(null), addressDTO, driverState.getBirthDate().orElse(null),
-                driverState.getSSN().orElse(null), driverState.getPaymentOptions().orElse(null),
+                driverState.getSsn().orElse(null), driverState.getPaymentOptions().orElse(null),
                 driverState.getRate().orElse(null), licenseDTO
         );
         return driverDTO;
