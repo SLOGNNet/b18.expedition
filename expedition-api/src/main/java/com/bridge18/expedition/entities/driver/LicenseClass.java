@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum LicenseClass {
     NONE,
     CLASS_A,
-    CLASS_B;
+    CLASS_B,
+    CLASS_C;
 
 }

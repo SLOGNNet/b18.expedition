@@ -5,7 +5,7 @@ import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 
 import java.util.Optional;
 
-public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, DriverState>{
+public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, DriverState> {
     @Override
     public Behavior initialBehavior(Optional<DriverState> snapshotState) {
         BehaviorBuilder b = newBehaviorBuilder(
@@ -24,6 +24,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                                 .rate(cmd.getRate())
                                 .contactInfo(cmd.getContactInfo())
                                 .address(cmd.getAddress())
+                                .driverType(cmd.getDriverType())
                                 .license(cmd.getLicense())
                                 .build(),
 
@@ -44,6 +45,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                                 .rate(cmd.getRate())
                                 .contactInfo(cmd.getContactInfo())
                                 .address(cmd.getAddress())
+                                .driverType(cmd.getDriverType())
                                 .license(cmd.getLicense())
                                 .build(),
 
@@ -68,6 +70,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .rate(evt.getRate())
                         .contactInfo(evt.getContactInfo())
                         .address(evt.getAddress())
+                        .driverType(evt.getDriverType())
                         .license(evt.getLicense())
                         .build()
         );
@@ -84,6 +87,7 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .rate(evt.getRate())
                         .contactInfo(evt.getContactInfo())
                         .address(evt.getAddress())
+                        .driverType(evt.getDriverType())
                         .license(evt.getLicense())
                         .build()
         );

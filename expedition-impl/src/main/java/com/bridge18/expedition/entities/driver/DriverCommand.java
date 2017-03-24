@@ -42,6 +42,9 @@ public interface DriverCommand extends Jsonable {
 
         @Value.Parameter
         Optional<License> getLicense();
+
+        @Value.Parameter
+        Optional<DriverTypes> getDriverType();
     }
 
     @Value.Immutable
@@ -73,6 +76,9 @@ public interface DriverCommand extends Jsonable {
 
         @Value.Parameter
         Optional<License> getLicense();
+
+        @Value.Parameter
+        Optional<DriverTypes> getDriverType();
     }
 
     @Value.Immutable

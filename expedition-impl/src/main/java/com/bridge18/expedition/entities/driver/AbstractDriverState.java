@@ -7,7 +7,6 @@ import org.immutables.value.Value;
 import org.pcollections.PVector;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,6 +39,9 @@ public interface AbstractDriverState extends Jsonable {
     Optional<PaymentOptions> getPaymentOption();
     @Value.Parameter
     Optional<Double> getRate();
+
+    @Value.Parameter
+    Optional<DriverTypes> getDriverType();
 
     @Value.Parameter
     Optional<Address> getAddress();
