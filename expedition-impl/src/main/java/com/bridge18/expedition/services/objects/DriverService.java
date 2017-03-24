@@ -1,12 +1,9 @@
 package com.bridge18.expedition.services.objects;
 
-import com.bridge18.expedition.entities.driver.LicenseClass;
-import com.bridge18.expedition.entities.driver.PaymentOptions;
 import com.bridge18.expedition.entities.driver.*;
 import org.pcollections.PVector;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 
@@ -19,6 +16,7 @@ public interface DriverService {
                                               Optional<String> ssn,
                                               Optional<PaymentOptions> paymentOption,
                                               Optional<Double> rate,
+                                              Optional<DriverTypes> driverType,
                                               Optional<PVector<ContactInfo>> contactInfo,
                                               Optional<Address> address,
                                               Optional<License> license);
@@ -32,6 +30,7 @@ public interface DriverService {
                                               Optional<String> ssn,
                                               Optional<PaymentOptions> paymentOption,
                                               Optional<Double> rate,
+                                              Optional<DriverTypes> driverType,
                                               Optional<PVector<ContactInfo>> contactInfo,
                                               Optional<Address> address,
                                               Optional<License> license);

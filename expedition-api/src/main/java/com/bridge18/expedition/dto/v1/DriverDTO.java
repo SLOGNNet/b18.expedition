@@ -1,5 +1,6 @@
 package com.bridge18.expedition.dto.v1;
 
+import com.bridge18.expedition.entities.driver.DriverTypes;
 import com.bridge18.expedition.entities.driver.PaymentOptions;
 
 import javax.annotation.concurrent.Immutable;
@@ -21,9 +22,12 @@ public class DriverDTO {
     public String ssn;
     public PaymentOptions paymentOption;
     public Double rate;
+    public DriverTypes type;
     public LicenseDTO license;
 
-    public DriverDTO(String id, String firstName, String middleName, String lastName, List<ContactInfoDTO> contactInfo, String position, AddressDTO address, Date birthDate, String ssn, PaymentOptions paymentOption, Double rate, LicenseDTO license) {
+    public DriverDTO(String id, String firstName, String middleName, String lastName, List<ContactInfoDTO>
+            contactInfo, String position, AddressDTO address, Date birthDate, String ssn, PaymentOptions
+            paymentOption, Double rate, DriverTypes type, LicenseDTO license) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -35,6 +39,7 @@ public class DriverDTO {
         this.ssn = ssn;
         this.paymentOption = paymentOption;
         this.rate = rate;
+        this.type = type;
         this.license = license;
     }
 }
