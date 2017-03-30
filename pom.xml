@@ -20,6 +20,7 @@
                 <version>${lagom.version}</version>
                 <configuration>
                     <cassandraMaxBootWaitingSeconds>100</cassandraMaxBootWaitingSeconds>
+                    <cassandraCleanOnStart>false</cassandraCleanOnStart>
                 </configuration>
             </plugin>
             <plugin>

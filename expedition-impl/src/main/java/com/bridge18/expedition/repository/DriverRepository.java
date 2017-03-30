@@ -160,23 +160,15 @@ public class DriverRepository {
                                     "lastName text" +
                                     ")"
                     ),
-                    /*session.executeCreateTable(
-                            "CREATE TYPE contactInfo (" +
-                                    "  label text," +
-                                    "  value text," +
-                                    "  type text" +
-                                    ")")
-                            .thenCompose(
-                                    done ->*/
-                                            session.executeCreateTable(
-                                                    "CREATE TABLE IF NOT EXISTS driverSummary_v2 (" +
-                                                            "driverId text PRIMARY KEY, " +
-                                                            "firstName text, " +
-                                                            "lastName text," +
-                                                            "contactInfoList list<varchar>" +
-                                                            ")"
-                                            )
-                           /* )*/
+
+                    session.executeCreateTable(
+                            "CREATE TABLE IF NOT EXISTS driverSummary_v2 (" +
+                                    "driverId text PRIMARY KEY, " +
+                                    "firstName text, " +
+                                    "lastName text," +
+                                    "contactInfoList list<varchar>" +
+                                    ")"
+                    )
 
             );
         }
