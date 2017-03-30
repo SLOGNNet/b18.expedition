@@ -6,5 +6,4 @@ public enum EquipmentType {
     NONE,
     POWER_UNIT,
     TRAILER;
-
 }

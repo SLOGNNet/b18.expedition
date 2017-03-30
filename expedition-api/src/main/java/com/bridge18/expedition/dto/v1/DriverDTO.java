@@ -25,6 +25,9 @@ public class DriverDTO {
     public DriverTypes type;
     public LicenseDTO license;
 
+    public DriverDTO() {
+    }
+
     public DriverDTO(String id, String firstName, String middleName, String lastName, List<ContactInfoDTO>
             contactInfo, String position, AddressDTO address, Date birthDate, String ssn, PaymentOptions
             paymentOption, Double rate, DriverTypes type, LicenseDTO license) {

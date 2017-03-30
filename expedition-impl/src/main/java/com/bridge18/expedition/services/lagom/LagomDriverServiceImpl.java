@@ -101,6 +101,10 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                         )
                 ) : null;
 
+        if (!driverState.getAddress().isPresent()) {
+            return new DriverDTO();
+        }
+        
         Address address = driverState.getAddress().get();
         AddressDTO addressDTO = driverState.getAddress().isPresent() ?
             new AddressDTO(address.getAddressId().orElse(null),
