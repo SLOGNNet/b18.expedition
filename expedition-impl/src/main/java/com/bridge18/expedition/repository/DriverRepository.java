@@ -1,28 +1,23 @@
 package com.bridge18.expedition.repository;
 
 import akka.Done;
-import com.bridge18.expedition.dto.v1.ContactInfoDTO;
 import com.bridge18.expedition.dto.v1.DriverSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
-import com.bridge18.expedition.entities.driver.*;
+import com.bridge18.expedition.entities.driver.DriverCreated;
+import com.bridge18.expedition.entities.driver.DriverEvent;
+import com.bridge18.expedition.entities.driver.DriverUpdated;
 import com.datastax.driver.core.*;
-import com.datastax.driver.extras.codecs.arrays.ObjectArrayCodec;
-import com.datastax.driver.extras.codecs.enums.EnumNameCodec;
-import com.datastax.driver.extras.codecs.json.JacksonJsonCodec;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSide;
 import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSide;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraSession;
 import org.pcollections.PSequence;
-import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
@@ -39,66 +34,6 @@ public class DriverRepository {
         this.session = session;
         readSide.register(DriverEventProcessor.class);
     }
-
-    public CompletionStage<PaginatedSequence<DriverSummary>> getDrivers(String pagingState, int pageSize){
-        return countDrivers()
-                .thenCompose(
-                        count -> {
-                            CompletionStage<PaginatedSequence<DriverSummary>> driverSummaries =
-                                    selectDrivers(pagingState, pageSize, count);
-
-                            return driverSummaries;
-                        }
-                );
-    }
-
-    private CompletionStage<Integer> countDrivers(){
-        return session
-                .selectOne(
-                        "SELECT COUNT(*) FROM driverSummary_v2"
-                )
-                .thenApply(row -> (int) row.get().getLong("count"));
-    }
-
-    private CompletionStage<PaginatedSequence<DriverSummary>> selectDrivers(String pagingState, int pageSize, int count){
-        return session
-                .underlying()
-                .thenApply(nativeSession -> {
-                    Statement queryStatement = new SimpleStatement("SELECT * FROM driverSummary_v2");
-                    queryStatement.setFetchSize(pageSize);
-                    if(pagingState != null){
-                        queryStatement.setPagingState(PagingState.fromString(pagingState));
-                    }
-                    return nativeSession.execute(queryStatement);
-                })
-                .thenApply(resultSet -> {
-                            List<DriverSummary> resultList = resultSet.all().stream()
-                                    .map(DriverRepository::convertDriverSummary)
-                                    .collect(Collectors.toList());
-                            return new PaginatedSequence<DriverSummary>(
-                                    TreePVector.from(resultList).subList(0, pageSize > resultList.size() ?
-                                            resultList.size() : pageSize)
-                                    ,
-                                    resultSet.getAllExecutionInfo().get(0).getPagingState() == null ?
-                                            null :
-                                            resultSet.getAllExecutionInfo().get(0).getPagingState().toString(),
-                                    pageSize,
-                                    count);
-                        }
-                );
-
-    }
-
-    private static DriverSummary convertDriverSummary(Row driver) {
-        return new DriverSummary(
-                driver.getString("driverId"),
-                driver.getString("firstName"),
-                driver.getString("lastName"),
-                driver.getList("contactInfoList", ContactInfoDTO.class)
-        );
-    }
-
-
 
     private static class DriverEventProcessor extends ReadSideProcessor<DriverEvent> {
 
@@ -121,29 +56,11 @@ public class DriverRepository {
                     .setPrepare(tag -> prepareStatements())
                     .setEventHandler(DriverCreated.class,
                             e -> insertDriverSummary(e.getId(), e.getFirstName().orElse(null),
-                                    e.getLastName().orElse(null),
-                                    transformPVectorToList(e.getContactInfo())
-                                    ))
+                                    e.getLastName().orElse(null)))
                     .setEventHandler(DriverUpdated.class,
                             e -> updateDriverSummary(e.getId(), e.getFirstName().orElse(null),
-                                    e.getLastName().orElse(null),
-                                    transformPVectorToList(e.getContactInfo())
-                                    ))
+                                    e.getLastName().orElse(null)))
                     .build();
-        }
-
-        private List<ContactInfoDTO> transformPVectorToList(Optional<PVector<ContactInfo>> contactInfoPVector){
-            if(!contactInfoPVector.isPresent() || contactInfoPVector.get().isEmpty()){
-                return new ArrayList<>();
-            }
-
-            return contactInfoPVector.get().stream()
-                    .map(contactInfo -> new ContactInfoDTO(
-                            contactInfo.getLabel().orElse(""),
-                            contactInfo.getValue().orElse(""),
-                            contactInfo.getType().orElse(ContactInfoType.NONE)
-                    ))
-                    .collect(Collectors.toList());
         }
 
         @Override
@@ -159,70 +76,48 @@ public class DriverRepository {
                                     "firstName text, " +
                                     "lastName text" +
                                     ")"
-                    ),
-
-                    session.executeCreateTable(
-                            "CREATE TABLE IF NOT EXISTS driverSummary_v2 (" +
-                                    "driverId text PRIMARY KEY, " +
-                                    "firstName text, " +
-                                    "lastName text," +
-                                    "contactInfoList list<varchar>" +
-                                    ")"
                     )
-
             );
         }
 
         private CompletionStage<Done> prepareStatements(){
             return doAll(
-                    session.underlying()
-                            .thenAccept(s -> {
-                                registerCodec(s, new EnumNameCodec<>(ContactInfoType.class));
-                                registerCodec(s, new JacksonJsonCodec<>(ContactInfoDTO.class));
-                            })
-                            .thenApply(x -> Done.getInstance()),
                     prepareInsertDriverSummaryStatement(),
                     prepareUpdateDriverSummaryStatement()
             );
         }
 
-        private void registerCodec(Session session, TypeCodec<?> codec) {
-            session.getCluster().getConfiguration().getCodecRegistry().register(codec);
-        }
-
         private CompletionStage<Done> prepareInsertDriverSummaryStatement(){
             return session
-                    .prepare("INSERT INTO driverSummary_v2(" +
+                    .prepare("INSERT INTO driverSummary(" +
                             "driverId, " +
                             "firstName, " +
-                            "lastName, " +
-                            "contactInfoList" +
-                            ") VALUES (?, ?, ?, ?)")
+                            "lastName" +
+                            ") VALUES (?, ?, ?)")
                     .thenApply(accept(s -> insertDriverSummaryStatement = s));
         }
 
         private CompletionStage<Done> prepareUpdateDriverSummaryStatement(){
             return session
-                    .prepare("UPDATE driverSummary_v2 " +
+                    .prepare("UPDATE driverSummary " +
                             "SET firstName = ?, " +
-                            "lastName = ?, " +
-                            "contactInfoList = ?" +
+                            "lastName = ?" +
                             "WHERE driverId = ?")
                     .thenApply(accept(s -> updateDriverSummaryStatement = s));
         }
 
-        private CompletionStage<List<BoundStatement>> insertDriverSummary(String driverId, String firstName, String lastName, List<ContactInfoDTO> contactInfoList){
+        private CompletionStage<List<BoundStatement>> insertDriverSummary(String driverId, String firstName, String lastName){
             return completedStatements(
                     insertDriverSummaryStatement.bind(
-                            driverId, firstName, lastName, contactInfoList
+                            driverId, firstName, lastName
                     )
             );
         }
 
-        private CompletionStage<List<BoundStatement>> updateDriverSummary(String driverId, String firstName, String lastName, List<ContactInfoDTO> contactInfoList){
+        private CompletionStage<List<BoundStatement>> updateDriverSummary(String driverId, String firstName, String lastName){
             return completedStatements(
                     updateDriverSummaryStatement.bind(
-                            firstName, lastName, contactInfoList, driverId
+                            firstName, lastName, driverId
                     )
             );
         }
