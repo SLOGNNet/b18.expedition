@@ -21,7 +21,6 @@
                 <configuration>
                     <cassandraCleanOnStart>false</cassandraCleanOnStart>
                     <cassandraMaxBootWaitingSeconds>100</cassandraMaxBootWaitingSeconds>
-                    <cassandraCleanOnStart>false</cassandraCleanOnStart>
                 </configuration>
             </plugin>
             <plugin>
