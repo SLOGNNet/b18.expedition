@@ -187,6 +187,6 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
 
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
-        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(10));
+        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(20));
     }
 }

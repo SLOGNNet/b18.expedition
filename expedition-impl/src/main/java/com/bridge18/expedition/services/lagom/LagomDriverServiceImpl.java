@@ -82,7 +82,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<DriverSummary>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
-        return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(10));
+        return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(20));
     }
 
     @Override
