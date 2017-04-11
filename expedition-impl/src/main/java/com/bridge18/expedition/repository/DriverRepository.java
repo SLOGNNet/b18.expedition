@@ -35,65 +35,6 @@ public class DriverRepository {
         readSide.register(DriverEventProcessor.class);
     }
 
-    public CompletionStage<PaginatedSequence<DriverSummary>> getDrivers(String pagingState, int pageSize){
-        return countDrivers()
-                .thenCompose(
-                        count -> {
-                            CompletionStage<PaginatedSequence<DriverSummary>> driverSummaries =
-                                    selectDrivers(pagingState, pageSize, count);
-
-                            return driverSummaries;
-                        }
-                );
-    }
-
-    private CompletionStage<Integer> countDrivers(){
-        return session
-                .selectOne(
-                        "SELECT COUNT(*) FROM driverSummary"
-                )
-                .thenApply(row -> (int) row.get().getLong("count"));
-    }
-
-    private CompletionStage<PaginatedSequence<DriverSummary>> selectDrivers(String pagingState, int pageSize, int count){
-        return session
-                .underlying()
-                .thenApply(nativeSession -> {
-                    Statement queryStatement = new SimpleStatement("SELECT * FROM driverSummary");
-                    queryStatement.setFetchSize(pageSize);
-                    if(pagingState != null){
-                        queryStatement.setPagingState(PagingState.fromString(pagingState));
-                    }
-                    return nativeSession.execute(queryStatement);
-                })
-                .thenApply(resultSet -> {
-                            List<DriverSummary> resultList = resultSet.all().stream()
-                                    .map(DriverRepository::convertDriverSummary)
-                                    .collect(Collectors.toList());
-                            return new PaginatedSequence<DriverSummary>(
-                                    TreePVector.from(resultList).subList(0, pageSize > resultList.size() ?
-                                            resultList.size() : pageSize)
-                                    ,
-                                    resultSet.getAllExecutionInfo().get(0).getPagingState() == null ?
-                                            null :
-                                            resultSet.getAllExecutionInfo().get(0).getPagingState().toString(),
-                                    pageSize,
-                                    count);
-                        }
-                );
-
-    }
-
-    private static DriverSummary convertDriverSummary(Row driver) {
-        return new DriverSummary(
-                driver.getString("driverId"),
-                driver.getString("firstName"),
-                driver.getString("lastName")
-        );
-    }
-
-
-
     private static class DriverEventProcessor extends ReadSideProcessor<DriverEvent> {
 
         private final CassandraSession session;

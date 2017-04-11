@@ -8,6 +8,7 @@ import com.bridge18.expedition.entities.driver.ContactInfo;
 import com.bridge18.expedition.entities.driver.DriverState;
 import com.bridge18.expedition.entities.driver.License;
 import com.bridge18.expedition.repository.DriverRepository;
+import com.bridge18.expedition.repository.DriverRepositoryV2;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.google.common.collect.Lists;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
@@ -22,10 +23,10 @@ import java.util.Optional;
 public class LagomDriverServiceImpl implements LagomDriverService {
     private DriverService driverService;
 
-    private final DriverRepository driverRepository;
+    private final DriverRepositoryV2 driverRepository;
 
     @Inject
-    public LagomDriverServiceImpl(DriverService driverService, DriverRepository driverRepository) {
+    public LagomDriverServiceImpl(DriverService driverService, DriverRepositoryV2 driverRepository) {
         this.driverService = driverService;
         this.driverRepository = driverRepository;
     }
@@ -101,6 +102,10 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                         )
                 ) : null;
 
+        if (!driverState.getAddress().isPresent()) {
+            return new DriverDTO();
+        }
+        
         Address address = driverState.getAddress().get();
         AddressDTO addressDTO = driverState.getAddress().isPresent() ?
             new AddressDTO(address.getAddressId().orElse(null),
