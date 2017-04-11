@@ -20,6 +20,8 @@ import javax.xml.ws.WebServiceException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.bridge18.expedition.services.lagom.LagomDriverServiceImpl.PAGE_SIZE;
+
 public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     private EquipmentService equipmentService;
     private EquipmentRepository equipmentRepository;
@@ -187,6 +189,6 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
 
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
-        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(20));
+        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
     }
 }
