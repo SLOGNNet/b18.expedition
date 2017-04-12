@@ -98,4 +98,13 @@ public interface DriverEvent extends Jsonable, AggregateEvent<DriverEvent> {
         @Value.Parameter
         Optional<License> getLicense();
     }
+
+    @Value.Immutable
+    @ImmutableStyle
+    @JsonDeserialize
+    interface AbstractDriverDeleted extends DriverEvent {
+        @Value.Parameter
+        String getId();
+
+    }
 }

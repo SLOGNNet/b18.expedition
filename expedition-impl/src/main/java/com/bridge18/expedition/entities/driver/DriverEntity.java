@@ -1,6 +1,7 @@
 package com.bridge18.expedition.entities.driver;
 
 
+import akka.Done;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
 
 import java.util.Optional;
@@ -53,6 +54,11 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                             ctx.reply(state());
                         }));
 
+        b.setCommandHandler(DeleteDriver.class, (cmd, ctx) ->
+                ctx.thenPersist(DriverDeleted.builder().id(entityId()).build(),
+                        evt -> ctx.reply(Done.getInstance())
+                )
+        );
 
         b.setReadOnlyCommandHandler(GetDriverInformation.class, (cmd, ctx) ->
                 ctx.reply(state()));
@@ -92,6 +98,9 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .build()
         );
 
+        b.setEventHandler(DriverDeleted.class, evt ->
+                DriverState.builder().id(entityId()).build()
+        );
 
         return b.build();
     }

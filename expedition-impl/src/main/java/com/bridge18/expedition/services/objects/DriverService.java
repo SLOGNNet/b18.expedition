@@ -1,5 +1,6 @@
 package com.bridge18.expedition.services.objects;
 
+import akka.Done;
 import com.bridge18.expedition.entities.driver.*;
 import org.pcollections.PVector;
 
@@ -34,6 +35,8 @@ public interface DriverService {
                                               Optional<PVector<ContactInfo>> contactInfo,
                                               Optional<Address> address,
                                               Optional<License> license);
+
+    CompletionStage<Done> deleteDriver(String id);
 
     CompletionStage<DriverState> getDriverInformation(String id);
 }
