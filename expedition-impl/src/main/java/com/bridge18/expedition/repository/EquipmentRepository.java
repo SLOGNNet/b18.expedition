@@ -114,10 +114,10 @@ public class EquipmentRepository {
                     .setPrepare(tag -> prepareStatements())
                     .setEventHandler(EquipmentCreated.class,
                             e -> insertEquipmentSummary(e.getId(), e.getVin().orElse(null),
-                                    e.getType().get(), e.getSubType().get()))
+                                    e.getType().orElse(EquipmentType.NONE), e.getSubType().orElse(EquipmentSubType.NONE)))
                     .setEventHandler(EquipmentUpdated.class,
                             e -> updateEquipmentSummary(e.getId(), e.getVin().orElse(null),
-                                    e.getType().get(), e.getSubType().get()))
+                                    e.getType().orElse(EquipmentType.NONE), e.getSubType().orElse(EquipmentSubType.NONE)))
                     .setEventHandler(EquipmentDeleted.class,
                             e -> deleteEquipmentSummary(e.getId()))
                     .build();
