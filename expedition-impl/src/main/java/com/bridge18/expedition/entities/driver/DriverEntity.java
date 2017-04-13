@@ -54,15 +54,16 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                             ctx.reply(state());
                         }));
 
+
+        b.setReadOnlyCommandHandler(GetDriverInformation.class, (cmd, ctx) ->
+                ctx.reply(state())
+        );
+
         b.setCommandHandler(DeleteDriver.class, (cmd, ctx) ->
                 ctx.thenPersist(DriverDeleted.builder().id(entityId()).build(),
                         evt -> ctx.reply(Done.getInstance())
                 )
         );
-
-        b.setReadOnlyCommandHandler(GetDriverInformation.class, (cmd, ctx) ->
-                ctx.reply(state()));
-
 
         b.setEventHandler(DriverCreated.class,
                 evt -> DriverState.builder().id(entityId())
@@ -98,10 +99,23 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                         .build()
         );
 
-        b.setEventHandler(DriverDeleted.class, evt ->
-                DriverState.builder().id(entityId()).build()
+        b.setEventHandlerChangingBehavior(
+                DriverDeleted.class,
+                driverDeleted -> deleted(state())
         );
 
         return b.build();
+    }
+
+    private Behavior deleted(DriverState state){
+        BehaviorBuilder b = newBehaviorBuilder(state);
+
+        b.setReadOnlyCommandHandler(DeleteDriver.class, this::alreadyDone);
+
+        return b.build();
+    }
+
+    private void alreadyDone(Object command, ReadOnlyCommandContext<Done> ctx) {
+        ctx.reply(Done.getInstance());
     }
 }

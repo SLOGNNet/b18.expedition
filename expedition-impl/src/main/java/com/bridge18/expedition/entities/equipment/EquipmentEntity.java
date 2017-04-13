@@ -107,10 +107,23 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                         .build()
         );
 
-        b.setEventHandler(EquipmentDeleted.class, evt ->
-                EquipmentState.builder().id(entityId()).build()
+        b.setEventHandlerChangingBehavior(
+                EquipmentDeleted.class,
+                driverDeleted -> deleted(state())
         );
 
         return b.build();
+    }
+
+    private Behavior deleted(EquipmentState state){
+        BehaviorBuilder b = newBehaviorBuilder(state);
+
+        b.setReadOnlyCommandHandler(DeleteEquipment.class, this::alreadyDone);
+
+        return b.build();
+    }
+
+    private void alreadyDone(Object command, ReadOnlyCommandContext<Done> ctx) {
+        ctx.reply(Done.getInstance());
     }
 }
