@@ -25,6 +25,8 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     private final DriverRepositoryV2 driverRepository;
 
+    static final int PAGE_SIZE = 20;
+
     @Inject
     public LagomDriverServiceImpl(DriverService driverService, DriverRepositoryV2 driverRepository) {
         this.driverService = driverService;
@@ -83,7 +85,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<DriverSummary>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
-        return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(10));
+        return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
     }
 
     @Override
