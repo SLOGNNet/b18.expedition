@@ -2,7 +2,7 @@ package com.bridge18.expedition.api;
 
 import akka.NotUsed;
 import com.bridge18.expedition.dto.v1.DriverDTO;
-import com.bridge18.expedition.dto.v1.DriverSummary;
+import com.bridge18.expedition.dto.v1.DriverSummaryDTO;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.lightbend.lagom.javadsl.api.Descriptor;
 import com.lightbend.lagom.javadsl.api.Service;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import static com.lightbend.lagom.javadsl.api.Service.*;
 public interface LagomDriverService extends Service {
     ServiceCall<DriverDTO, DriverDTO> createNewDriver();
-    ServiceCall<NotUsed, PaginatedSequence<DriverSummary>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
+    ServiceCall<NotUsed, PaginatedSequence<DriverSummaryDTO>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
     ServiceCall<DriverDTO, DriverDTO> updateDriverInformation(String id);
     ServiceCall<NotUsed, DriverDTO> getDriverInformation(String id);
 

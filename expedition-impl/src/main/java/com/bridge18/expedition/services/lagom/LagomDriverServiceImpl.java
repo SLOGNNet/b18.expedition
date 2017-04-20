@@ -7,7 +7,6 @@ import com.bridge18.expedition.entities.driver.Address;
 import com.bridge18.expedition.entities.driver.ContactInfo;
 import com.bridge18.expedition.entities.driver.DriverState;
 import com.bridge18.expedition.entities.driver.License;
-import com.bridge18.expedition.repository.DriverRepository;
 import com.bridge18.expedition.repository.DriverRepositoryV2;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.google.common.collect.Lists;
@@ -82,7 +81,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
     }
 
     @Override
-    public ServiceCall<NotUsed, PaginatedSequence<DriverSummary>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
+    public ServiceCall<NotUsed, PaginatedSequence<DriverSummaryDTO>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
         return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(10));
     }
 
