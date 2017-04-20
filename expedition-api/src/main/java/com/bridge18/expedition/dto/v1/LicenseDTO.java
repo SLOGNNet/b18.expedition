@@ -1,9 +1,11 @@
 package com.bridge18.expedition.dto.v1;
 
 import com.bridge18.expedition.entities.driver.LicenseClass;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+@EqualsAndHashCode
 public class LicenseDTO {
     public String number;
     public Date expiration;

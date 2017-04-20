@@ -3,10 +3,12 @@ package com.bridge18.expedition.dto.v1;
 import com.bridge18.expedition.entities.driver.ContactInfoType;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.EqualsAndHashCode;
 
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
+@EqualsAndHashCode
 public class ContactInfoDTO {
     public String label;
 

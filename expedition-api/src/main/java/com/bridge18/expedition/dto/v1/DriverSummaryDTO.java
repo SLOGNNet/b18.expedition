@@ -1,12 +1,18 @@
 package com.bridge18.expedition.dto.v1;
 
+import lombok.EqualsAndHashCode;
+
 import java.util.List;
 
+@EqualsAndHashCode
 public final class DriverSummaryDTO {
     String id;
     String firstName;
     String lastName;
     List<ContactInfoDTO> contactInfo;
+
+    public DriverSummaryDTO() {
+    }
 
     public DriverSummaryDTO(String id, String firstName, String lastName, List<ContactInfoDTO> contactInfo) {
         this.id = id;
