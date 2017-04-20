@@ -2,11 +2,10 @@ package com.bridge18.expedition.repository;
 
 import akka.Done;
 import com.bridge18.expedition.dto.v1.ContactInfoDTO;
-import com.bridge18.expedition.dto.v1.DriverSummary;
+import com.bridge18.expedition.dto.v1.DriverSummaryDTO;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.driver.*;
 import com.datastax.driver.core.*;
-import com.datastax.driver.extras.codecs.arrays.ObjectArrayCodec;
 import com.datastax.driver.extras.codecs.enums.EnumNameCodec;
 import com.datastax.driver.extras.codecs.json.JacksonJsonCodec;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
@@ -23,7 +22,6 @@ import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
@@ -40,11 +38,11 @@ public class DriverRepositoryV2 {
         readSide.register(DriverEventProcessor.class);
     }
 
-    public CompletionStage<PaginatedSequence<DriverSummary>> getDrivers(String pagingState, int pageSize){
+    public CompletionStage<PaginatedSequence<DriverSummaryDTO>> getDrivers(String pagingState, int pageSize){
         return countDrivers()
                 .thenCompose(
                         count -> {
-                            CompletionStage<PaginatedSequence<DriverSummary>> driverSummaries =
+                            CompletionStage<PaginatedSequence<DriverSummaryDTO>> driverSummaries =
                                     selectDrivers(pagingState, pageSize, count);
 
                             return driverSummaries;
@@ -60,7 +58,7 @@ public class DriverRepositoryV2 {
                 .thenApply(row -> (int) row.get().getLong("count"));
     }
 
-    private CompletionStage<PaginatedSequence<DriverSummary>> selectDrivers(String pagingState, int pageSize, int count){
+    private CompletionStage<PaginatedSequence<DriverSummaryDTO>> selectDrivers(String pagingState, int pageSize, int count){
         return session
                 .underlying()
                 .thenApply(nativeSession -> {
@@ -72,10 +70,10 @@ public class DriverRepositoryV2 {
                     return nativeSession.execute(queryStatement);
                 })
                 .thenApply(resultSet -> {
-                            List<DriverSummary> resultList = resultSet.all().stream()
+                            List<DriverSummaryDTO> resultList = resultSet.all().stream()
                                     .map(DriverRepositoryV2::convertDriverSummary)
                                     .collect(Collectors.toList());
-                            return new PaginatedSequence<DriverSummary>(
+                            return new PaginatedSequence<DriverSummaryDTO>(
                                     TreePVector.from(resultList).subList(0, pageSize > resultList.size() ?
                                             resultList.size() : pageSize)
                                     ,
@@ -89,8 +87,8 @@ public class DriverRepositoryV2 {
 
     }
 
-    private static DriverSummary convertDriverSummary(Row driver) {
-        return new DriverSummary(
+    private static DriverSummaryDTO convertDriverSummary(Row driver) {
+        return new DriverSummaryDTO(
                 driver.getString("driverId"),
                 driver.getString("firstName"),
                 driver.getString("lastName"),

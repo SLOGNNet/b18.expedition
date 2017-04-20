@@ -23,6 +23,10 @@
             <name>bintray</name>
             <url>http://dl.bintray.com/hajile/maven</url>
         </repository>
+        <repository>
+            <id>bridge18-repo</id>
+            <url>https://nexus-repo.bridge18.com/repository/bridge18-maven/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -35,6 +39,12 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>expedition-api</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bridge18</groupId>
+            <artifactId>mongodb-readside</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>

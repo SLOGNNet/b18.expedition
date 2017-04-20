@@ -20,6 +20,8 @@ import javax.xml.ws.WebServiceException;
 import java.util.List;
 import java.util.Optional;
 
+import static com.bridge18.expedition.services.lagom.LagomDriverServiceImpl.PAGE_SIZE;
+
 public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     private EquipmentService equipmentService;
     private EquipmentRepository equipmentRepository;
@@ -43,9 +45,9 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                     )  : null;
             return equipmentService.createEquipment(Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
-                    Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
+                    Optional.ofNullable(Optional.ofNullable(request.type).<WebServiceException>orElseThrow(
                             () -> new WebServiceException("Type field is mandatory"))),
-                    Optional.ofNullable(Optional.ofNullable(request.subType).orElseThrow(
+                    Optional.ofNullable(Optional.ofNullable(request.subType).<WebServiceException>orElseThrow(
                             () -> new WebServiceException("Subtype field is mandatory"))),
                     Optional.ofNullable(request.operatingMode),
                     Optional.ofNullable(request.make),
@@ -68,8 +70,8 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                         return new EquipmentDTO(equipmentState.getId(),
                                 equipmentState.getVin().orElse(null),
                                 equipmentState.getOwnership().orElse(null),
-                                equipmentState.getType().orElseThrow(() -> new WebServiceException("Type field is mandatory")),
-                                equipmentState.getSubType().orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
+                                equipmentState.getType().<WebServiceException>orElseThrow(() -> new WebServiceException("Type field is mandatory")),
+                                equipmentState.getSubType().<WebServiceException>orElseThrow(() -> new WebServiceException("Subtype field is mandatory")),
                                 equipmentState.getOperatingMode().orElse(null),
                                 equipmentState.getMake().orElse(null),
                                 equipmentState.getModel().orElse(null),
@@ -102,9 +104,9 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
             return equipmentService.updateEquipment(id,
                     Optional.ofNullable(request.vin),
                     Optional.ofNullable(request.ownership),
-                    Optional.ofNullable(Optional.ofNullable(request.type).orElseThrow(
+                    Optional.ofNullable(Optional.ofNullable(request.type).<WebServiceException>orElseThrow(
                             () -> new WebServiceException("Type field is mandatory"))),
-                    Optional.ofNullable(Optional.ofNullable(request.subType).orElseThrow(
+                    Optional.ofNullable(Optional.ofNullable(request.subType).<WebServiceException>orElseThrow(
                             () -> new WebServiceException("Subtype field is mandatory"))),
                     Optional.ofNullable(request.operatingMode),
                     Optional.ofNullable(request.make),
@@ -187,6 +189,6 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
 
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
-        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(10));
+        return request -> equipmentRepository.getEquipments(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
     }
 }

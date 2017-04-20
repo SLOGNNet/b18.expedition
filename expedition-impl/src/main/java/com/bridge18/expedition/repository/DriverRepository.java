@@ -1,8 +1,6 @@
 package com.bridge18.expedition.repository;
 
 import akka.Done;
-import com.bridge18.expedition.dto.v1.DriverSummary;
-import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.driver.DriverCreated;
 import com.bridge18.expedition.entities.driver.DriverEvent;
 import com.bridge18.expedition.entities.driver.DriverUpdated;
@@ -13,14 +11,11 @@ import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraReadSide;
 import com.lightbend.lagom.javadsl.persistence.cassandra.CassandraSession;
 import org.pcollections.PSequence;
-import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.stream.Collectors;
 
 import static com.bridge18.expedition.core.CompletionStageUtils.*;
 import static com.bridge18.expedition.core.CassandraReadSideUtils.*;

@@ -5,16 +5,16 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 @EqualsAndHashCode
-public final class DriverSummary {
+public final class DriverSummaryDTO {
     String id;
     String firstName;
     String lastName;
     List<ContactInfoDTO> contactInfo;
 
-    public DriverSummary() {
+    public DriverSummaryDTO() {
     }
 
-    public DriverSummary(String id, String firstName, String lastName, List<ContactInfoDTO> contactInfo) {
+    public DriverSummaryDTO(String id, String firstName, String lastName, List<ContactInfoDTO> contactInfo) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
