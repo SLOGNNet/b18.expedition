@@ -2,12 +2,14 @@ package com.bridge18.expedition.dto.v1;
 
 import com.bridge18.expedition.entities.driver.DriverTypes;
 import com.bridge18.expedition.entities.driver.PaymentOptions;
+import lombok.EqualsAndHashCode;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
 import java.util.List;
 
 @Immutable
+@EqualsAndHashCode
 public class DriverDTO {
     public String id;
 

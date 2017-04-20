@@ -1,6 +1,7 @@
 package com.bridge18.expedition.dto.v1;
 
 import com.bridge18.expedition.entities.equipment.*;
+import lombok.EqualsAndHashCode;
 import org.pcollections.PVector;
 
 import javax.annotation.concurrent.Immutable;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Immutable
+@EqualsAndHashCode
 public class EquipmentDTO {
     public String id;
 

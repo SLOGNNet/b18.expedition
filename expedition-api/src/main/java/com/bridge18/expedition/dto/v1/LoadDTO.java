@@ -2,10 +2,12 @@ package com.bridge18.expedition.dto.v1;
 
 import com.bridge18.expedition.entities.FreightType;
 import com.bridge18.expedition.entities.LoadType;
+import lombok.EqualsAndHashCode;
 
 import javax.annotation.concurrent.Immutable;
 
 @Immutable
+@EqualsAndHashCode
 public class LoadDTO {
     public String id;
 

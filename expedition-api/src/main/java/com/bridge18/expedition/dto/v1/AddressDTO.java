@@ -1,5 +1,8 @@
 package com.bridge18.expedition.dto.v1;
 
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode
 public class AddressDTO {
     public Integer id;
     public String name;
