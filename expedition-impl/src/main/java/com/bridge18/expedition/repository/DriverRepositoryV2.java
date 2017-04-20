@@ -105,6 +105,7 @@ public class DriverRepositoryV2 {
 
         private PreparedStatement insertDriverSummaryStatement;
         private PreparedStatement updateDriverSummaryStatement;
+        private PreparedStatement deleteDriverSummaryStatement;
 
         @Inject
         public DriverEventProcessor(CassandraSession session, CassandraReadSide readSide) {
@@ -127,6 +128,8 @@ public class DriverRepositoryV2 {
                                     e.getLastName().orElse(null),
                                     transformPVectorToList(e.getContactInfo())
                             ))
+                    .setEventHandler(DriverDeleted.class,
+                            e -> deleteDriverSummary(e.getId()))
                     .build();
         }
 
@@ -180,7 +183,8 @@ public class DriverRepositoryV2 {
                             })
                             .thenApply(x -> Done.getInstance()),
                     prepareInsertDriverSummaryStatement(),
-                    prepareUpdateDriverSummaryStatement()
+                    prepareUpdateDriverSummaryStatement(),
+                    prepareDeleteDriverSummaryStatement()
             );
         }
 
@@ -209,6 +213,13 @@ public class DriverRepositoryV2 {
                     .thenApply(accept(s -> updateDriverSummaryStatement = s));
         }
 
+        private CompletionStage<Done> prepareDeleteDriverSummaryStatement(){
+            return session
+                    .prepare("DELETE FROM driverSummary_v2 " +
+                            "WHERE driverId = ?")
+                    .thenApply(accept(s -> deleteDriverSummaryStatement = s));
+        }
+
         private CompletionStage<List<BoundStatement>> insertDriverSummary(String driverId, String firstName, String lastName, List<ContactInfoDTO> contactInfoList){
             return completedStatements(
                     insertDriverSummaryStatement.bind(
@@ -221,6 +232,14 @@ public class DriverRepositoryV2 {
             return completedStatements(
                     updateDriverSummaryStatement.bind(
                             firstName, lastName, contactInfoList, driverId
+                    )
+            );
+        }
+
+        private CompletionStage<List<BoundStatement>> deleteDriverSummary(String driverId){
+            return completedStatements(
+                    deleteDriverSummaryStatement.bind(
+                            driverId
                     )
             );
         }

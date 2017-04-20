@@ -1,5 +1,6 @@
 package com.bridge18.expedition.services.objects.impl;
 
+import akka.Done;
 import com.bridge18.expedition.entities.driver.*;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.google.inject.Singleton;
@@ -72,6 +73,15 @@ public class DriverServiceImpl implements DriverService {
                 .address(address)
                 .license(license)
                 .build();
+
+        PersistentEntityRef<DriverCommand> ref = persistentEntityRegistry.refFor(DriverEntity.class, id);
+
+        return ref.ask(cmd);
+    }
+
+    @Override
+    public CompletionStage<Done> deleteDriver(String id) {
+        DeleteDriver cmd = DeleteDriver.builder().build();
 
         PersistentEntityRef<DriverCommand> ref = persistentEntityRegistry.refFor(DriverEntity.class, id);
 

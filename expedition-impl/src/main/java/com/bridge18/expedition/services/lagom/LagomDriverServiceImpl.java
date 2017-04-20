@@ -1,5 +1,6 @@
 package com.bridge18.expedition.services.lagom;
 
+import akka.Done;
 import akka.NotUsed;
 import com.bridge18.expedition.api.LagomDriverService;
 import com.bridge18.expedition.dto.v1.*;
@@ -85,6 +86,12 @@ public class LagomDriverServiceImpl implements LagomDriverService {
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<DriverSummaryDTO>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
         return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
+    }
+
+    @Override
+    public ServiceCall<NotUsed, Done> deleteDriver(String id) {
+        return request ->
+                driverService.deleteDriver(id);
     }
 
     @Override

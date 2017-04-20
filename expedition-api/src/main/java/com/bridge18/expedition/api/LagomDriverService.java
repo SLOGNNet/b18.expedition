@@ -1,5 +1,6 @@
 package com.bridge18.expedition.api;
 
+import akka.Done;
 import akka.NotUsed;
 import com.bridge18.expedition.dto.v1.DriverDTO;
 import com.bridge18.expedition.dto.v1.DriverSummaryDTO;
@@ -17,6 +18,7 @@ public interface LagomDriverService extends Service {
     ServiceCall<DriverDTO, DriverDTO> createNewDriver();
     ServiceCall<NotUsed, PaginatedSequence<DriverSummaryDTO>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
     ServiceCall<DriverDTO, DriverDTO> updateDriverInformation(String id);
+    ServiceCall<NotUsed, Done> deleteDriver(String id);
     ServiceCall<NotUsed, DriverDTO> getDriverInformation(String id);
 
     @Override
@@ -25,6 +27,7 @@ public interface LagomDriverService extends Service {
                 restCall(Method.POST, "/v1/api/expedition/drivers", this::createNewDriver),
                 restCall(Method.GET, "/v1/api/expedition/drivers?pagingState&pageSize", this::getDriverSummaries),
                 restCall(Method.PUT, "/v1/api/expedition/drivers/:id", this::updateDriverInformation),
+                restCall(Method.DELETE, "/v1/api/expedition/drivers/:id", this::deleteDriver),
                 restCall(Method.GET, "/v1/api/expedition/drivers/:id", this::getDriverInformation)
         ).withAutoAcl(true)
                 .withServiceAcls(

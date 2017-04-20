@@ -1,5 +1,6 @@
 package com.bridge18.expedition.entities.driver;
 
+import akka.Done;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.lightbend.lagom.javadsl.immutable.ImmutableStyle;
 import com.lightbend.lagom.javadsl.persistence.PersistentEntity;
@@ -85,5 +86,11 @@ public interface DriverCommand extends Jsonable {
     @ImmutableStyle
     @JsonDeserialize
     interface AbstractGetDriverInformation extends DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<DriverState> {
+    }
+
+    @Value.Immutable
+    @ImmutableStyle
+    @JsonDeserialize
+    interface AbstractDeleteDriver extends DriverCommand, CompressedJsonable, PersistentEntity.ReplyType<Done> {
     }
 }
