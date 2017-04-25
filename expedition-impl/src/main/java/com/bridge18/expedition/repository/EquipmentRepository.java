@@ -73,9 +73,9 @@ public class EquipmentRepository {
                                     TreePVector.from(resultList).subList(0, pageSize > resultList.size() ?
                                             resultList.size() : pageSize)
                                     ,
-                                    resultSet.getAllExecutionInfo().get(0).getPagingState() == null ?
+                                    /*resultSet.getAllExecutionInfo().get(0).getPagingState() == null ?
                                             null :
-                                            resultSet.getAllExecutionInfo().get(0).getPagingState().toString(),
+                                            resultSet.getAllExecutionInfo().get(0).getPagingState().toString(),*/
                                     pageSize,
                                     count);
                         }

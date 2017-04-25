@@ -1,60 +1,53 @@
 package com.bridge18.expedition.repository.mongo;
 
+import com.bridge18.expedition.entities.driver.DriverTypes;
+import com.bridge18.expedition.entities.driver.PaymentOptions;
+import lombok.Data;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Indexed;
+
+import java.util.Date;
+import java.util.List;
 
 //@Entity("drivers")
+@Data
 public class Driver {
     @Id
     private String id;
 
-    @Indexed
     private String driverId;
     private String firstName;
+    private String middleName;
     private String lastName;
+    private List<MongoContactInfo> contactInfo;
+    private String position;
+    private Date birthDate;
+    private String ssn;
+    private PaymentOptions paymentOption;
+    private Double rate;
+    private DriverTypes type;
 
-    public Driver(String id, String driverId, String firstName, String lastName) {
-        this.id = id;
+    @Embedded
+    private MongoAddress address;
+    @Embedded
+    private MongoLicense license;
+
+    public Driver(String driverId, String firstName, String middleName, String lastName, List<MongoContactInfo> mongoContactInfo, String position, Date birthDate, String ssn, PaymentOptions paymentOption, Double rate, DriverTypes type, MongoAddress mongoAddress, MongoLicense mongoLicense) {
         this.driverId = driverId;
         this.firstName = firstName;
+        this.middleName = middleName;
         this.lastName = lastName;
+        this.contactInfo = mongoContactInfo;
+        this.position = position;
+        this.birthDate = birthDate;
+        this.ssn = ssn;
+        this.paymentOption = paymentOption;
+        this.rate = rate;
+        this.type = type;
+        this.address = mongoAddress;
+        this.license = mongoLicense;
     }
 
-    public Driver(String driverId, String firstName, String lastName) {
-        this.driverId = driverId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(String driverId) {
-        this.driverId = driverId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public Driver() {
     }
 }

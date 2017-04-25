@@ -8,7 +8,7 @@ import com.bridge18.expedition.entities.driver.Address;
 import com.bridge18.expedition.entities.driver.ContactInfo;
 import com.bridge18.expedition.entities.driver.DriverState;
 import com.bridge18.expedition.entities.driver.License;
-import com.bridge18.expedition.repository.DriverRepositoryV2;
+import com.bridge18.expedition.repository.mongo.MongoDriverRepository;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.google.common.collect.Lists;
 import com.lightbend.lagom.javadsl.api.ServiceCall;
@@ -23,12 +23,12 @@ import java.util.Optional;
 public class LagomDriverServiceImpl implements LagomDriverService {
     private DriverService driverService;
 
-    private final DriverRepositoryV2 driverRepository;
+    private final MongoDriverRepository driverRepository;
 
     static final int PAGE_SIZE = 20;
 
     @Inject
-    public LagomDriverServiceImpl(DriverService driverService, DriverRepositoryV2 driverRepository) {
+    public LagomDriverServiceImpl(DriverService driverService, MongoDriverRepository driverRepository) {
         this.driverService = driverService;
         this.driverRepository = driverRepository;
     }
@@ -84,8 +84,9 @@ public class LagomDriverServiceImpl implements LagomDriverService {
     }
 
     @Override
-    public ServiceCall<NotUsed, PaginatedSequence<DriverSummaryDTO>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize) {
-        return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
+    public ServiceCall<NotUsed, PaginatedSequence<DriverDTO>> getDriverSummaries(Optional<Integer> pageNumber, Optional<Integer> pageSize) {
+        //return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
+        return  request -> driverRepository.getDrivers(pageNumber.orElse(1), pageSize.orElse(PAGE_SIZE));
     }
 
     @Override
@@ -116,13 +117,13 @@ public class LagomDriverServiceImpl implements LagomDriverService {
         
         Address address = driverState.getAddress().get();
         AddressDTO addressDTO = driverState.getAddress().isPresent() ?
-            new AddressDTO(address.getAddressId().orElse(null),
-                    address.getAddressName().orElse(null),address.getStreetAddress1().orElse(null),
+            new AddressDTO(address.getId().orElse(null),
+                    address.getName().orElse(null),address.getStreetAddress1().orElse(null),
                     address.getStreetAddress2().orElse(null),address.getCity().orElse(null),
-                    address.getAddressPhone().orElse(null),address.getState().orElse(null),
-                    address.getZip().orElse(null),address.getAddressFax().orElse(null),
-                    address.getAddressPhoneExtension().orElse(null),address.getAddressFaxExtension().orElse(null),
-                    address.getAddressLatitude().orElse(null),address.getAddressLongitude().orElse(null)
+                    address.getPhone().orElse(null),address.getState().orElse(null),
+                    address.getZip().orElse(null),address.getFax().orElse(null),
+                    address.getPhoneExtension().orElse(null),address.getFaxExtension().orElse(null),
+                    address.getLatitude().orElse(null),address.getLongitude().orElse(null)
         ) : null;
 
         License license = driverState.getLicense().get();
@@ -147,19 +148,19 @@ public class LagomDriverServiceImpl implements LagomDriverService {
     private Address convertAddressDTOToAddress(AddressDTO addressDTO){
         addressDTO = Optional.ofNullable(addressDTO).orElse(new AddressDTO());
         return Address.builder()
-                .addressId(Optional.ofNullable(addressDTO.id))
-                .addressName(Optional.ofNullable(addressDTO.name))
+                .id(Optional.ofNullable(addressDTO.id))
+                .name(Optional.ofNullable(addressDTO.name))
                 .streetAddress1(Optional.ofNullable(addressDTO.streetAddress1))
                 .streetAddress2(Optional.ofNullable(addressDTO.streetAddress2))
                 .city(Optional.ofNullable(addressDTO.city))
-                .addressPhone(Optional.ofNullable(addressDTO.phone))
+                .phone(Optional.ofNullable(addressDTO.phone))
                 .state(Optional.ofNullable(addressDTO.state))
                 .zip(Optional.ofNullable(addressDTO.zip))
-                .addressFax(Optional.ofNullable(addressDTO.fax))
-                .addressPhoneExtension(Optional.ofNullable(addressDTO.phoneExtension))
-                .addressFaxExtension(Optional.ofNullable(addressDTO.faxExtension))
-                .addressLatitude(Optional.ofNullable(addressDTO.latitude))
-                .addressLongitude(Optional.ofNullable(addressDTO.longitude))
+                .fax(Optional.ofNullable(addressDTO.fax))
+                .phoneExtension(Optional.ofNullable(addressDTO.phoneExtension))
+                .faxExtension(Optional.ofNullable(addressDTO.faxExtension))
+                .latitude(Optional.ofNullable(addressDTO.latitude))
+                .longitude(Optional.ofNullable(addressDTO.longitude))
                 .build();
     }
 
