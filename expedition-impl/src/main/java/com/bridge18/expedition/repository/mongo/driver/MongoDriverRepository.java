@@ -130,9 +130,9 @@ public class MongoDriverRepository implements DriverRepository {
 
             return contactInfoPVector.get().stream()
                     .map(contactInfo -> new MongoContactInfo(
-                            contactInfo.getLabel().orElse(""),
-                            contactInfo.getValue().orElse(""),
-                            contactInfo.getType().orElse(ContactInfoType.NONE)
+                            contactInfo.getLabel().orElse(null),
+                            contactInfo.getValue().orElse(null),
+                            contactInfo.getType().orElse(null)
                     ))
                     .collect(Collectors.toList());
         }
