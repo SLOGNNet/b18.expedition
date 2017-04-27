@@ -8,7 +8,7 @@ import com.bridge18.expedition.entities.driver.Address;
 import com.bridge18.expedition.entities.driver.ContactInfo;
 import com.bridge18.expedition.entities.driver.DriverState;
 import com.bridge18.expedition.entities.driver.License;
-import com.bridge18.expedition.repository.mongo.MongoDriverRepository;
+import com.bridge18.expedition.repository.mongo.driver.MongoDriverRepository;
 import com.bridge18.expedition.services.objects.DriverService;
 import com.google.common.collect.Lists;
 import com.lightbend.lagom.javadsl.api.ServiceCall;

@@ -1,4 +1,4 @@
-package com.bridge18.expedition.repository.mongo;
+package com.bridge18.expedition.repository.mongo.driver;
 
 import com.bridge18.expedition.entities.driver.ContactInfoType;
 import lombok.Data;
