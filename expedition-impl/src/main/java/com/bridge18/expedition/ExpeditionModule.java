@@ -8,6 +8,8 @@ import com.bridge18.expedition.consumers.TaskAddLoadDetailsConsumer;
 import com.bridge18.expedition.consumers.TaskNewLoadConsumer;
 import com.bridge18.expedition.consumers.impl.TaskAddLoadDetailsConsumerImpl;
 import com.bridge18.expedition.consumers.impl.TaskNewLoadConsumerImpl;
+import com.bridge18.expedition.repository.DriverRepository;
+import com.bridge18.expedition.repository.mongo.driver.MongoDriverRepository;
 import com.bridge18.expedition.services.lagom.LagomDriverServiceImpl;
 import com.bridge18.expedition.services.lagom.LagomEquipmentServiceImpl;
 import com.bridge18.expedition.services.lagom.LagomLoadServiceImpl;
@@ -37,7 +39,8 @@ public class ExpeditionModule extends AbstractModule implements ServiceGuiceSupp
         bind(LoadService.class).to(LoadServiceImpl.class);
         bind(DriverService.class).to(DriverServiceImpl.class);
         bind(EquipmentService.class).to(EquipmentServiceImpl.class);
-        
+        bind(DriverRepository.class).to(MongoDriverRepository.class);
+
         bindServices(serviceBinding(LagomLoadService.class, LagomLoadServiceImpl.class),
                 serviceBinding(LagomDriverService.class, LagomDriverServiceImpl.class),
                 serviceBinding(LagomEquipmentService.class, LagomEquipmentServiceImpl.class),
