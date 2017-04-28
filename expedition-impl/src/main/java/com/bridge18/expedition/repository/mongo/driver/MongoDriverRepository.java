@@ -216,30 +216,19 @@ public class MongoDriverRepository implements DriverRepository {
         private UpdateOperations<Driver> setNotNullFieldsInUpdateOperations(Datastore datastore, DriverUpdated e) {
             UpdateOperations updateOperations = datastore.createUpdateOperations(Driver.class);
 
-            updateOperations = e.getFirstName().isPresent() ?
-                    updateOperations.set("firstName", e.getFirstName().get()) : updateOperations;
-            updateOperations = e.getMiddleName().isPresent() ?
-                    updateOperations.set("middleName", e.getMiddleName().get()) : updateOperations;
-            updateOperations = e.getLastName().isPresent() ?
-                    updateOperations.set("lastName", e.getLastName().get()) : updateOperations;
-            updateOperations = e.getContactInfo().isPresent() ?
-                    updateOperations.set("contactInfo", transformPVectorToList(e.getContactInfo())) : updateOperations;
-            updateOperations = e.getPosition().isPresent() ?
-                    updateOperations.set("position", e.getPosition().get()) : updateOperations;
-            updateOperations = e.getBirthDate().isPresent() ?
-                    updateOperations.set("birthDate", e.getBirthDate().get()) : updateOperations;
-            updateOperations = e.getSsn().isPresent() ?
-                    updateOperations.set("ssn", e.getSsn().get()) : updateOperations;
-            updateOperations = e.getPaymentOption().isPresent() ?
-                    updateOperations.set("colour", e.getPaymentOption().get()) : updateOperations;
-            updateOperations = e.getRate().isPresent() ?
-                    updateOperations.set("rate", e.getRate().get()) : updateOperations;
-            updateOperations = e.getDriverType().isPresent() ?
-                    updateOperations.set("type", e.getDriverType().get()) : updateOperations;
-            updateOperations = e.getAddress().isPresent() ?
-                    updateOperations.set("address", transformAddressToMongoAddress(e.getAddress())) : updateOperations;
-            updateOperations = e.getLicense().isPresent() ?
-                    updateOperations.set("license", transformLicenseToMongoLicense(e.getLicense())) : updateOperations;
+            if(e.getFirstName().isPresent()) updateOperations.set("firstName", e.getFirstName().get());
+            if(e.getMiddleName().isPresent()) updateOperations.set("middleName", e.getMiddleName().get());
+            if(e.getLastName().isPresent()) updateOperations.set("lastName", e.getLastName().get());
+            if(e.getContactInfo().isPresent()) updateOperations.set("contactInfo", transformPVectorToList(e.getContactInfo()));
+            if(e.getPosition().isPresent()) updateOperations.set("position", e.getPosition().get());
+            if(e.getBirthDate().isPresent()) updateOperations.set("birthDate", e.getBirthDate().get());
+            if(e.getSsn().isPresent()) updateOperations.set("ssn", e.getSsn().get());
+            if(e.getPaymentOption().isPresent()) updateOperations.set("paymentOption", e.getPaymentOption().get());
+            if(e.getRate().isPresent()) updateOperations.set("rate", e.getRate().get());
+            if(e.getDriverType().isPresent()) updateOperations.set("type", e.getDriverType().get());
+            if(e.getAddress().isPresent()) updateOperations.set("address", transformAddressToMongoAddress(e.getAddress()));
+            if(e.getLicense().isPresent()) updateOperations.set("license", transformLicenseToMongoLicense(e.getLicense()));
+
 
             return updateOperations;
         }

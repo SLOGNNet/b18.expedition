@@ -449,19 +449,19 @@ ssl_storage_port: 7001
 # You _must_ change this if you want multiple nodes to be able to communicate!
 #
 # Set listen_address OR listen_interface, not both. Interfaces must correspond
-# to a single mongoAddress, IP aliasing is not supported.
+# to a single address, IP aliasing is not supported.
 #
 # Leaving it blank leaves it up to InetAddress.getLocalHost(). This
 # will always do the Right Thing _if_ the node is properly configured
 # (hostname, name resolution, etc), and the Right Thing is to use the
-# mongoAddress associated with the hostname (it might not be).
+# address associated with the hostname (it might not be).
 #
 # Setting listen_address to 0.0.0.0 is always wrong.
 #
-# If you choose to specify the interface by name and the interface has an ipv4 and an ipv6 mongoAddress
+# If you choose to specify the interface by name and the interface has an ipv4 and an ipv6 address
 # you can specify which should be chosen using listen_interface_prefer_ipv6. If false the first ipv4
-# mongoAddress will be used. If true the first ipv6 mongoAddress will be used. Defaults to false preferring
-# ipv4. If there is only one mongoAddress it will be selected regardless of ipv4/ipv6.
+# address will be used. If true the first ipv6 address will be used. Defaults to false preferring
+# ipv4. If there is only one address it will be selected regardless of ipv4/ipv6.
 listen_address: localhost
 # listen_interface: eth0
 # listen_interface_prefer_ipv6: false
@@ -475,7 +475,7 @@ listen_address: localhost
 # internode_authenticator: org.apache.cassandra.auth.AllowAllInternodeAuthenticator
 
 # Whether to start the native transport server.
-# Please note that the mongoAddress on which the native transport is bound is the
+# Please note that the address on which the native transport is bound is the
 # same as the rpc_address. The port however is different and specified below.
 start_native_transport: true
 # port for the CQL native transport to listen for clients on
@@ -510,11 +510,11 @@ native_transport_port: 9042
 # Whether to start the thrift rpc server.
 start_rpc: false
 
-# The mongoAddress or interface to bind the Thrift RPC service and native transport
+# The address or interface to bind the Thrift RPC service and native transport
 # server to.
 #
 # Set rpc_address OR rpc_interface, not both. Interfaces must correspond
-# to a single mongoAddress, IP aliasing is not supported.
+# to a single address, IP aliasing is not supported.
 #
 # Leaving rpc_address blank has the same effect as on listen_address
 # (i.e. it will be based on the configured hostname of the node).
@@ -524,10 +524,10 @@ start_rpc: false
 #
 # For security reasons, you should not expose this port to the internet.  Firewall it if needed.
 #
-# If you choose to specify the interface by name and the interface has an ipv4 and an ipv6 mongoAddress
+# If you choose to specify the interface by name and the interface has an ipv4 and an ipv6 address
 # you can specify which should be chosen using rpc_interface_prefer_ipv6. If false the first ipv4
-# mongoAddress will be used. If true the first ipv6 mongoAddress will be used. Defaults to false preferring
-# ipv4. If there is only one mongoAddress it will be selected regardless of ipv4/ipv6.
+# address will be used. If true the first ipv6 address will be used. Defaults to false preferring
+# ipv4. If there is only one address it will be selected regardless of ipv4/ipv6.
 rpc_address: localhost
 # rpc_interface: eth1
 # rpc_interface_prefer_ipv6: false
@@ -535,7 +535,7 @@ rpc_address: localhost
 # port for Thrift to listen for clients on
 rpc_port: 9160
 
-# RPC mongoAddress to broadcast to drivers and other Cassandra nodes. This cannot
+# RPC address to broadcast to drivers and other Cassandra nodes. This cannot
 # be set to 0.0.0.0. If left blank, this will be set to the value of
 # rpc_address. If rpc_address is set to 0.0.0.0, broadcast_rpc_address must
 # be set.
@@ -777,7 +777,7 @@ cross_node_timeout: false
 #  - RackInferringSnitch:
 #    Proximity is determined by rack and data center, which are
 #    assumed to correspond to the 3rd and 2nd octet of each node's IP
-#    mongoAddress, respectively.  Unless this happens to match your
+#    address, respectively.  Unless this happens to match your
 #    deployment conventions, this is best used as an example of
 #    writing a custom Snitch class and is provided in that spirit.
 #
