@@ -170,22 +170,22 @@ public class MongoEquipmentRepository implements EquipmentRepository {
         private UpdateOperations<MongoEquipment> setNotNullFieldsInUpdateOperations(Datastore datastore, EquipmentUpdated e) {
             UpdateOperations updateOperations = datastore.createUpdateOperations(MongoEquipment.class);
 
-            updateOperations = e.getVin().isPresent() ? updateOperations.set("vin", e.getVin().get()) : updateOperations;
-            updateOperations = e.getOwnership().isPresent() ? updateOperations.set("ownership", e.getOwnership().get()) : updateOperations;
-            updateOperations = e.getType().isPresent() ? updateOperations.set("type", e.getType().get()) : updateOperations;
-            updateOperations = e.getSubType().isPresent() ? updateOperations.set("subType", e.getSubType().get()) : updateOperations;
-            updateOperations = e.getOperatingMode().isPresent() ? updateOperations.set("operatingMode", e.getOperatingMode().get()) : updateOperations;
-            updateOperations = e.getMake().isPresent() ? updateOperations.set("make", e.getMake().get()) : updateOperations;
-            updateOperations = e.getModel().isPresent() ? updateOperations.set("model", e.getModel().get()) : updateOperations;
-            updateOperations = e.getColour().isPresent() ? updateOperations.set("colour", e.getColour().get()) : updateOperations;
-            updateOperations = e.getIsSleeperBerthAvailable().isPresent() ? updateOperations.set("isSleeperBerthAvailable", e.getIsSleeperBerthAvailable().get()) : updateOperations;
-            updateOperations = e.getNumber().isPresent() ? updateOperations.set("number", e.getNumber().get()) : updateOperations;
-            updateOperations = e.getLicensePlateState().isPresent() ? updateOperations.set("licensePlateState", e.getLicensePlateState().get()) : updateOperations;
-            updateOperations = e.getLicensePlateNumber().isPresent() ? updateOperations.set("licensePlateNumber", e.getLicensePlateNumber().get()) : updateOperations;
-            updateOperations = e.getLicensePlateExpiration().isPresent() ? updateOperations.set("licensePlateExpiration", e.getLicensePlateExpiration().get()) : updateOperations;
-            updateOperations = e.getNotes().isPresent() ? updateOperations.set("notes", e.getNotes().get()) : updateOperations;
-            updateOperations = e.getMileageRecords().isPresent() ? updateOperations.set("mileageRecords", transformPVectorToList(e.getMileageRecords())) : updateOperations;
-
+            if(e.getVin().isPresent()) updateOperations.set("vin", e.getVin().get());
+            if(e.getOwnership().isPresent()) updateOperations.set("ownership", e.getOwnership().get());
+            if(e.getType().isPresent()) updateOperations.set("type", e.getType().get());
+            if(e.getSubType().isPresent()) updateOperations.set("subType", e.getSubType().get());
+            if(e.getOperatingMode().isPresent()) updateOperations.set("operatingMode", e.getOperatingMode().get());
+            if(e.getMake().isPresent()) updateOperations.set("make", e.getMake().get());
+            if(e.getModel().isPresent()) updateOperations.set("model", e.getModel().get());
+            if(e.getColour().isPresent()) updateOperations.set("colour", e.getColour().get());
+            if(e.getIsSleeperBerthAvailable().isPresent()) updateOperations.set("isSleeperBerthAvailable", e.getIsSleeperBerthAvailable().get());
+            if(e.getNumber().isPresent()) updateOperations.set("number", e.getNumber().get());
+            if(e.getLicensePlateState().isPresent()) updateOperations.set("licensePlateState", e.getLicensePlateState().get());
+            if(e.getLicensePlateNumber().isPresent()) updateOperations.set("licensePlateNumber", e.getLicensePlateNumber().get());
+            if(e.getLicensePlateExpiration().isPresent()) updateOperations.set("licensePlateExpiration", e.getLicensePlateExpiration().get());
+            if(e.getNotes().isPresent()) updateOperations.set("notes", e.getNotes().get());
+            if(e.getMileageRecords().isPresent()) updateOperations.set("mileageRecords", transformPVectorToList(e.getMileageRecords()));
+            
             return updateOperations;
         }
 
