@@ -30,27 +30,26 @@ public class DriverEntity extends PersistentEntity<DriverCommand, DriverEvent, D
                                 .address(cmd.getAddress())
                                 .driverType(cmd.getDriverType())
                                 .license(cmd.getLicense())
-                                .build(),
-                        DriverUpdated.builder()
-                                .id(entityId())
-                                .position(cmd.getPosition())
-                                .firstName(cmd.getFirstName())
-                                .middleName(cmd.getMiddleName())
-                                .lastName(cmd.getLastName())
-                                .birthDate(cmd.getBirthDate())
-                                .ssn(cmd.getSsn())
-                                .paymentOption(cmd.getPaymentOption())
-                                .rate(cmd.getRate())
-                                .contactInfo(cmd.getContactInfo())
-                                .address(cmd.getAddress())
-                                .driverType(cmd.getDriverType())
-                                .license(cmd.getLicense())
                                 .build()
                         ));
 
         b.setEventHandlerChangingBehavior(
                 DriverCreated.class,
-                driverCreated -> created(state())
+                evt -> created(
+                        DriverState.builder().from(state())
+                        .position(evt.getPosition())
+                        .firstName(evt.getFirstName())
+                        .middleName(evt.getMiddleName())
+                        .lastName(evt.getLastName())
+                        .birthDate(evt.getBirthDate())
+                        .ssn(evt.getSsn())
+                        .paymentOption(evt.getPaymentOption())
+                        .rate(evt.getRate())
+                        .contactInfo(evt.getContactInfo())
+                        .address(evt.getAddress())
+                        .driverType(evt.getDriverType())
+                        .license(evt.getLicense())
+                        .build())
         );
 
 
