@@ -143,18 +143,66 @@ public class MongoDriverRepository implements DriverRepository {
         private UpdateOperations<DriverState> setUpdateOperations(Datastore datastore, DriverUpdated e) {
             UpdateOperations updateOperations = datastore.createUpdateOperations(DriverState.class);
 
-            if(e.getFirstName().isPresent()) updateOperations.set("firstName", e.getFirstName().get());
-            if(e.getMiddleName().isPresent()) updateOperations.set("middleName", e.getMiddleName().get());
-            if(e.getLastName().isPresent()) updateOperations.set("lastName", e.getLastName().get());
-            if(e.getContactInfo().isPresent()) updateOperations.set("contactInfo", e.getContactInfo().get());
-            if(e.getPosition().isPresent()) updateOperations.set("position", e.getPosition().get());
-            if(e.getBirthDate().isPresent()) updateOperations.set("birthDate", e.getBirthDate().get());
-            if(e.getSsn().isPresent()) updateOperations.set("ssn", e.getSsn().get());
-            if(e.getPaymentOption().isPresent()) updateOperations.set("paymentOption", e.getPaymentOption().get());
-            if(e.getRate().isPresent()) updateOperations.set("rate", e.getRate().get());
-            if(e.getDriverType().isPresent()) updateOperations.set("driverType", e.getDriverType().get());
-            if(e.getAddress().isPresent()) updateOperations.set("address", e.getAddress().get());
-            if(e.getLicense().isPresent()) updateOperations.set("license", e.getLicense().get());
+            if(e.getFirstName().isPresent()) {
+                updateOperations.set("firstName", e.getFirstName().get());
+            } else {
+                updateOperations.unset("firstName");
+            }
+            if(e.getMiddleName().isPresent()) {
+                updateOperations.set("middleName", e.getMiddleName().get());
+            } else {
+                updateOperations.unset("middleName");
+            }
+            if(e.getLastName().isPresent()) {
+                updateOperations.set("lastName", e.getLastName().get());
+            } else {
+                updateOperations.unset("lastName");
+            }
+            if(e.getContactInfo().isPresent()) {
+                updateOperations.set("contactInfo", e.getContactInfo().get());
+            } else {
+                updateOperations.unset("contactInfo");
+            }
+            if(e.getPosition().isPresent()) {
+                updateOperations.set("position", e.getPosition().get());
+            } else {
+                updateOperations.unset("position");
+            }
+            if(e.getBirthDate().isPresent()) {
+                updateOperations.set("birthDate", e.getBirthDate().get());
+            } else {
+                updateOperations.unset("birthDate");
+            }
+            if(e.getSsn().isPresent()) {
+                updateOperations.set("ssn", e.getSsn().get());
+            } else {
+                updateOperations.unset("ssn");
+            }
+            if(e.getPaymentOption().isPresent()) {
+                updateOperations.set("paymentOption", e.getPaymentOption().get());
+            } else {
+                updateOperations.unset("paymentOption");
+            }
+            if(e.getRate().isPresent()) {
+                updateOperations.set("rate", e.getRate().get());
+            } else {
+                updateOperations.unset("rate");
+            }
+            if(e.getDriverType().isPresent()) {
+                updateOperations.set("driverType", e.getDriverType().get());
+            } else {
+                updateOperations.unset("driverType");
+            }
+            if(e.getAddress().isPresent()) {
+                updateOperations.set("address", e.getAddress().get());
+            } else {
+                updateOperations.unset("address");
+            }
+            if(e.getLicense().isPresent()) {
+                updateOperations.set("license", e.getLicense().get());
+            } else {
+                updateOperations.unset("license");
+            }
 
 
             return updateOperations;
