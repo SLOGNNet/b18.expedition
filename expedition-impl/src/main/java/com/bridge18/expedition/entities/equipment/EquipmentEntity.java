@@ -32,31 +32,31 @@ public class EquipmentEntity extends PersistentEntity<EquipmentCommand, Equipmen
                                 .licensePlateExpiration(cmd.getLicensePlateExpiration())
                                 .notes(cmd.getNotes())
                                 .mileageRecords(cmd.getMileageRecords())
-                                .build(),
-                        EquipmentUpdated.builder()
-                                .id(entityId())
-                                .vin(cmd.getVin())
-                                .ownership(cmd.getOwnership())
-                                .type(cmd.getType())
-                                .subType(cmd.getSubType())
-                                .operatingMode(cmd.getOperatingMode())
-                                .make(cmd.getMake())
-                                .model(cmd.getModel())
-                                .colour(cmd.getColour())
-                                .isSleeperBerthAvailable(cmd.getIsSleeperBerthAvailable())
-                                .number(cmd.getNumber())
-                                .licensePlateState(cmd.getLicensePlateState())
-                                .licensePlateNumber(cmd.getLicensePlateNumber())
-                                .licensePlateExpiration(cmd.getLicensePlateExpiration())
-                                .notes(cmd.getNotes())
-                                .mileageRecords(cmd.getMileageRecords())
                                 .build()
                 )
         );
 
         b.setEventHandlerChangingBehavior(
                 EquipmentCreated.class,
-                equipmentCreated -> created(state())
+                evt -> created(
+                        EquipmentState.builder().id(entityId())
+                                .vin(evt.getVin())
+                                .ownership(evt.getOwnership())
+                                .type(evt.getType())
+                                .subType(evt.getSubType())
+                                .operatingMode(evt.getOperatingMode())
+                                .make(evt.getMake())
+                                .model(evt.getModel())
+                                .colour(evt.getColour())
+                                .isSleeperBerthAvailable(evt.getIsSleeperBerthAvailable())
+                                .number(evt.getNumber())
+                                .licensePlateState(evt.getLicensePlateState())
+                                .licensePlateNumber(evt.getLicensePlateNumber())
+                                .licensePlateExpiration(evt.getLicensePlateExpiration())
+                                .notes(evt.getNotes())
+                                .mileageRecords(evt.getMileageRecords())
+                                .build()
+                )
         );
 
 
