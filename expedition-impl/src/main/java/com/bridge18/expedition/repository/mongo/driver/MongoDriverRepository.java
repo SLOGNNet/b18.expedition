@@ -39,64 +39,17 @@ public class MongoDriverRepository implements DriverRepository {
     }
 
     @Override
-    public CompletionStage<PaginatedSequence<DriverDTO>> getDrivers(int pageNumber, int pageSize) {
-        List<Driver> drivers = datastore.createQuery(Driver.class)
+    public PaginatedSequence<DriverState> getDrivers(int pageNumber, int pageSize) {
+        List<DriverState> drivers = datastore.createQuery(DriverState.class)
                 .asList(new FindOptions().skip(pageNumber > 0 ? (pageNumber - 1) * pageSize : 0)
                         .limit(pageSize)
                 );
-        return CompletableFuture.completedFuture(
-                new PaginatedSequence<>(
-                        TreePVector.from(
-                                drivers.stream()
-                                        .map(this::transformDriverToDriverDTO)
-                                        .collect(Collectors.toList())
-                        ),
+        return new PaginatedSequence<>(
+                        TreePVector.from(drivers),
                         pageSize,
-                        (int) datastore.getCount(datastore.createQuery(Driver.class))
-                )
-
-
+                        (int) datastore.getCount(datastore.createQuery(DriverState.class))
         );
     }
-
-    private DriverDTO transformDriverToDriverDTO(Driver driver) {
-        MongoAddress mongoAddress = driver.getAddress();
-        AddressDTO addressDTO = mongoAddress != null ?
-                new AddressDTO(mongoAddress.getId(),
-                        mongoAddress.getName(), mongoAddress.getStreetAddress1(),
-                        mongoAddress.getStreetAddress2(), mongoAddress.getCity(),
-                        mongoAddress.getPhone(), mongoAddress.getState(),
-                        mongoAddress.getZip(), mongoAddress.getFax(),
-                        mongoAddress.getPhoneExtension(), mongoAddress.getFaxExtension(),
-                        mongoAddress.getLatitude(), mongoAddress.getLongitude()
-                ) : null;
-
-        List<ContactInfoDTO> contactInfoDTOList = driver.getContactInfo() != null ?
-                Lists.transform(driver.getContactInfo(), mongoContactInfo ->
-                        new ContactInfoDTO(mongoContactInfo.getLabel(),
-                                mongoContactInfo.getValue(),
-                                mongoContactInfo.getType()
-                        )
-                ) : null;
-
-        MongoLicense mongoLicense = driver.getLicense();
-        LicenseDTO licenseDTO = mongoLicense != null ?
-                new LicenseDTO(
-                        mongoLicense.getNumber(),
-                        mongoLicense.getExpiration(), mongoLicense.getDateIssued(),
-                        mongoLicense.getStateIssued(), mongoLicense.getLicenseClass(),
-                        mongoLicense.getEndorsements(), mongoLicense.getRestrictions()
-                ) : null;
-
-        return new DriverDTO(driver.getDriverId(),
-                driver.getFirstName(), driver.getMiddleName(),
-                driver.getLastName(), contactInfoDTOList,
-                driver.getPosition(), addressDTO, driver.getBirthDate(),
-                driver.getSsn(), driver.getPaymentOption(),
-                driver.getRate(), driver.getType(), licenseDTO
-        );
-    }
-
 
     private static class DriverEventProcessor extends ReadSideProcessor<DriverEvent> {
 
@@ -119,47 +72,9 @@ public class MongoDriverRepository implements DriverRepository {
                             this::updateDriverSummary
                     )
                     .setEventHandler(DriverDeleted.class,
-                            (datastore, e) -> deleteDriverSummary(datastore, e.getId()))
+                            this::deleteDriverSummary
+                    )
                     .build();
-        }
-
-        private List<MongoContactInfo> transformPVectorToList(Optional<PVector<ContactInfo>> contactInfoPVector) {
-            if (!contactInfoPVector.isPresent() || contactInfoPVector.get().isEmpty()) {
-                return new ArrayList<>();
-            }
-
-            return contactInfoPVector.get().stream()
-                    .map(contactInfo -> new MongoContactInfo(
-                            contactInfo.getLabel().orElse(null),
-                            contactInfo.getValue().orElse(null),
-                            contactInfo.getType().orElse(null)
-                    ))
-                    .collect(Collectors.toList());
-        }
-
-        private MongoAddress transformAddressToMongoAddress(Optional<Address> optionalAddress) {
-            if (!optionalAddress.isPresent()) {
-                return new MongoAddress();
-            }
-            Address address = optionalAddress.get();
-            return new MongoAddress(address.getId().orElse(null), address.getName().orElse(null),
-                    address.getStreetAddress1().orElse(null), address.getStreetAddress2().orElse(null),
-                    address.getCity().orElse(null), address.getPhone().orElse(null),
-                    address.getState().orElse(null), address.getZip().orElse(null),
-                    address.getFax().orElse(null), address.getPhoneExtension().orElse(null),
-                    address.getFaxExtension().orElse(null), address.getLatitude().orElse(null),
-                    address.getLongitude().orElse(null));
-        }
-
-        private MongoLicense transformLicenseToMongoLicense(Optional<License> optionalLicense) {
-            if (!optionalLicense.isPresent()) {
-                return new MongoLicense();
-            }
-            License license = optionalLicense.get();
-            return new MongoLicense(license.getLicenseNumber().orElse(null),
-                    license.getLicenseExpiration().orElse(null), license.getLicenseDateIssued().orElse(null),
-                    license.getLicenseStateIssued().orElse(null), license.getLicenseClass().orElse(null),
-                    license.getLicenseEndorsements().orElse(null), license.getLicenseRestrictions().orElse(null));
         }
 
         @Override
@@ -172,7 +87,7 @@ public class MongoDriverRepository implements DriverRepository {
                     //@TODO: indexing?
 
                     CompletableFuture.runAsync(() -> {
-                        datastore.ensureIndexes(Driver.class);
+                        datastore.ensureIndexes(DriverState.class);
                     })
             );
         }
@@ -188,56 +103,68 @@ public class MongoDriverRepository implements DriverRepository {
 
             return CompletableFuture.runAsync(() -> {
                 datastore.save(
-                        new Driver(e.getId(), e.getFirstName().orElse(null),
-                                e.getMiddleName().orElse(null), e.getLastName().orElse(null),
-                                transformPVectorToList(e.getContactInfo()), e.getPosition().orElse(null),
-                                e.getBirthDate().orElse(null), e.getSsn().orElse(null),
-                                e.getPaymentOption().orElse(null), e.getRate().orElse(null),
-                                e.getDriverType().orElse(null), transformAddressToMongoAddress(e.getAddress()),
-                                transformLicenseToMongoLicense(e.getLicense())
-                        )
+                        createDriverState(e)
                 );
             });
+        }
+
+        private DriverState createDriverState(DriverCreated e){
+            DriverState.Builder builder = DriverState.builder().id(e.getId());
+
+            if(e.getFirstName().isPresent()) builder.firstName(e.getFirstName().get());
+            if(e.getMiddleName().isPresent()) builder.middleName(e.getMiddleName().get());
+            if(e.getLastName().isPresent()) builder.lastName(e.getLastName().get());
+            if(e.getContactInfo().isPresent()) builder.contactInfo(e.getContactInfo().get());
+            if(e.getPosition().isPresent()) builder.position(e.getPosition().get());
+            if(e.getBirthDate().isPresent()) builder.birthDate(e.getBirthDate().get());
+            if(e.getSsn().isPresent()) builder.ssn(e.getSsn().get());
+            if(e.getPaymentOption().isPresent()) builder.paymentOption(e.getPaymentOption().get());
+            if(e.getRate().isPresent()) builder.rate(e.getRate().get());
+            if(e.getDriverType().isPresent()) builder.driverType(e.getDriverType().get());
+            if(e.getAddress().isPresent()) builder.address(e.getAddress().get());
+            if(e.getLicense().isPresent()) builder.license(e.getLicense().get());
+
+            return builder.build();
         }
 
         private CompletionStage<Void> updateDriverSummary(Datastore datastore,
                                                           DriverUpdated e) {
 
             return CompletableFuture.runAsync(() -> {
-                UpdateOperations<Driver> updateOperations = setNotNullFieldsInUpdateOperations(datastore, e);
+                UpdateOperations<DriverState> updateOperations = setUpdateOperations(datastore, e);
 
                 datastore.update(
-                        datastore.createQuery(Driver.class).field("driverId").equal(e.getId()),
+                        datastore.createQuery(DriverState.class).field("id").equal(e.getId()),
                         updateOperations
                 );
             });
         }
 
-        private UpdateOperations<Driver> setNotNullFieldsInUpdateOperations(Datastore datastore, DriverUpdated e) {
-            UpdateOperations updateOperations = datastore.createUpdateOperations(Driver.class);
+        private UpdateOperations<DriverState> setUpdateOperations(Datastore datastore, DriverUpdated e) {
+            UpdateOperations updateOperations = datastore.createUpdateOperations(DriverState.class);
 
             if(e.getFirstName().isPresent()) updateOperations.set("firstName", e.getFirstName().get());
             if(e.getMiddleName().isPresent()) updateOperations.set("middleName", e.getMiddleName().get());
             if(e.getLastName().isPresent()) updateOperations.set("lastName", e.getLastName().get());
-            if(e.getContactInfo().isPresent()) updateOperations.set("contactInfo", transformPVectorToList(e.getContactInfo()));
+            if(e.getContactInfo().isPresent()) updateOperations.set("contactInfo", e.getContactInfo().get());
             if(e.getPosition().isPresent()) updateOperations.set("position", e.getPosition().get());
             if(e.getBirthDate().isPresent()) updateOperations.set("birthDate", e.getBirthDate().get());
             if(e.getSsn().isPresent()) updateOperations.set("ssn", e.getSsn().get());
             if(e.getPaymentOption().isPresent()) updateOperations.set("paymentOption", e.getPaymentOption().get());
             if(e.getRate().isPresent()) updateOperations.set("rate", e.getRate().get());
-            if(e.getDriverType().isPresent()) updateOperations.set("type", e.getDriverType().get());
-            if(e.getAddress().isPresent()) updateOperations.set("address", transformAddressToMongoAddress(e.getAddress()));
-            if(e.getLicense().isPresent()) updateOperations.set("license", transformLicenseToMongoLicense(e.getLicense()));
+            if(e.getDriverType().isPresent()) updateOperations.set("driverType", e.getDriverType().get());
+            if(e.getAddress().isPresent()) updateOperations.set("address", e.getAddress().get());
+            if(e.getLicense().isPresent()) updateOperations.set("license", e.getLicense().get());
 
 
             return updateOperations;
         }
 
-        private CompletionStage<Void> deleteDriverSummary(Datastore datastore, String driverId) {
+        private CompletionStage<Void> deleteDriverSummary(Datastore datastore, DriverDeleted e) {
             return CompletableFuture.runAsync(() -> {
-                        Query<Driver> driversToDelete = datastore.createQuery(Driver.class)
-                                .field("driverId")
-                                .equal(driverId);
+                        Query<DriverState> driversToDelete = datastore.createQuery(DriverState.class)
+                                .field("id")
+                                .equal(e.getId());
                         datastore.delete(driversToDelete);
                     }
             );

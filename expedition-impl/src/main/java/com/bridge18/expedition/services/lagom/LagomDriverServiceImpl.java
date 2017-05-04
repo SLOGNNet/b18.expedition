@@ -18,6 +18,8 @@ import org.pcollections.TreePVector;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 
 public class LagomDriverServiceImpl implements LagomDriverService {
@@ -35,7 +37,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     @Override
     public ServiceCall<DriverDTO, DriverDTO> createNewDriver() {
-        return request ->{
+        return request -> {
             PVector<ContactInfo> inContactInfo = Optional.ofNullable(request.contactInfo).isPresent() ?
                     TreePVector.from(
                             Lists.transform(request.contactInfo, contactInfoDTO -> ContactInfo.builder()
@@ -44,7 +46,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                     .type(Optional.ofNullable(contactInfoDTO.type))
                                     .build()
                             )
-                    )  : null;
+                    ) : null;
             return driverService.createDriver(Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
@@ -61,7 +63,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     @Override
     public ServiceCall<DriverDTO, DriverDTO> updateDriverInformation(String id) {
-        return request ->{
+        return request -> {
             PVector<ContactInfo> inContactInfo = Optional.ofNullable(request.contactInfo).isPresent() ?
                     TreePVector.from(
                             Lists.transform(request.contactInfo, contactInfoDTO -> ContactInfo.builder()
@@ -70,7 +72,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                                     .type(Optional.ofNullable(contactInfoDTO.type))
                                     .build()
                             )
-                    )  : null;
+                    ) : null;
             return driverService.updateDriver(id, Optional.ofNullable(request.position),
                     Optional.ofNullable(request.firstName), Optional.ofNullable(request.middleName),
                     Optional.ofNullable(request.lastName), Optional.ofNullable(request.birthDate),
@@ -85,8 +87,19 @@ public class LagomDriverServiceImpl implements LagomDriverService {
 
     @Override
     public ServiceCall<NotUsed, PaginatedSequence<DriverDTO>> getDriverSummaries(Optional<Integer> pageNumber, Optional<Integer> pageSize) {
-        //return request -> driverRepository.getDrivers(pagingState.orElse(null), pageSize.orElse(PAGE_SIZE));
-        return  request -> driverRepository.getDrivers(pageNumber.orElse(1), pageSize.orElse(PAGE_SIZE));
+        return request -> {
+            PaginatedSequence<DriverState> drivers = driverRepository.getDrivers(pageNumber.orElse(1), pageSize.orElse(PAGE_SIZE));
+            return CompletableFuture.completedFuture(new PaginatedSequence<>(
+                    TreePVector.from(
+                            drivers.getValues().stream()
+                                    .map(this::convertDriverStateToDriverDTO)
+                                    .collect(Collectors.toList())
+                    ),
+                    drivers.getPageSize(),
+                    drivers.getCount()
+            )
+            );
+        };
     }
 
     @Override
@@ -111,22 +124,18 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                         )
                 ) : null;
 
-        if (!driverState.getAddress().isPresent()) {
-            return new DriverDTO();
-        }
-        
-        Address address = driverState.getAddress().get();
+        Address address = driverState.getAddress().orElse(null);
         AddressDTO addressDTO = driverState.getAddress().isPresent() ?
-            new AddressDTO(address.getId().orElse(null),
-                    address.getName().orElse(null),address.getStreetAddress1().orElse(null),
-                    address.getStreetAddress2().orElse(null),address.getCity().orElse(null),
-                    address.getPhone().orElse(null),address.getState().orElse(null),
-                    address.getZip().orElse(null),address.getFax().orElse(null),
-                    address.getPhoneExtension().orElse(null),address.getFaxExtension().orElse(null),
-                    address.getLatitude().orElse(null),address.getLongitude().orElse(null)
-        ) : null;
+                new AddressDTO(address.getId().orElse(null),
+                        address.getName().orElse(null), address.getStreetAddress1().orElse(null),
+                        address.getStreetAddress2().orElse(null), address.getCity().orElse(null),
+                        address.getPhone().orElse(null), address.getState().orElse(null),
+                        address.getZip().orElse(null), address.getFax().orElse(null),
+                        address.getPhoneExtension().orElse(null), address.getFaxExtension().orElse(null),
+                        address.getLatitude().orElse(null), address.getLongitude().orElse(null)
+                ) : null;
 
-        License license = driverState.getLicense().get();
+        License license = driverState.getLicense().orElse(null);
         LicenseDTO licenseDTO = driverState.getLicense().isPresent() ?
                 new LicenseDTO(
                         license.getLicenseNumber().orElse(null),
@@ -138,14 +147,15 @@ public class LagomDriverServiceImpl implements LagomDriverService {
         DriverDTO driverDTO = new DriverDTO(driverState.getId(),
                 driverState.getFirstName().orElse(null), driverState.getMiddleName().orElse(null),
                 driverState.getLastName().orElse(null), contactInfoDTOList,
-                driverState.getPosition().orElse(null), addressDTO, driverState.getBirthDate().orElse(null),
-                driverState.getSsn().orElse(null), driverState.getPaymentOption().orElse(null),
-                driverState.getRate().orElse(null), driverState.getDriverType().orElse(null), licenseDTO
+                driverState.getPosition().orElse(null), addressDTO,
+                driverState.getBirthDate().orElse(null),driverState.getSsn().orElse(null),
+                driverState.getPaymentOption().orElse(null), driverState.getRate().orElse(null),
+                driverState.getDriverType().orElse(null), licenseDTO
         );
         return driverDTO;
     }
 
-    private Address convertAddressDTOToAddress(AddressDTO addressDTO){
+    private Address convertAddressDTOToAddress(AddressDTO addressDTO) {
         addressDTO = Optional.ofNullable(addressDTO).orElse(new AddressDTO());
         return Address.builder()
                 .id(Optional.ofNullable(addressDTO.id))
@@ -164,7 +174,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                 .build();
     }
 
-    private License convertLicenseDTOToLicense(LicenseDTO licenseDTO){
+    private License convertLicenseDTOToLicense(LicenseDTO licenseDTO) {
         licenseDTO = Optional.ofNullable(licenseDTO).orElse(new LicenseDTO());
         return License.builder()
                 .licenseNumber(Optional.ofNullable(licenseDTO.number))
