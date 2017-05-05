@@ -196,21 +196,21 @@ public class EquipmentServiceTest {
                 equipmentState.getId()
         ).toCompletableFuture().get(5, SECONDS);
 
-        assertEquals(Optional.of("vin-2"), updatedEquipmentState.getVin());
-        assertEquals(Optional.of(Ownership.COMPANY), updatedEquipmentState.getOwnership());
-        assertEquals(Optional.of(EquipmentType.NONE), updatedEquipmentState.getType());
-        assertEquals(Optional.of(EquipmentSubType.NONE), updatedEquipmentState.getSubType());
-        assertEquals(Optional.of(OperatingMode.NONE), updatedEquipmentState.getOperatingMode());
-        assertEquals(Optional.of("make-2"), updatedEquipmentState.getMake());
-        assertEquals(Optional.of("model-2"), updatedEquipmentState.getModel());
-        assertEquals(Optional.of("colour-2"), updatedEquipmentState.getColour());
-        assertEquals(Optional.of(true), updatedEquipmentState.getIsSleeperBerthAvailable());
-        assertEquals(Optional.of("number-2"), updatedEquipmentState.getNumber());
-        assertEquals(Optional.of("licensePlateState-2"), updatedEquipmentState.getLicensePlateState());
-        assertEquals(Optional.of("licensePlateNumber-2"), updatedEquipmentState.getLicensePlateNumber());
-        assertEquals(Optional.of(licensePlateExpiration), updatedEquipmentState.getLicensePlateExpiration());
-        assertEquals(Optional.of("notes-2"), updatedEquipmentState.getNotes());
-        assertEquals(Optional.of(mileageRecords), updatedEquipmentState.getMileageRecords());
+        assertEquals(Optional.of("vin-2"), getEquipmentState.getVin());
+        assertEquals(Optional.of(Ownership.COMPANY), getEquipmentState.getOwnership());
+        assertEquals(Optional.of(EquipmentType.NONE), getEquipmentState.getType());
+        assertEquals(Optional.of(EquipmentSubType.NONE), getEquipmentState.getSubType());
+        assertEquals(Optional.of(OperatingMode.NONE), getEquipmentState.getOperatingMode());
+        assertEquals(Optional.of("make-2"), getEquipmentState.getMake());
+        assertEquals(Optional.of("model-2"), getEquipmentState.getModel());
+        assertEquals(Optional.of("colour-2"), getEquipmentState.getColour());
+        assertEquals(Optional.of(true), getEquipmentState.getIsSleeperBerthAvailable());
+        assertEquals(Optional.of("number-2"), getEquipmentState.getNumber());
+        assertEquals(Optional.of("licensePlateState-2"), getEquipmentState.getLicensePlateState());
+        assertEquals(Optional.of("licensePlateNumber-2"), getEquipmentState.getLicensePlateNumber());
+        assertEquals(Optional.of(licensePlateExpiration), getEquipmentState.getLicensePlateExpiration());
+        assertEquals(Optional.of("notes-2"), getEquipmentState.getNotes());
+        assertEquals(Optional.of(mileageRecords), getEquipmentState.getMileageRecords());
     }
 
     @Test
