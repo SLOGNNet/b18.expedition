@@ -121,15 +121,15 @@ public class LagomDriverServiceTest {
         assertEquals(driverLicenseDTO, getDriverDTO.license);
 
         Thread.sleep(3000);
-        PaginatedSequence<DriverSummaryDTO> driverSummaries = testService
+        PaginatedSequence<DriverDTO> driverSummaries = testService
                 .getDriverSummaries(Optional.empty(), Optional.empty())
                 .invoke().toCompletableFuture().get(10, SECONDS);
         assertEquals(1, driverSummaries.getCount());
-        DriverSummaryDTO driverSummary = driverSummaries.getValues().get(0);
-        assertEquals("firstName-2", driverSummary.getFirstName());
-        assertEquals("lastName-2", driverSummary.getLastName());
-        assertEquals(updatedDriverDTO.id, driverSummary.getId());
-        assertEquals(contactInfos, driverSummary.getContactInfo());
+        DriverDTO driverSummary = driverSummaries.getValues().get(0);
+        assertEquals("firstName-2", driverSummary.firstName);
+        assertEquals("lastName-2", driverSummary.lastName);
+        assertEquals(updatedDriverDTO.id, driverSummary.id);
+        //assertEquals(contactInfos, driverSummary.getContactInfo());
 
         testService
                 .deleteDriver(getDriverDTO.id)

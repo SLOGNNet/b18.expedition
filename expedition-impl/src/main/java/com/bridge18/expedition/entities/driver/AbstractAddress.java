@@ -13,9 +13,9 @@ import java.util.Optional;
 @JsonDeserialize
 public interface AbstractAddress extends Jsonable {
     @Value.Parameter
-    Optional<Integer> getAddressId();
+    Optional<Integer> getId();
     @Value.Parameter
-    Optional<String> getAddressName();
+    Optional<String> getName();
     @Value.Parameter
     Optional<String> getStreetAddress1();
     @Value.Parameter
@@ -23,19 +23,19 @@ public interface AbstractAddress extends Jsonable {
     @Value.Parameter
     Optional<String> getCity();
     @Value.Parameter
-    Optional<String> getAddressPhone();
+    Optional<String> getPhone();
     @Value.Parameter
     Optional<String> getState();
     @Value.Parameter
     Optional<String> getZip();
     @Value.Parameter
-    Optional<String> getAddressFax();
+    Optional<String> getFax();
     @Value.Parameter
-    Optional<String> getAddressPhoneExtension();
+    Optional<String> getPhoneExtension();
     @Value.Parameter
-    Optional<String> getAddressFaxExtension();
+    Optional<String> getFaxExtension();
     @Value.Parameter
-    Optional<Double> getAddressLatitude();
+    Optional<Double> getLatitude();
     @Value.Parameter
-    Optional<Double> getAddressLongitude();
+    Optional<Double> getLongitude();
 }
