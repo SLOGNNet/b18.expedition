@@ -7,9 +7,11 @@ import com.bridge18.expedition.entities.driver.ContactInfoType;
 import com.bridge18.expedition.entities.driver.DriverTypes;
 import com.bridge18.expedition.entities.driver.LicenseClass;
 import com.bridge18.expedition.entities.driver.PaymentOptions;
+import com.lightbend.lagom.javadsl.persistence.ReadSide;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +24,7 @@ import static com.lightbend.lagom.javadsl.testkit.ServiceTest.defaultSetup;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static play.inject.Bindings.bind;
 
 public class LagomDriverServiceTest {
     static ActorSystem system;
@@ -29,6 +32,7 @@ public class LagomDriverServiceTest {
     private final static ServiceTest.Setup setup = defaultSetup().withCassandra(true)
             .configureBuilder(b ->
                     b.configure("cassandra-query-journal.eventual-consistency-delay", "0")
+                            .overrides(bind(ReadSide.class).to(Mockito.mock(ReadSide.class).getClass()))
             );
 
     private static ServiceTest.TestServer testServer;
@@ -119,25 +123,5 @@ public class LagomDriverServiceTest {
         assertEquals(contactInfos, getDriverDTO.contactInfo);
         assertEquals(driverAddressDTO, getDriverDTO.address);
         assertEquals(driverLicenseDTO, getDriverDTO.license);
-
-        Thread.sleep(3000);
-        PaginatedSequence<DriverDTO> driverSummaries = testService
-                .getDriverSummaries(Optional.empty(), Optional.empty())
-                .invoke().toCompletableFuture().get(10, SECONDS);
-        assertEquals(1, driverSummaries.getCount());
-        DriverDTO driverSummary = driverSummaries.getValues().get(0);
-        assertEquals("firstName-2", driverSummary.firstName);
-        assertEquals("lastName-2", driverSummary.lastName);
-        assertEquals(updatedDriverDTO.id, driverSummary.id);
-        //assertEquals(contactInfos, driverSummary.getContactInfo());
-
-        testService
-                .deleteDriver(getDriverDTO.id)
-                .invoke().toCompletableFuture().get(10, SECONDS);
-        Thread.sleep(3000);
-        driverSummaries = testService
-                .getDriverSummaries(Optional.empty(), Optional.empty())
-                .invoke().toCompletableFuture().get(10, SECONDS);
-        assertEquals(0, driverSummaries.getCount());
     }
 }
