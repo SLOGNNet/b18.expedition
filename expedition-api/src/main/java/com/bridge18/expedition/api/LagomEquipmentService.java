@@ -66,13 +66,13 @@ public interface LagomEquipmentService extends Service {
     @ApiOperation(value = "Get equipments on the page", httpMethod = "GET")
     @ApiImplicitParams(value = {
             //Todo or should be Optional
-            @ApiImplicitParam(paramType = "query", name = "pagingState", dataType = "java.lang.String"),
+            @ApiImplicitParam(paramType = "query", name = "pageNumber", dataType = "java.lang.Integer"),
             @ApiImplicitParam(paramType = "query", name = "pageSize", dataType = "java.lang.Integer")
     })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Equipments", response = PaginatedSequence.class)
     })
-    ServiceCall<NotUsed, PaginatedSequence<EquipmentSummary>> getEquipmentSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
+    ServiceCall<NotUsed, PaginatedSequence<EquipmentDTO>> getEquipmentSummaries(Optional<Integer> pageNumber, Optional<Integer> pageSize);
 
     @Override
     default Descriptor descriptor() {
@@ -81,7 +81,7 @@ public interface LagomEquipmentService extends Service {
                 restCall(Method.PUT, "/v1/api/expedition/equipment/:id", this::updateEquipmentInformation),
                 restCall(Method.DELETE, "/v1/api/expedition/equipment/:id", this::deleteEquipment),
                 restCall(Method.GET, "/v1/api/expedition/equipment/:id", this::getEquipment),
-                restCall(Method.GET, "/v1/api/expedition/equipment?pagingState&pageSize", this::getEquipmentSummaries)
+                restCall(Method.GET, "/v1/api/expedition/equipment?pageNumber&pageSize", this::getEquipmentSummaries)
         ).withAutoAcl(true)
                 .withServiceAcls(
                         ServiceAcl.methodAndPath(Method.OPTIONS, "\\*")
