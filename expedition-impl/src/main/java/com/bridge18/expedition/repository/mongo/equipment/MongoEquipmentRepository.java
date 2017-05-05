@@ -15,6 +15,7 @@ import com.lightbend.lagom.javadsl.persistence.ReadSideProcessor;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.FindOptions;
 import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.Sort;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.pcollections.PSequence;
 import org.pcollections.PVector;
@@ -41,6 +42,7 @@ public class MongoEquipmentRepository implements EquipmentRepository {
     @Override
     public PaginatedSequence<EquipmentState> getEquipments(int pageNumber, int pageSize) {
         List<EquipmentState> equipments = datastore.createQuery(EquipmentState.class)
+                .order(Sort.naturalDescending())
                 .asList(new FindOptions()
                         .skip(pageNumber > 0 ? (pageNumber - 1) * pageSize : 0)
                         .limit(pageSize)
