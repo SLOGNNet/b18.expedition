@@ -4,19 +4,16 @@ import akka.actor.ActorSystem;
 import com.bridge18.expedition.api.LagomEquipmentService;
 import com.bridge18.expedition.dto.v1.EquipmentDTO;
 import com.bridge18.expedition.dto.v1.MileageRecordDTO;
-import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.equipment.*;
+import com.lightbend.lagom.javadsl.persistence.ReadSide;
 import com.lightbend.lagom.javadsl.testkit.ServiceTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.pcollections.PVector;
-import org.pcollections.TreePVector;
+import org.mockito.Mockito;
 
-import javax.xml.ws.WebServiceException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -24,6 +21,7 @@ import static com.lightbend.lagom.javadsl.testkit.ServiceTest.defaultSetup;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static play.inject.Bindings.bind;
 
 public class LagomEquipmentServiceTest {
     static ActorSystem system;
@@ -31,16 +29,17 @@ public class LagomEquipmentServiceTest {
     private final static ServiceTest.Setup setup = defaultSetup().withCassandra(true)
             .configureBuilder(b ->
                     b.configure("cassandra-query-journal.eventual-consistency-delay", "0")
+                            .overrides(bind(ReadSide.class).to(Mockito.mock(ReadSide.class).getClass()))
             );
 
     private static ServiceTest.TestServer testServer;
+
     private static LagomEquipmentService testService;
 
 
     @BeforeClass
     public static void beforeAll() {
         system = ActorSystem.create("LagomEquipmentServiceTest");
-
         testServer = ServiceTest.startServer(setup);
         testService = testServer.client(LagomEquipmentService.class);
     }
