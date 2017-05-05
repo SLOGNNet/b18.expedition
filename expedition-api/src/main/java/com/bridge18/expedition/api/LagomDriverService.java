@@ -37,7 +37,7 @@ public interface LagomDriverService extends Service {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Drivers", response = PaginatedSequence.class)
     })
-    ServiceCall<NotUsed, PaginatedSequence<DriverSummaryDTO>> getDriverSummaries(Optional<String> pagingState, Optional<Integer> pageSize);
+    ServiceCall<NotUsed, PaginatedSequence<DriverDTO>> getDriverSummaries(Optional<Integer> pageNumber, Optional<Integer> pageSize);
 
     @ApiPath("/{id}")
     @ApiOperation(value = "Update driver by id", httpMethod = "PUT")
@@ -74,7 +74,7 @@ public interface LagomDriverService extends Service {
     default Descriptor descriptor() {
         return named("expeditionDriver").withCalls(
                 restCall(Method.POST, "/v1/api/expedition/drivers", this::createNewDriver),
-                restCall(Method.GET, "/v1/api/expedition/drivers?pagingState&pageSize", this::getDriverSummaries),
+                restCall(Method.GET, "/v1/api/expedition/drivers?pageNumber&pageSize", this::getDriverSummaries),
                 restCall(Method.PUT, "/v1/api/expedition/drivers/:id", this::updateDriverInformation),
                 restCall(Method.DELETE, "/v1/api/expedition/drivers/:id", this::deleteDriver),
                 restCall(Method.GET, "/v1/api/expedition/drivers/:id", this::getDriverInformation)

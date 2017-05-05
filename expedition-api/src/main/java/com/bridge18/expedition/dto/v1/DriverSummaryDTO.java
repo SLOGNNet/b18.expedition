@@ -9,16 +9,16 @@ public final class DriverSummaryDTO {
     String id;
     String firstName;
     String lastName;
-    List<ContactInfoDTO> contactInfo;
+    AddressDTO addressDTO;
 
     public DriverSummaryDTO() {
     }
 
-    public DriverSummaryDTO(String id, String firstName, String lastName, List<ContactInfoDTO> contactInfo) {
+    public DriverSummaryDTO(String id, String firstName, String lastName, AddressDTO addressDTO) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.contactInfo = contactInfo;
+        this.addressDTO = addressDTO;
     }
 
     public String getId() {
@@ -33,7 +33,7 @@ public final class DriverSummaryDTO {
         return lastName;
     }
 
-    public List<ContactInfoDTO> getContactInfo() {
-        return contactInfo;
+    public AddressDTO getAddressDTO() {
+        return addressDTO;
     }
 }
