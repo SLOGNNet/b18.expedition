@@ -141,7 +141,7 @@ public class DriverEntityTest {
 
         PersistentEntityTestDriver.Outcome<DriverEvent, DriverState> outcome1 = persistentEntityTestDriver.run(createDriverCmd);
 
-        assertEquals(2, outcome1.events().size());
+        assertEquals(1, outcome1.events().size());
 
         DriverState driverState = (DriverState) outcome1.getReplies().get(0);
         assertEquals("test-driver-1", ((DriverState) outcome1.getReplies().get(0)).getId());
