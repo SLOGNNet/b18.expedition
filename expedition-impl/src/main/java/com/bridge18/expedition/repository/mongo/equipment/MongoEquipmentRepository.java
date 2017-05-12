@@ -1,13 +1,10 @@
 package com.bridge18.expedition.repository.mongo.equipment;
 
 import akka.Done;
-import com.bridge18.expedition.dto.v1.EquipmentDTO;
-import com.bridge18.expedition.dto.v1.MileageRecordDTO;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.equipment.*;
 import com.bridge18.expedition.repository.EquipmentRepository;
 import com.bridge18.readside.mongodb.readside.MongodbReadSide;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.lightbend.lagom.javadsl.persistence.AggregateEventTag;
 import com.lightbend.lagom.javadsl.persistence.ReadSide;
@@ -18,17 +15,13 @@ import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.Sort;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.pcollections.PSequence;
-import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import java.util.stream.Collectors;
 
-import static com.bridge18.expedition.core.CompletionStageUtils.doAll;
+import static com.bridge18.core.CompletionStageUtils.doAll;
 
 public class MongoEquipmentRepository implements EquipmentRepository {
     private Datastore datastore;
@@ -69,7 +62,6 @@ public class MongoEquipmentRepository implements EquipmentRepository {
         public ReadSideHandler<EquipmentEvent> buildHandler() {
             return readSide.<EquipmentEvent>builder("mongoEquipmentEventOffset")
                     .setGlobalPrepare(this::globalPrepare)
-                    .setPrepare(this::prepareStatements)
                     .setEventHandler(EquipmentCreated.class,
                             this::insertEquipmentSummary
                     )
@@ -89,17 +81,9 @@ public class MongoEquipmentRepository implements EquipmentRepository {
 
         private CompletionStage<Done> globalPrepare(Datastore datastore) {
             return doAll(
-                    //@TODO: indexing?
-
                     CompletableFuture.runAsync(() -> {
                         datastore.ensureIndexes(EquipmentState.class);
                     })
-            );
-        }
-
-        private CompletionStage<Done> prepareStatements(Datastore datastore, AggregateEventTag<EquipmentEvent> tag) {
-            return doAll(
-                    //@TODO: indexing?
             );
         }
 
