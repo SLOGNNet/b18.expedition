@@ -4,7 +4,6 @@ package com.bridge18.expedition.api;
 import akka.Done;
 import akka.NotUsed;
 import com.bridge18.expedition.dto.v1.EquipmentDTO;
-import com.bridge18.expedition.dto.v1.EquipmentSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.swagger.annotations.ApiPath;
 import com.lightbend.lagom.javadsl.api.Descriptor;
@@ -16,7 +15,8 @@ import io.swagger.annotations.*;
 
 import java.util.Optional;
 
-import static com.lightbend.lagom.javadsl.api.Service.*;
+import static com.lightbend.lagom.javadsl.api.Service.named;
+import static com.lightbend.lagom.javadsl.api.Service.restCall;
 
 @ApiPath("/v1/api/expedition/equipment")
 @Api(consumes = "application/json", produces = "application/json")

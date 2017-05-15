@@ -5,4 +5,5 @@ import com.bridge18.expedition.entities.equipment.EquipmentState;
 
 public interface EquipmentRepository {
     PaginatedSequence<EquipmentState> getEquipments(int pageNumber, int pageSize);
+    EquipmentState findByNumber(String number);
 }
