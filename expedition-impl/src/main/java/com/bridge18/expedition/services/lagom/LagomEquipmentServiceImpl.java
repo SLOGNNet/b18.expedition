@@ -17,7 +17,6 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.xml.ws.WebServiceException;
 import java.util.List;
 import java.util.Optional;
@@ -37,10 +36,8 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
     }
 
     @Override
-    @Valid
     public ServiceCall<EquipmentDTO, EquipmentDTO> createNewEquipment() {
         return request -> {
-
             if (equipmentRepository.findByNumber(request.number) != null) {
                 throw new LagomException("NUMBER_IN_USE", 400, "Number in use. Please enter unique number", "number");
             }

@@ -13,6 +13,7 @@ import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.api.transport.Method;
 import io.swagger.annotations.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 import static com.lightbend.lagom.javadsl.api.Service.named;
@@ -29,6 +30,7 @@ public interface LagomEquipmentService extends Service {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Equipment created", response = EquipmentDTO.class)
     })
+    @Valid
     ServiceCall<EquipmentDTO, EquipmentDTO> createNewEquipment();
 
     @ApiPath("/{id}")
