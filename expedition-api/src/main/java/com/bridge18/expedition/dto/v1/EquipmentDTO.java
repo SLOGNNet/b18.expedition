@@ -6,11 +6,9 @@ import com.bridge18.expedition.entities.equipment.OperatingMode;
 import com.bridge18.expedition.entities.equipment.Ownership;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import play.data.validation.Constraints;
-import play.data.validation.ValidationError;
+import play.data.validation.Constraints.Required;
 
 import javax.annotation.concurrent.Immutable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +21,10 @@ public class EquipmentDTO {
     public String vin;
     public Ownership ownership;
 
-    @Constraints.Required(message = "Equipment type can't be empty")
+    @Required(message = "Equipment type can't be empty")
     public EquipmentType type;
 
-    @Constraints.Required(message = "Equipment subtype can't be empty")
+    @Required(message = "Equipment subtype can't be empty")
     public EquipmentSubType subType;
 
     public OperatingMode operatingMode;
@@ -38,7 +36,7 @@ public class EquipmentDTO {
 
     public Boolean isSleeperBerthAvailable;
 
-    @Constraints.Required(message = "Number can't be empty")
+    @Required(message = "Number can't be empty")
     public String number;
 
     public String licensePlateState;
@@ -48,13 +46,4 @@ public class EquipmentDTO {
     public String notes;
 
     public List<MileageRecordDTO> mileageRecords;
-
-
-    public List<ValidationError> validate() {
-        final List<ValidationError> errors = new ArrayList<>();
-        if (this.number != null) {
-            errors.add(new ValidationError("number == null", "number == null"));
-        }
-        return errors.size() > 0 ? errors : null;
-    }
 }
