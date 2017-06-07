@@ -2,9 +2,9 @@ package com.bridge18.expedition.services.lagom;
 
 import akka.Done;
 import akka.NotUsed;
+import com.bridge18.exception.LagomException;
 import com.bridge18.expedition.api.LagomEquipmentService;
 import com.bridge18.expedition.dto.v1.EquipmentDTO;
-import com.bridge18.expedition.dto.v1.EquipmentSummary;
 import com.bridge18.expedition.dto.v1.MileageRecordDTO;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.expedition.entities.equipment.EquipmentState;
@@ -17,27 +17,35 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import javax.xml.ws.WebServiceException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import static com.bridge18.expedition.services.lagom.LagomDriverServiceImpl.PAGE_SIZE;
 
 public class LagomEquipmentServiceImpl implements LagomEquipmentService {
+
+    private final Validator validator;
     private EquipmentService equipmentService;
     private EquipmentRepository equipmentRepository;
 
     @Inject
-    public LagomEquipmentServiceImpl(EquipmentService equipmentService, EquipmentRepository equipmentRepository) {
+    public LagomEquipmentServiceImpl(EquipmentService equipmentService, EquipmentRepository equipmentRepository, Validator validator) {
         this.equipmentService = equipmentService;
         this.equipmentRepository = equipmentRepository;
+        this.validator = validator;
     }
 
     @Override
     public ServiceCall<EquipmentDTO, EquipmentDTO> createNewEquipment() {
         return request -> {
+            validate(request);
             PVector<MileageRecord> inMileageRecords = Optional.ofNullable(request.mileageRecords).isPresent() ?
                     TreePVector.from(
                             Lists.transform(request.mileageRecords, mileageRecordDTO -> MileageRecord.builder()
@@ -157,4 +165,13 @@ public class LagomEquipmentServiceImpl implements LagomEquipmentService {
                 mileageRecordDTOList);
     }
 
+    private void validate(EquipmentDTO request) {
+        Set<ConstraintViolation<EquipmentDTO>> violations = validator.validate(request);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+        if (equipmentRepository.findByNumber(request.number) != null) {
+            throw new LagomException("NUMBER_IN_USE", 400, "Number in use. Please enter unique number", "number");
+        }
+    }
 }

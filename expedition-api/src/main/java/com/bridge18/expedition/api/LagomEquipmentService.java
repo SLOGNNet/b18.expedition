@@ -4,7 +4,6 @@ package com.bridge18.expedition.api;
 import akka.Done;
 import akka.NotUsed;
 import com.bridge18.expedition.dto.v1.EquipmentDTO;
-import com.bridge18.expedition.dto.v1.EquipmentSummary;
 import com.bridge18.expedition.dto.v1.PaginatedSequence;
 import com.bridge18.swagger.annotations.ApiPath;
 import com.lightbend.lagom.javadsl.api.Descriptor;
@@ -14,9 +13,11 @@ import com.lightbend.lagom.javadsl.api.ServiceCall;
 import com.lightbend.lagom.javadsl.api.transport.Method;
 import io.swagger.annotations.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
-import static com.lightbend.lagom.javadsl.api.Service.*;
+import static com.lightbend.lagom.javadsl.api.Service.named;
+import static com.lightbend.lagom.javadsl.api.Service.restCall;
 
 @ApiPath("/v1/api/expedition/equipment")
 @Api(consumes = "application/json", produces = "application/json")
@@ -29,6 +30,7 @@ public interface LagomEquipmentService extends Service {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Equipment created", response = EquipmentDTO.class)
     })
+    @Valid
     ServiceCall<EquipmentDTO, EquipmentDTO> createNewEquipment();
 
     @ApiPath("/{id}")

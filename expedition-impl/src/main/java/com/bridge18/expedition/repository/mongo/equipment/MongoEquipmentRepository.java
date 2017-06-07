@@ -49,6 +49,15 @@ public class MongoEquipmentRepository implements EquipmentRepository {
         );
     }
 
+    @Override
+    public EquipmentState findByNumber(String number) {
+        EquipmentState equipmentState = datastore.createQuery(EquipmentState.class)
+                .field("number")
+                .equal(number)
+                .get();
+        return equipmentState;
+    }
+
     private static class EquipmentEventProcessor extends ReadSideProcessor<EquipmentEvent> {
 
         private final MongodbReadSide readSide;

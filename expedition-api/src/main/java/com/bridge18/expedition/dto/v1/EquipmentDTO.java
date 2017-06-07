@@ -1,8 +1,12 @@
 package com.bridge18.expedition.dto.v1;
 
-import com.bridge18.expedition.entities.equipment.*;
+import com.bridge18.expedition.entities.equipment.EquipmentSubType;
+import com.bridge18.expedition.entities.equipment.EquipmentType;
+import com.bridge18.expedition.entities.equipment.OperatingMode;
+import com.bridge18.expedition.entities.equipment.Ownership;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import org.pcollections.PVector;
+import play.data.validation.Constraints.Required;
 
 import javax.annotation.concurrent.Immutable;
 import java.util.Date;
@@ -10,13 +14,17 @@ import java.util.List;
 
 @Immutable
 @EqualsAndHashCode
+@AllArgsConstructor
 public class EquipmentDTO {
     public String id;
 
     public String vin;
     public Ownership ownership;
 
+    @Required(message = "Equipment type can't be empty")
     public EquipmentType type;
+
+    @Required(message = "Equipment subtype can't be empty")
     public EquipmentSubType subType;
 
     public OperatingMode operatingMode;
@@ -28,6 +36,7 @@ public class EquipmentDTO {
 
     public Boolean isSleeperBerthAvailable;
 
+    @Required(message = "Number can't be empty")
     public String number;
 
     public String licensePlateState;
@@ -37,23 +46,4 @@ public class EquipmentDTO {
     public String notes;
 
     public List<MileageRecordDTO> mileageRecords;
-
-    public EquipmentDTO(String id, String vin, Ownership ownership, EquipmentType type, EquipmentSubType subType, OperatingMode operatingMode, String make, String model, String colour, Boolean isSleeperBerthAvailable, String number, String licensePlateState, String licensePlateNumber, Date licensePlateExpiration, String notes, List<MileageRecordDTO> mileageRecord) {
-        this.id = id;
-        this.vin = vin;
-        this.ownership = ownership;
-        this.type = type;
-        this.subType = subType;
-        this.operatingMode = operatingMode;
-        this.make = make;
-        this.model = model;
-        this.colour = colour;
-        this.isSleeperBerthAvailable = isSleeperBerthAvailable;
-        this.number = number;
-        this.licensePlateState = licensePlateState;
-        this.licensePlateNumber = licensePlateNumber;
-        this.licensePlateExpiration = licensePlateExpiration;
-        this.notes = notes;
-        this.mileageRecords = mileageRecord;
-    }
 }

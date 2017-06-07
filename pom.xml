@@ -122,6 +122,7 @@
                 <artifactId>mockito-core</artifactId>
                 <version>2.7.5</version>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
 

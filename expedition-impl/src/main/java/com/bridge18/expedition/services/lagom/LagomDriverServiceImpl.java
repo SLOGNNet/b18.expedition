@@ -16,8 +16,12 @@ import org.pcollections.PVector;
 import org.pcollections.TreePVector;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -26,18 +30,20 @@ public class LagomDriverServiceImpl implements LagomDriverService {
     private DriverService driverService;
 
     private final MongoDriverRepository driverRepository;
-
+    private final Validator validator;
     static final int PAGE_SIZE = 20;
 
     @Inject
-    public LagomDriverServiceImpl(DriverService driverService, MongoDriverRepository driverRepository) {
+    public LagomDriverServiceImpl(DriverService driverService, MongoDriverRepository driverRepository, Validator validator) {
         this.driverService = driverService;
         this.driverRepository = driverRepository;
+        this.validator = validator;
     }
 
     @Override
     public ServiceCall<DriverDTO, DriverDTO> createNewDriver() {
         return request -> {
+            validate(request);
             PVector<ContactInfo> inContactInfo = Optional.ofNullable(request.contactInfo).isPresent() ?
                     TreePVector.from(
                             Lists.transform(request.contactInfo, contactInfoDTO -> ContactInfo.builder()
@@ -90,14 +96,14 @@ public class LagomDriverServiceImpl implements LagomDriverService {
         return request -> {
             PaginatedSequence<DriverState> drivers = driverRepository.getDrivers(pageNumber.orElse(1), pageSize.orElse(PAGE_SIZE));
             return CompletableFuture.completedFuture(new PaginatedSequence<>(
-                    TreePVector.from(
-                            drivers.getValues().stream()
-                                    .map(this::convertDriverStateToDriverDTO)
-                                    .collect(Collectors.toList())
-                    ),
-                    drivers.getPageSize(),
-                    drivers.getCount()
-            )
+                            TreePVector.from(
+                                    drivers.getValues().stream()
+                                            .map(this::convertDriverStateToDriverDTO)
+                                            .collect(Collectors.toList())
+                            ),
+                            drivers.getPageSize(),
+                            drivers.getCount()
+                    )
             );
         };
     }
@@ -148,7 +154,7 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                 driverState.getFirstName().orElse(null), driverState.getMiddleName().orElse(null),
                 driverState.getLastName().orElse(null), contactInfoDTOList,
                 driverState.getPosition().orElse(null), addressDTO,
-                driverState.getBirthDate().orElse(null),driverState.getSsn().orElse(null),
+                driverState.getBirthDate().orElse(null), driverState.getSsn().orElse(null),
                 driverState.getPaymentOption().orElse(null), driverState.getRate().orElse(null),
                 driverState.getDriverType().orElse(null), licenseDTO
         );
@@ -185,5 +191,12 @@ public class LagomDriverServiceImpl implements LagomDriverService {
                 .licenseEndorsements(Optional.ofNullable(licenseDTO.endorsements))
                 .licenseRestrictions(Optional.ofNullable(licenseDTO.restrictions))
                 .build();
+    }
+
+    private void validate(DriverDTO request) {
+        Set<ConstraintViolation<DriverDTO>> violations = validator.validate(request);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 }
