@@ -22,9 +22,8 @@ public class WorkerBootstrap {
     public WorkerBootstrap(Configuration configuration, CreateEmptyLoadWorker createEmptyLoad) {
         this.configuration = configuration;
 
-        //@TODO: use configuration
         camundaClient = CamundaClient.create()
-                .endpointUrl("http://localhost:8084/api/tasks/")
+                .endpointUrl(configuration.getString("camunda-endpoint-url"))
                 .build();
 
         register("Load.createEmpty", createEmptyLoad, 3000);

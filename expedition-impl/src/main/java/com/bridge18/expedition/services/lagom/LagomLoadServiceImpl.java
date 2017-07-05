@@ -23,17 +23,17 @@ public class LagomLoadServiceImpl implements LagomLoadService {
 
     @Override
     public ServiceCall<NotUsed, LoadDTO> createNewLoad() {
-        return request -> {
-            return loadService.createLoad()
+        return request ->
+            loadService.createLoad()
                     .thenApply((loadState) ->
                             new LoadDTO(loadState.getId()));
-        };
+
     }
 
     @Override
     public ServiceCall<LoadDTO, LoadDTO> addLoadDetails(String id) {
-        return request -> {
-            return loadService.addLoadDetails(id,
+        return request ->
+            loadService.addLoadDetails(id,
                     Optional.ofNullable(request.customerId), Optional.ofNullable(request.customerAddressId),
                     Optional.ofNullable(request.carrierLoadNumber), Optional.ofNullable(request.brokerLoadNumber),
                     Optional.ofNullable(request.loadType), Optional.ofNullable(request.freightType))
@@ -43,6 +43,6 @@ public class LagomLoadServiceImpl implements LagomLoadService {
                                     loadState.getCustomerId().orElse(null), loadState.getCustomerAddressId().orElse(null),
                                     loadState.getCarrierLoadNumber().orElse(null), loadState.getBrokerLoadNumber().orElse(null),
                                     loadState.getLoadType().orElse(null), loadState.getFreightType().orElse(null)));
-        };
+
     }
 }

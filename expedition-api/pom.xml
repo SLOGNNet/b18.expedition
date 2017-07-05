@@ -10,10 +10,36 @@
 
     <packaging>jar</packaging>
 
+    <repositories>
+        <repository>
+            <id>bridge18-repo</id>
+            <url>https://nexus-repo.bridge18.com/repository/bridge18-maven/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.lightbend.lagom</groupId>
             <artifactId>lagom-javadsl-api_2.11</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bridge18</groupId>
+            <artifactId>swagger</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.14</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.pcollections</groupId>
+            <artifactId>pcollections</artifactId>
+            <version>2.1.2</version>
         </dependency>
     </dependencies>
 </project>
